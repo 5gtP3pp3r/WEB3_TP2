@@ -1,10 +1,10 @@
 import { PageTemplate } from '../../PageTemplate';
-//import { AffichageDuProjetDemineur } from './AffichageDuProjetDemineur';  
+import { App } from './App';  
 
 export function PageDemineur() {
-//   return (
-//     <PageTemplate title="Jeu Démineur" previous="/projets/yahtzee" nextPage="/projets/horloge">
-//       {<AffichageDuProjetDemineur />}
-//     </PageTemplate>
-//   );
+  return (
+    <PageTemplate title="Jeu Démineur" previous="/projets/yahtzee" nextPage="/projets/horloge">
+      {<App />}
+    </PageTemplate>
+  );
 }
