@@ -10,13 +10,9 @@ import { Footer } from './Footer';
 import { Page404 } from './Page404';
 import { PageAccueil } from './PageAccueil';
 
-import { PageDemineur } from './Projects/demineur/PageDemineur';
-import { PageHorloge } from './Projects/horloge/PageHorloge';
-import { PageYahtzee } from './Projects/yahtzee/PageYahtzee';
-
-
-
-
+import { PageDemineur } from './Projets/demineur/PageDemineur';
+import { PageHorloge } from './Projets/horloge/PageHorloge';
+import { PageYahtzee } from './Projets/yahtzee/PageYahtzee';
 
 export function App() {
 
