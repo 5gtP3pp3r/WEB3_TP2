@@ -63,7 +63,7 @@ export function App() {
                                               "mine: "+block.mine)}  
                 onContextMenu={(e) => { e.preventDefault(); handleRightClick(block.id);}}>
 
-                {block.cache ? (                                                            // Condition temporaire pour changer les états 
+                {block.cache ? (                                                            // Conditions temporaires pour changer les états 
                   block.drapeau ? (                                                         // caché et drapeau sur clique gauche et droit.
                     <img src="../../images/demineur/herbeFlag.png" alt="herbeFlag" />       // Revoir les conditions pour enlever le flag avec un rightClick.
                   ) : (                                                                     // Revoir les conditions pour ne pas pouvoir faire de leftClick si flag.
