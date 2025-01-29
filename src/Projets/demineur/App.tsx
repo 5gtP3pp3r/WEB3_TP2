@@ -44,7 +44,7 @@ export function App() {
       <Row>
         <Col>
           <h1>Test affichage grid:</h1>
-          <p>Pour l'instant, dimension grille hard codé à 10x10:<br />Test de changement d'état des blocks:<br />
+          <p>Pour l'instant, dimension grille hard codé à 10x10:<br />Test de changements d'états des blocks:<br />
           Clique gauche, tourne en terre si herbe.<br />Clique droit, plante un flag si herbe.<br />
           Clique gauche ou droit de fait rien sur terre.<br />Ce côté va être la zone d'interface pour générer le jeux.</p>
         </Col>
