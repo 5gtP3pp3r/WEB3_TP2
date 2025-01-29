@@ -1,7 +1,7 @@
 
 export interface IBlock {
-    x: string;              // coordonnées
-    y: string;
+    x: number;              // coordonnées
+    y: number;
     id: number;             // id pour qt block à générer aléatoire
     valeur: string;         // Si caché faux: images terre1 à terre8
     cache: boolean;         // vrai image: herbe
