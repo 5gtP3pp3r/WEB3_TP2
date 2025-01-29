@@ -68,6 +68,7 @@ export function App() {
               <div key={block.id} style={{ width: "20px", height: "20px", cursor: block.cache ? 'url(../../images/demineur/curseurDemineur.png), auto' : 'auto' } }
 
                 onClick={() => {handleLeftClick(block.id)}}
+
                 onMouseOver={() =>console.log("x: "+block.x+"\n"+                           // Diag test valeur au mouseOver console.log()
                                               "y: "+block.y+"\n"+
                                               "id: "+block.id+"\n"+
@@ -75,6 +76,7 @@ export function App() {
                                               "caché: "+block.cache+"\n"+
                                               "drapeau: "+block.drapeau+"\n"+
                                               "mine: "+block.mine)}  
+                                              
                 onContextMenu={(e) => { e.preventDefault(); handleRightClick(block.id);}}>
 
                 {block.cache ? (                                                            // Conditions temporaires pour changer les états 
