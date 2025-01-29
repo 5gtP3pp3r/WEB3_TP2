@@ -8,6 +8,7 @@ const largeur = 10;
 const hauteur = 10;
 
 export function App() {
+  const [estCustomCursor, setCustomCursor] = useState(false);
   // pour l'istant, crée une grille générique de 10x10 sans mines aléatoire. 
   // ne vérifie donc pas les blocka autour pour placer la valeurs en 
   // conséquence de la proximité d'un block avec block.mine = vrai.
@@ -51,7 +52,7 @@ export function App() {
         <Col>          
           <div style={{ display: "grid", gridTemplateColumns: `repeat(${largeur}, 20px)`}}>
             {grille.map((block) => (
-              <div key={block.id} style={{ width: "20px", height: "20px" }}
+              <div key={block.id} style={{ width: "20px", height: "20px", cursor: block.cache ? 'url(../../images/demineur/curseurDemineur.png), auto' : 'auto' } }
 
                 onClick={() => {handleLeftClick(block.id)}}
                 onMouseOver={() =>console.log("x: "+block.x+"\n"+                           // Diag test valeur au mouseOver console.log()
