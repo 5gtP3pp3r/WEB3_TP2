@@ -8,7 +8,6 @@ const largeur = 10;
 const hauteur = 10;
 
 export function App() {
-  const [estCustomCursor, setCustomCursor] = useState(false);
   // pour l'istant, crée une grille générique de 10x10 sans mines aléatoire. 
   // ne vérifie donc pas les blocka autour pour placer la valeurs en 
   // conséquence de la proximité d'un block avec block.mine = vrai.
