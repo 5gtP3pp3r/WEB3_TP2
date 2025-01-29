@@ -21,14 +21,14 @@ export function PageTemplate({ title, children, previous, nextPage }: PageTempla
         <ButtonGroup>
             <Button
                 onClick={() => navigate(previous)}
-                className="btn btn-primary mt-3"
+                className="btn btn-light mt-3"
                 style={{width:160}}
             >
             Jeu Précédent
             </Button>
             <Button
                 onClick={() => navigate(nextPage)}
-                className="btn btn-primary mt-3"
+                className="btn btn-light mt-3"
                 style={{width:160}}
             >
             Jeu Suivant
