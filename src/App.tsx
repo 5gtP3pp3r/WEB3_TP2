@@ -13,23 +13,26 @@ import { PageAccueil } from './PageAccueil';
 import { PageDemineur } from './Projets/demineur/PageDemineur';
 import { PageHorloge } from './Projets/horloge/PageHorloge';
 import { PageYahtzee } from './Projets/yahtzee/PageYahtzee';
+import { RoutePrivee } from './RoutePrivee';
 
 export function App() {
 
   return (
     <BrowserRouter>
-    <Header/>
-    <NavBarre/>
-    <Container>
-      <Routes>
-        <Route path="/" element={<PageAccueil />} />
-        <Route path="projets/demineur" element={<PageDemineur />} />
-        <Route path="projets/horloge" element={<PageHorloge />} />
-        <Route path="projets/yahtzee" element={<PageYahtzee />} />
-        <Route path="*" element={<Page404 />}/> 
-      </Routes>
-    </Container>
-    <Footer/>
+      <Header />
+      <NavBarre />
+      <Container>
+        <Routes>
+          <Route path="/" element={<PageAccueil />} />
+          <Route path="*" element={<Page404 />} />
+          <Route element={<RoutePrivee />}>
+            <Route path="projets/demineur" element={<PageDemineur />} />
+            <Route path="projets/horloge" element={<PageHorloge />} />
+            <Route path="projets/yahtzee" element={<PageYahtzee />} />
+          </Route>
+        </Routes>
+      </Container>
+      <Footer />
     </BrowserRouter>
   );
 }
