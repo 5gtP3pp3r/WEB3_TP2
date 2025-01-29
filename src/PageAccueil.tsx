@@ -7,9 +7,8 @@ export function PageAccueil() {
     const { isAuthenticated, loginWithRedirect} = useAuth0();
 
     return (
-        <div>
-            <h3>Page d'accueil</h3>
-            
+        <div className='m-5'>
+            <h3>Page d'accueil</h3>           
             <div>
             {isAuthenticated ? (
                 <>
@@ -21,9 +20,7 @@ export function PageAccueil() {
                     <p>BLABLABLA  Connectez vous bande de con!</p>
                     <Button variant='light'  onClick={() => loginWithRedirect()}>Se connecter</Button> 
                 </>
-            )}
-            <div className="d-flex justify-content-center m-5">
-            </div>    
+            )}    
             </div>
         </div>
         
