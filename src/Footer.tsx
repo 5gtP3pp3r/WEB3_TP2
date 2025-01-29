@@ -3,7 +3,7 @@ import { Container, Row } from 'react-bootstrap';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { Button } from 'react-bootstrap';
 import { useAuth0 } from '@auth0/auth0-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 
 export function Footer() {
