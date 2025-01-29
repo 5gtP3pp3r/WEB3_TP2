@@ -20,9 +20,12 @@ export function App() {
   // ajuster la valeur à terre${nb block voisin.mine = vrai} "terre1, terre2..." -> ToDo
   const [grille, setGrille] = useState<IBlock[]>(() => {
     const grid: IBlock[] = [];   
-    for (let id = 0; id < largeur * hauteur; id++) {
+    for (let id = 0; id < largeur * hauteur; ++id) {
       const x = id % largeur; 
       const y = Math.floor(id / largeur); 
+      // Je crois que je vais ajouter une fonction externe qui va me retourné des id aléatoires 
+      // pour passer mine à vrai. à voir comment implanter `ca vers ici avant le grid.push
+      // Vérifications des mines des voisins ici pour modifier la "valeur".
       grid.push({
         x,
         y,
@@ -32,11 +35,10 @@ export function App() {
         drapeau: false,
         mine: false,
       });
-    }
-    
-    return grid; // Retourner la grille générée
+    }    
+    return grid;
   });
-  // méthode temporaire pour changer herbe à terre block.cache: true/false
+  // méthode temporaire pour changer l'image herbe à terre -> block.cache: true/false
   const handleLeftClick = (id: number) => {   
     setGrille((prevGrille) =>
       prevGrille.map((block) =>
@@ -44,7 +46,7 @@ export function App() {
       )
     );
   };
-  // méthode temporaire pour afficher le flag block.drapeau: true/false
+  // méthode temporaire pour changer l'image herbe à herbeFlag -> block.drapeau: true/false
   const handleRightClick = (id: number) => {   
     setGrille((prevGrille) =>
       prevGrille.map((block) =>
@@ -69,18 +71,18 @@ export function App() {
 
                 onClick={() => {handleLeftClick(block.id)}}
 
-                onMouseOver={() =>console.log("x: "+block.x+"\n"+                           // Diag test valeur au mouseOver console.log()
+                onMouseOver={() =>console.log("x: "+block.x+"\n"+                           // Diag test valeurs au mouseOver console.log()
                                               "y: "+block.y+"\n"+
                                               "id: "+block.id+"\n"+
                                               "valeur: "+block.valeur+"\n"+
                                               "caché: "+block.cache+"\n"+
                                               "drapeau: "+block.drapeau+"\n"+
                                               "mine: "+block.mine)}  
-                                              
+
                 onContextMenu={(e) => { e.preventDefault(); handleRightClick(block.id);}}>
 
                 {block.cache ? (                                                            // Conditions temporaires pour changer les états 
-                  block.drapeau ? (                                                         // caché et drapeau sur clique gauche et droit.
+                  block.drapeau ? (                                                         // "cache" et "drapeau" sur clique gauche et droit.
                     <img src="../../images/demineur/herbeFlag.png" alt="herbeFlag" />       // Revoir les conditions pour enlever le flag avec un rightClick.
                   ) : (                                                                     // Revoir les conditions pour ne pas pouvoir faire de leftClick si flag.
                     <img src="../../images/demineur/herbe.png" alt="herbe" />
