@@ -45,8 +45,8 @@ export function App() {
         <Col>
           <h1>Test affichage grid:</h1>
           <p>Pour l'instant, dimension grille hard codé à 10x10:<br />Test de changement d'état des blocks:<br />
-          Clique gauche, tourne en terre si herbe<br />Clique droit, plante un flag si herbe<br />
-          Clique gauche ou droit de fait rien sur terre</p>
+          Clique gauche, tourne en terre si herbe.<br />Clique droit, plante un flag si herbe.<br />
+          Clique gauche ou droit de fait rien sur terre.<br />Ce côté va être la zone d'interface pour générer le jeux.</p>
         </Col>
         <Col>          
           <div style={{ display: "grid", gridTemplateColumns: `repeat(${largeur}, 20px)`}}>
@@ -65,8 +65,8 @@ export function App() {
 
                 {block.cache ? (                                                            // Condition temporaire pour changer les états 
                   block.drapeau ? (                                                         // caché et drapeau sur clique gauche et droit.
-                    <img src="../../images/demineur/herbeFlag.png" alt="herbeFlag" />
-                  ) : (
+                    <img src="../../images/demineur/herbeFlag.png" alt="herbeFlag" />       // Revoir les conditions pour enlever le flag avec un rightClick.
+                  ) : (                                                                     // Revoir les conditions pour ne pas pouvoir faire de leftClick si flag.
                     <img src="../../images/demineur/herbe.png" alt="herbe" />
                   )
                 ) : (
