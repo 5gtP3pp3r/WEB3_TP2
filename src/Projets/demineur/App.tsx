@@ -9,19 +9,33 @@ const hauteur = 10;
 
 export function App() {
   // pour l'istant, crée une grille générique de 10x10 sans mines aléatoire. 
-  // ne vérifie donc pas les blocka autour pour placer la valeurs en 
+  // ne vérifie donc pas les block autour pour placer la valeurs en 
   // conséquence de la proximité d'un block avec block.mine = vrai.
-  const [grille, setGrille] = useState<IBlock[]>(
-    Array.from({ length: largeur * hauteur }, (_, id) => ({
-      x: id % largeur,
-      y: Math.floor(id / largeur),
-      id,
-      valeur: "terre",
-      cache: true,
-      drapeau: false,
-      mine: false,
-    }))
-  );
+
+  // Créer un nouveau tableau vide, ajouter la valeur "id" avec une boucle -> check 
+  // à chaque itération calculer les valeurs de x: valeur id modulo largeur -> check 
+  // y: id divisé par largeur arrondi à la baisse car les résultats seront float la majorité du temps -> check
+  // Pour l'instant mine est générique à faux. Va faloir ajouter un random vs dimension grille. -> ToDo
+  // Pour l'instant valeur générique "terre". Va faloir vérifier les voisins et 
+  // ajuster la valeur à terre${nb block voisin.mine = vrai} "terre1, terre2..." -> ToDo
+  const [grille, setGrille] = useState<IBlock[]>(() => {
+    const grid: IBlock[] = [];   
+    for (let id = 0; id < largeur * hauteur; id++) {
+      const x = id % largeur; 
+      const y = Math.floor(id / largeur); 
+      grid.push({
+        x,
+        y,
+        id,
+        valeur: "terre",
+        cache: true,
+        drapeau: false,
+        mine: false,
+      });
+    }
+    
+    return grid; // Retourner la grille générée
+  });
   // méthode temporaire pour changer herbe à terre block.cache: true/false
   const handleLeftClick = (id: number) => {   
     setGrille((prevGrille) =>
