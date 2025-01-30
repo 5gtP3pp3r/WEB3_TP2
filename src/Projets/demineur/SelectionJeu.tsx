@@ -1,15 +1,17 @@
 import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
+import { Button } from 'react-bootstrap';
 import { INiveau } from './Niveau';
 //import { niveauxTab } from './Niveau';
 
 interface NiveauProps {
-    niveaux: INiveau[];
-    onNiveauSelect: (niveau: string) => void;
+    niveaux: INiveau[];    
     niveauActif: string;
+    onNiveauSelect: (niveau: string) => void;
+    onLancerJeu: (niveau: INiveau) => void;
 }
 
-export function SelectionJeu({niveaux, onNiveauSelect, niveauActif}: NiveauProps) {
+export function SelectionJeu({niveaux, niveauActif, onNiveauSelect, onLancerJeu}: NiveauProps, niveau: INiveau ) {
     return (
         <Form>
         <ListGroup>
@@ -24,6 +26,13 @@ export function SelectionJeu({niveaux, onNiveauSelect, niveauActif}: NiveauProps
                 </ListGroup.Item>
             ))}
         </ListGroup>
+            <Button
+                className='mt-3'
+                variant='light'
+                onClick={() => onLancerJeu(niveau)}
+                style={{ cursor: 'pointer', width: '130px' }}
+                >Jouer!
+            </Button>
         </Form>
     );
 }
