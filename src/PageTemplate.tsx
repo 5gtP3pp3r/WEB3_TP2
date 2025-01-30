@@ -17,18 +17,18 @@ export function PageTemplate({ title, children, previous, nextPage }: PageTempla
     <div>
       <h3>{title}</h3>
       <div>{children}</div>
-      <div className="d-flex justify-content-center m-5">
+      <div className="d-flex justify-content-center mb-5">
         <ButtonGroup>
             <Button
                 onClick={() => navigate(previous)}
-                className="btn btn-light mt-3"
+                className="btn btn-light"
                 style={{width:160}}
             >
             Jeu Précédent
             </Button>
             <Button
                 onClick={() => navigate(nextPage)}
-                className="btn btn-light mt-3"
+                className="btn btn-light"
                 style={{width:160}}
             >
             Jeu Suivant
