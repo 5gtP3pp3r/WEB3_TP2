@@ -30,7 +30,7 @@ export function App() {
         x,
         y,
         id,
-        valeur: "terre1",   // Surement changer en number pour pouvoir l'utiliser dans une variable et aller chercher l'image terre${valeur}.png
+        valeur: "terre",   // Surement changer en number pour pouvoir l'utiliser dans une variable et aller chercher l'image terre${valeur}.png
         cache: true,
         drapeau: false,
         mine: false,
