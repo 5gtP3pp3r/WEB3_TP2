@@ -4,8 +4,8 @@ import Col from 'react-bootstrap/Col';
 import { useState } from 'react';
 import { IBlock } from "./IBlock";
 
-const largeur = 10;
-const hauteur = 10;
+const largeur = 30;   // facile: 8x8 10 mines, intermédiare: 16x16 40 mines, expert: 24x24 99 mines 
+const hauteur = 30;
 
 export function App() {
   // pour l'istant, crée une grille générique de 10x10 sans mines aléatoire. 
@@ -30,7 +30,7 @@ export function App() {
         x,
         y,
         id,
-        valeur: "terre",
+        valeur: "terre1",   // Surement changer en number pour pouvoir l'utiliser dans une variable et aller chercher l'image terre${valeur}.png
         cache: true,
         drapeau: false,
         mine: false,
@@ -56,15 +56,16 @@ export function App() {
   };
 
   return (
+    <div style={{height: '620px',backgroundImage: "url('../../images/demineur/noMansLand.png')",backgroundSize: 'cover', backgroundPosition: 'center'}}>
     <Container>
       <Row>
-        <Col>
+        <Col xs={4}>
           <h1>Test affichage grid:</h1>
           <p>Pour l'instant, dimension grille hard codé à 10x10:<br />Test de changements d'états des blocks:<br />
           Clique gauche, tourne en terre si herbe.<br />Clique droit, plante un flag si herbe.<br />
           Clique gauche ou droit de fait rien sur terre.<br />Ce côté va être la zone d'interface pour générer le jeux.</p>
         </Col>
-        <Col>          
+        <Col xs={8} className='d-flex justify-content-start'>          
           <div style={{ display: "grid", gridTemplateColumns: `repeat(${largeur}, 20px)`}}>
             {grille.map((block) => (
               <div key={block.id} style={{ width: "20px", height: "20px", cursor: block.cache ? 'url(../../images/demineur/curseurDemineur.png), auto' : 'auto' } }
@@ -97,5 +98,6 @@ export function App() {
         </Col>
       </Row>
     </Container>
+    </div>
   );
 }
