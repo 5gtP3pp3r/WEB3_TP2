@@ -56,9 +56,10 @@ export function App() {
       <Row>
         <Col xs={4}>
           <h1>Test affichage grid:</h1>
-          <p>Pour l'instant, dimension grille hard codé à 10x10:<br />Test de changements d'états des blocks:<br />
-          Clique gauche, tourne en terre si herbe.<br />Clique droit, plante un flag si herbe.<br />
-          Clique gauche ou droit de fait rien sur terre.<br />Ce côté va être la zone d'interface pour générer le jeux.</p>
+          <p>-Test de changements d'états des blocks:<br />-Clique gauche, tourne en terre si herbe.<br />
+          -Clique droit, plante un flag si herbe.<br />-Clique gauche ou droit de fait rien sur terre.<br />
+          -Ce côté va être la zone d'interface pour générer le jeux.<br />-Affichage mines et valeurs fonctionnelles!<br />
+          -Trouver comment éviter un réaffichage à la sélection de la difficulté lorsque le jeu est en cours.</p>
           <SelectionJeu
             niveaux={niveauxTab}
             niveauActif={niveauActif}
@@ -74,12 +75,12 @@ export function App() {
                 onClick={() => {handleLeftClick(block.id)}}
 
                 onMouseOver={() =>console.log("x: "+block.x+"\n"+                           // Diag test valeurs au mouseOver console.log()
-                                              "y: "+block.y+"\n"+
-                                              "id: "+block.id+"\n"+
-                                              "valeur: "+block.valeur+"\n"+
-                                              "caché: "+block.cache+"\n"+
-                                              "drapeau: "+block.drapeau+"\n"+
-                                              "mine: "+block.mine)}  
+                                              "y: "+block.y+"\n"+                           //
+                                              "id: "+block.id+"\n"+                         //
+                                              "valeur: "+block.valeur+"\n"+                 //
+                                              "caché: "+block.cache+"\n"+                   //
+                                              "drapeau: "+block.drapeau+"\n"+               //
+                                              "mine: "+block.mine)}                         //
 
                 onContextMenu={(e) => { e.preventDefault(); handleRightClick(block.id);}}>
 
@@ -92,7 +93,7 @@ export function App() {
                 ) : (
                   <img src={`../../images/demineur/terre${block.valeur}.png`} alt="terre" />
                 )}
-
+                
               </div>
             ))}
           </div>          
