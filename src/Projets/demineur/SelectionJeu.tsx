@@ -11,7 +11,9 @@ interface NiveauProps {
     onLancerJeu: (niveau: INiveau) => void;
 }
 
-export function SelectionJeu({niveaux, niveauActif, onNiveauSelect, onLancerJeu}: NiveauProps, niveau: INiveau ) {
+export function SelectionJeu({niveaux, niveauActif, onNiveauSelect, onLancerJeu}: NiveauProps): JSX.Element {
+    const niveau = niveaux.find(n => n.difficulte === niveauActif);
+
     return (
         <Form>
         <ListGroup>
@@ -36,4 +38,3 @@ export function SelectionJeu({niveaux, niveauActif, onNiveauSelect, onLancerJeu}
         </Form>
     );
 }
-
