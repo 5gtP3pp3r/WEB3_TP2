@@ -70,7 +70,7 @@ export function App() {
         <Col xs={8} >          
           <div style={{ display: "grid", gridTemplateColumns: `repeat(${niveau.dimensions}, 20px)`}}>
             {grille.map((block) => (
-              <div key={block.id} style={{ width: "20px", height: "20px", cursor: block.cache ? 'url(../../images/demineur/curseurDemineur.png), auto' : 'auto' } }
+              <div key={block.id} style={{ width: "20px", height: "20px", cursor: block.cache ? 'url(../../images/demineur/curseurDemineur.png), auto' : 'auto' }}
 
                 onClick={() => {handleLeftClick(block.id)}}
 
