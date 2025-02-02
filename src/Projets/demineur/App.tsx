@@ -18,8 +18,8 @@ export function App() {
   const [ niveauActif, setNiveauActif ] = useState<string>("facile");
   const [ enJeu, setEnjeu ] = useState<boolean>(false);
   const [ premierClick, setPremierClick ] = useState<boolean>(false);
-  const [ nbMines, setNbMines ] = useState<number>(0);
-  const [ timer, setTimer ] = useState<string>("0:00");
+  const [ nbMines, setNbMines ] = useState<number>(99);
+  const [ timer, setTimer ] = useState<number>(0);
 
   const handleLeftClick = (id: number) => {   
     setGrille((prevGrille) =>
@@ -54,6 +54,7 @@ export function App() {
     console.log("4-Dimensions: ", niveau.dimensions);
     console.log("4-Qty mines: ", niveau.qtMines);
     setGrille(GenererGrille(niveau)); 
+    setNbMines(niveau.qtMines);
   }
 
   return (
@@ -61,10 +62,10 @@ export function App() {
     <Container>
       <Row>
         <Col xs={3}>
-          <h1>Test affichage grid:</h1>
-          <p>-Test de changements d'états des blocks:<br />-Clique gauche, tourne en terre si herbe.<br />
-          -Clique droit, plante un flag si herbe.<br />-Clique gauche ou droit de fait rien sur terre.<br />
-          -Ce côté va être la zone d'interface pour générer le jeux.<br />-Affichage mines et valeurs fonctionnelles!<br />
+          <h3>Test affichage grid:</h3>
+          <p>-Test de changements d'états des blocks fonctionnels<br />
+          -Ce côté va être la zone d'interface pour générer le jeux.<br />
+          -Affichage mines et valeurs fonctionnelles!<br />
           -Trouver comment éviter un réaffichage à la sélection de la difficulté lorsque le jeu est en cours.</p>
           <SelectionJeu
             niveaux={niveauxTab}
@@ -74,7 +75,7 @@ export function App() {
           />
         </Col>
         <Col xs={6} >                
-          <StatsJeu />   
+          <StatsJeu temps={timer} nbMine={nbMines}/>   
           <div className="d-flex justify-content-center" >          
           <div style={{ display: "grid", gridTemplateColumns: `repeat(${niveau.dimensions}, 20px)`}}>
             {grille.map((block) => (
