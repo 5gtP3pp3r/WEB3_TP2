@@ -8,12 +8,18 @@ import { SelectionJeu } from './SelectionJeu';
 import { INiveau } from './Niveau';
 import { niveauxTab } from './Niveau';
 import { GenererGrille } from './GenererGrille';
+import { StatsJeu } from './Statsjeu';
+import { LeaderBord } from './LeaderBord';
 
 
 export function App() {
   const [ grille, setGrille ] = useState<IBlock[]>([]);
   const [ niveau, setNiveau ] = useState<INiveau>({difficulte:"facile", dimensions: 8, qtMines: 10}); 
   const [ niveauActif, setNiveauActif ] = useState<string>("facile");
+  const [ enJeu, setEnjeu ] = useState<boolean>(false);
+  const [ premierClick, setPremierClick ] = useState<boolean>(false);
+  const [ nbMines, setNbMines ] = useState<number>(0);
+  const [ timer, setTimer ] = useState<string>("0:00");
 
   const handleLeftClick = (id: number) => {   
     setGrille((prevGrille) =>
@@ -54,7 +60,7 @@ export function App() {
     <div style={{height: '620px',backgroundImage: "url('../../images/demineur/noMansLand.png')",backgroundSize: 'cover', backgroundPosition: 'center'}}>
     <Container>
       <Row>
-        <Col xs={4}>
+        <Col xs={3}>
           <h1>Test affichage grid:</h1>
           <p>-Test de changements d'états des blocks:<br />-Clique gauche, tourne en terre si herbe.<br />
           -Clique droit, plante un flag si herbe.<br />-Clique gauche ou droit de fait rien sur terre.<br />
@@ -67,7 +73,9 @@ export function App() {
             onLancerJeu={handelGenererGrille}
           />
         </Col>
-        <Col xs={8} >          
+        <Col xs={6} >                
+          <StatsJeu />   
+          <div className="d-flex justify-content-center" >          
           <div style={{ display: "grid", gridTemplateColumns: `repeat(${niveau.dimensions}, 20px)`}}>
             {grille.map((block) => (
               <div key={block.id} style={{ width: "20px", height: "20px", cursor: block.cache ? 'url(../../images/demineur/curseurDemineur.png), auto' : 'auto' }}
@@ -96,7 +104,11 @@ export function App() {
                 
               </div>
             ))}
-          </div>          
+          </div> 
+          </div>                    
+        </Col>
+        <Col xs={3}>
+            <LeaderBord />
         </Col>
       </Row>
     </Container>
