@@ -17,15 +17,25 @@ export function App() {
   const [ niveau, setNiveau ] = useState<INiveau>({difficulte:"facile", dimensions: 8, qtMines: 10}); 
   const [ niveauActif, setNiveauActif ] = useState<string>("facile");
   const [ enJeu, setEnjeu ] = useState<boolean>(false);
-  const [ premierClick, setPremierClick ] = useState<boolean>(false);
-  const [ nbMines, setNbMines ] = useState<number>(99);
+  const [ premierClick, setPremierClick ] = useState<boolean>(true);
+  const [ drapeauxPlaces, setdrapeauxPlaces ] = useState<number>(0);
   const [ timer, setTimer ] = useState<number>(0);
+  
+  const maxTime = 600;
+  const demarerTimer = () => {
+    if (timer < maxTime && premierClick) {
+      setTimeout(() => {
+        setTimer(prevTimer => prevTimer + 1);
+        demarerTimer();         
+      }, 1000);
+    }
+  };
 
   const handleLeftClick = (id: number) => {   
     setGrille((prevGrille) =>
       prevGrille.map((block) =>
         block.id === id ? { ...block, cache: false } : block
-      )
+      )    
     );
   };
   
@@ -35,7 +45,9 @@ export function App() {
         block.id === id ? { ...block, drapeau: true } : block
       )
     );
+        
   };
+
   const handleNiveauSelect = (niveau: string) => {
     setNiveauActif(niveau);
     const niveauChoisi = niveauxTab.find((diff) => diff.difficulte === niveau);
@@ -48,13 +60,14 @@ export function App() {
       console.log("2-Qty mines: ", niveauChoisi.qtMines);
     }
   };
+
   const handelGenererGrille = (niveau: INiveau) => {
     console.log("4-handelGenererGrille");
     console.log("4-Difficulté: ", niveau.difficulte); 
     console.log("4-Dimensions: ", niveau.dimensions);
     console.log("4-Qty mines: ", niveau.qtMines);
     setGrille(GenererGrille(niveau)); 
-    setNbMines(niveau.qtMines);
+    setdrapeauxPlaces(niveau.qtMines);
   }
 
   return (
@@ -75,13 +88,13 @@ export function App() {
           />
         </Col>
         <Col xs={6} >                
-          <StatsJeu temps={timer} nbMine={nbMines}/>   
+          <StatsJeu temps={timer} nbMine={drapeauxPlaces}/>   
           <div className="d-flex justify-content-center" >          
           <div style={{ display: "grid", gridTemplateColumns: `repeat(${niveau.dimensions}, 20px)`}}>
             {grille.map((block) => (
               <div key={block.id} style={{ width: "20px", height: "20px", cursor: block.cache ? 'url(../../images/demineur/curseurDemineur.png), auto' : 'auto' }}
 
-                onClick={() => {handleLeftClick(block.id)}}
+                onClick={() => {handleLeftClick(block.id); demarerTimer(); setPremierClick(false);}}
 
                 onMouseOver={() =>console.log("x: "+block.x+"\n"+                           // Diag test valeurs au mouseOver console.log()
                                               "y: "+block.y+"\n"+                           //
