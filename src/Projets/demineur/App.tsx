@@ -25,7 +25,7 @@ export function App() {
   const demarerTimer = () => {
     if (timer < maxTime && premierClick) {
       setTimeout(() => {
-        setTimer(prevTimer => prevTimer + 1);
+        setTimer(timerPrecedent => timerPrecedent + 1);
         demarerTimer();         
       }, 1000);
     }
@@ -39,13 +39,16 @@ export function App() {
     );
   };
   
+  const minDrapeau = 0;
   const handleRightClick = (id: number) => {   
     setGrille((prevGrille) =>
       prevGrille.map((block) =>
         block.id === id ? { ...block, drapeau: true } : block
       )
     );
-        
+    if ( drapeauxPlaces > minDrapeau) {
+      setdrapeauxPlaces(drapeauxPlaces - 1);
+    }
   };
 
   const handleNiveauSelect = (niveau: string) => {
