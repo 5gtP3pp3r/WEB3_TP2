@@ -6,6 +6,7 @@ interface ResultatJeuProps {
     tempsSecondes: number;
     nbClicks: number;
     estEnJeu: boolean;
+    victoire: boolean;
     
 }
 
@@ -17,18 +18,20 @@ interface ResultatJeuProps {
 // On ajoute une pénalitée pour avoir touché une mine. On perd le nombres de mines non trouvées * 10 points
 // En dernier on ajoute le nombre de mines découvertes. 
 
-export function ResultatJeu({niveau, nbMinesTrouves, tempsSecondes, nbClicks, estEnJeu}: ResultatJeuProps): JSX.Element {
+export function ResultatJeu({niveau, nbMinesTrouves, tempsSecondes, nbClicks, estEnJeu, victoire}: ResultatJeuProps): JSX.Element {
     const { difficulte, pointsBase, qtMines } = niveau;
 
     const minute: number = tempsSecondes > 59 ? Math.floor(tempsSecondes / 60) : 0;  
     const seconde: number = tempsSecondes % 60;
     const minuteString: string = minute > 0 ? " minutes, " : "";
 
-    const pointsApresTemps = Math.max(pointsBase - tempsSecondes, 0);
-    const pointsApresClicks = Math.max(pointsApresTemps - nbClicks, 0);
-    const penaliteMinesManquantes = (qtMines - nbMinesTrouves) * 50;
-    const pointsApresPenalite = Math.max(pointsApresClicks - penaliteMinesManquantes, 0);
-    const pointsTotal = pointsApresPenalite + (nbMinesTrouves * 5);
+    const pointsApresTemps: number = Math.max(pointsBase - tempsSecondes, 0);
+    const pointsApresClicks: number = Math.max(pointsApresTemps - nbClicks, 0);
+    const penaliteMinesManquantes: number = (qtMines - nbMinesTrouves) * 50;
+    const pointsApresPenalite: number = Math.max(pointsApresClicks - penaliteMinesManquantes, 0);
+    const pointsTotal: number = pointsApresPenalite + (nbMinesTrouves * 5);
+
+    const resultatPartie = victoire ? <h4 className='text-success'>VICTOIRE</h4> : <h4 className='text-danger'>DEFAITE</h4> ;
 
     return estEnJeu ? (
         <div className="d-flex-justify-content-center" style={{ height:'175px'}}>    
@@ -36,9 +39,8 @@ export function ResultatJeu({niveau, nbMinesTrouves, tempsSecondes, nbClicks, es
         </div>
     ) : (
         <div className="d-flex-justify-content-center" style={{ height:'175px'}}>    
-            <h5>Résultats de la partie</h5>
+            {resultatPartie}
             <ul>
-                <li>"Victoire" ou "Défaite" à ajouter...</li>
                 <li>Niveau: {difficulte}</li>
                 <li>Mines trouvé:  {nbMinesTrouves}</li>
                 <li>Temps: {minute}{minuteString}{seconde} secondes</li>

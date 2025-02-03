@@ -27,6 +27,7 @@ export function App() {
   const [ drapeauxAPlacer, setDrapeauxAPlacer ] = useState<number>(0);
   const [ minesTrouvees, setMineTrouvees ] = useState<number>(0);
   const [ timer, setTimer ] = useState<number>(0);
+  const [ victoire, setVictoire ] = useState<boolean>(false);
   
   
 const maxTime = 600;
@@ -125,6 +126,7 @@ function handleClickDroit(id: number) {
   if (nouvellesMinesTrouvees === niveau.qtMines) {
       setEnJeu(false);
       arreterTimer();
+      setVictoire(true);
   }
   console.log("Drapeaux à placer: " + nouveauxDrapeauxAPlacer);
   console.log("Mines trouvées: " + nouvellesMinesTrouvees);
@@ -182,12 +184,13 @@ function handleClickDroit(id: number) {
         </Col>
         <Col xs={3}>
             <Row>
-              <ResultatJeu              /**** NE PAS OUBLIER DE REVOIR LES PARAMETRES POUR LES VRAIS ****/
+              <ResultatJeu              
                 niveau={niveau} 
                 nbMinesTrouves={minesTrouvees} 
                 tempsSecondes={timer} 
                 nbClicks={nbClicks} 
                 estEnJeu={enJeu}
+                victoire={victoire}
               />
             </Row>
             <Row>
