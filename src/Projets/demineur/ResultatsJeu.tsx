@@ -9,6 +9,13 @@ interface ResultatJeuProps {
     
 }
 
+// Logique personnelle de calcule de points. Chaque niveau a une quantité de point de base.
+// À se pointage on soustrait le temp de complétion du jeux.
+// plus on prend de temps plus de points son perdus.
+// Ensuite, si le résultat est toujours positif, on soustrait le nombres de clicks, autant gauche (découvrir block) que droit (mettre un drapeau).
+// Mettre et enlever un drapeau à répétitions sur un même block réduit donc les points d'avantage.
+// En dernier on ajoute le nombre de mines découvertes. 
+
 export function ResultatJeu({niveau, nbMinesTrouves, tempsSecondes, nbClicks, estEnJeu}: ResultatJeuProps): JSX.Element {
     const { difficulte, pointsBase } = niveau;
 
