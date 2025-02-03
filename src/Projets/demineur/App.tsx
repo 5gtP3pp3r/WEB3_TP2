@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { IBlock } from "./IBlock";
 import { useRef } from 'react';
 
+import { GestionAffichagesBlocksOnClickSurGrille } from './GestionAffichagesBlocksOnClickSurGrille';
 import { SelectionJeu } from './SelectionJeu';
 import { INiveau } from './Niveau';
 import { niveauxTab } from './Niveau';
@@ -44,9 +45,8 @@ export function App() {
 };
 
   const handleLeftClick = (id: number) => {   
-    setGrille((prevGrille) =>
-      prevGrille.map((block) =>
-        block.id === id ? { ...block, cache: false } : block
+    setGrille(grille.map((block) =>
+        block.id === id && !block.drapeau ? { ...block, cache: false } : block
       )    
     );
     demarrerTimer(); 
@@ -54,16 +54,21 @@ export function App() {
     setNbClicks(nbClicks + 1);
   };
   
-  const minDrapeau = 0;
+  //const minDrapeau = 0;
   const handleRightClick = (id: number) => {   
-    setGrille((prevGrille) =>
-      prevGrille.map((block) =>
-        block.id === id ? { ...block, drapeau: true } : block
-      )
+    setGrille(grille.map((block) =>
+        block.id === id ? { ...block, drapeau: !block.drapeau } : block
+      )    
     );
-    if ( drapeauxPlaces > minDrapeau) {
-      setdrapeauxPlaces(drapeauxPlaces - 1);
+
+    if (grille.find((block) => block.id === id)?.drapeau) {       
+        setdrapeauxPlaces(drapeauxPlaces + 1);            
+    } else {
+      //if (drapeauxPlaces > minDrapeau) {
+        setdrapeauxPlaces(drapeauxPlaces - 1);
+      //}
     }
+  
     setNbClicks(nbClicks + 1);
   };
 
@@ -121,17 +126,7 @@ export function App() {
                                               "mine: "+block.mine)}                         //
 
                 onContextMenu={(e) => { e.preventDefault(); handleRightClick(block.id);}}>
-
-                {block.cache ? (                                                            // Conditions temporaires pour changer les états 
-                  block.drapeau ? (                                                         // "cache" et "drapeau" sur clique gauche et droit.
-                    <img src="../../images/demineur/herbeDrapeau.png" alt="herbeDrapeau" /> // Revoir les conditions pour enlever le flag avec un rightClick.
-                  ) : (                                                                     // Revoir les conditions pour ne pas pouvoir faire de leftClick si flag.
-                    <img src="../../images/demineur/herbe.png" alt="herbe" />
-                  )
-                ) : (
-                  <img src={`../../images/demineur/terre${block.valeur}.png`} alt="terre" />
-                )}
-                
+                {GestionAffichagesBlocksOnClickSurGrille(block)}                
               </div>
             ))}
           </div> 
@@ -139,7 +134,7 @@ export function App() {
         </Col>
         <Col xs={3}>
             <Row>
-              <ResultatJeu niveau={niveau} nbMinesTrouves={10} tempsSecondes={timer} nbClicks={10} estEnJeu={false}/>
+              <ResultatJeu niveau={niveau} nbMinesTrouves={10} tempsSecondes={55} nbClicks={nbClicks} estEnJeu={false}/>
             </Row>
             <Row>
               <LeaderBord />
