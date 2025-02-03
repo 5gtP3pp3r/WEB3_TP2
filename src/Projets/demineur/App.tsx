@@ -13,6 +13,7 @@ import { GenererGrille } from './GenererGrille';
 import { StatsJeu } from './StatsJeu';
 import { ResultatJeu } from './ResultatsJeu';
 import { LeaderBord } from './LeaderBord';
+import { RevelerBlockRecursif } from './RevelerBlockRecursif';
 
 
 export function App() {
@@ -28,72 +29,67 @@ export function App() {
   const [ timer, setTimer ] = useState<number>(0);
   
   
-  const maxTime = 600;
-  function demarrerTimer() {
-    if (timer < maxTime && premierClick) {
-      timerRef.current = window.setTimeout(() => {
-        setTimer(timerPrecedent => timerPrecedent + 1);
-        demarrerTimer();         
-      }, 1000);
-    }
-  };
-
-  const timerRef = useRef<number | null>(null);
-  function arreterTimer() {
-    if (timerRef.current !== null) {
-        clearTimeout(timerRef.current);
-        timerRef.current = null;
-    }
-  };
-
-  function handleNiveauSelect(niveau: string) {
-    setNiveauActif(niveau);
-    const niveauChoisi = niveauxTab.find((diff) => diff.difficulte === niveau);
-
-    if (niveauChoisi) {
-      setNiveauSelectionne(niveauChoisi);          
-    }
-    console.log("Niveau Selectioné: ");
-    console.log("difficulte: "+niveauChoisi?.difficulte);
-    console.log("dimensions: "+niveauChoisi?.dimensions);
-    console.log("Qt mines: "+niveauChoisi?.qtMines);
-    console.log("Points de base: "+niveauChoisi?.pointsBase);
-  };
-
-  function handelGenererNouvelleGrille(niveau: INiveau) {
-    arreterTimer();
-    setEnJeu(true);    
-    setNiveau(niveauSelectionne);
-    setGrille(GenererGrille(niveau));  
-    setDrapeauxAPlacer(niveau.qtMines);
-    setMineTrouvees(0);
-    setTimer(0);
-    setPremierClick(true);
-    console.log("Niveau Nouvelle grille générée: ");
-    console.log("difficulte: "+niveau?.difficulte);
-    console.log("dimensions: "+niveau?.dimensions);
-    console.log("Qt mines: "+niveau?.qtMines);
-    console.log("Points de base: "+niveau?.pointsBase);
+const maxTime = 600;
+function demarrerTimer() {
+  if (timer < maxTime && premierClick) {
+    timerRef.current = window.setTimeout(() => {
+      setTimer(timerPrecedent => timerPrecedent + 1);
+      demarrerTimer();         
+    }, 1000);
   }
+};
 
-  function handleClickGauche(id: number) {       
-    const blocClick = grille.find(block => block.id === id);
+const timerRef = useRef<number | null>(null);
+function arreterTimer() {
+  if (timerRef.current !== null) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+  }
+};
 
-    let nouvelleGrille;
-    if (blocClick?.mine) {
-        setEnJeu(false);
-        arreterTimer();
-        nouvelleGrille = grille.map(block => ({ ...block, cache: false }));
-    } 
-    else {
-      nouvelleGrille = grille.map(block =>
-          block.id === id && !block.drapeau ? { ...block, cache: false } : block
-      );
-    }
-    setGrille(nouvelleGrille);
-    demarrerTimer();
-    setPremierClick(false);
-    setNbClicks(prevNbClicks => prevNbClicks + 1);
+function handleNiveauSelect(niveau: string) {
+  setNiveauActif(niveau);
+  const niveauChoisi = niveauxTab.find((diff) => diff.difficulte === niveau);
+
+  if (niveauChoisi) {
+    setNiveauSelectionne(niveauChoisi);          
+  }
+  console.log("Niveau Selectioné: ");
+  console.log("difficulte: "+niveauChoisi?.difficulte);
+  console.log("dimensions: "+niveauChoisi?.dimensions);
+  console.log("Qt mines: "+niveauChoisi?.qtMines);
+  console.log("Points de base: "+niveauChoisi?.pointsBase);
+};
+
+function handelGenererNouvelleGrille(niveau: INiveau) {
+  arreterTimer();
+  setEnJeu(true);    
+  setNiveau(niveauSelectionne);
+  setGrille(GenererGrille(niveau));  
+  setDrapeauxAPlacer(niveau.qtMines);
+  setMineTrouvees(0);
+  setTimer(0);
+  setPremierClick(true);
+  console.log("Niveau Nouvelle grille générée: ");
+  console.log("difficulte: "+niveau?.difficulte);
+  console.log("dimensions: "+niveau?.dimensions);
+  console.log("Qt mines: "+niveau?.qtMines);
+  console.log("Points de base: "+niveau?.pointsBase);
+}
+
+function handleClickGauche(id: number) {
+  let nouvelleGrille = RevelerBlockRecursif(niveau, id, grille);
+
+  if (grille.find(block => block.id === id)?.mine) {
+      setEnJeu(false);
+      arreterTimer();
+      nouvelleGrille = grille.map(block => ({ ...block, cache: false })); // Dévoiler toute la grille si mine touchée
+  } 
+
+  setGrille(nouvelleGrille);
+  demarrerTimer();
+  setPremierClick(false);
+  setNbClicks(prevNbClicks => prevNbClicks + 1);
 }
   
 function handleClickDroit(id: number) {        
@@ -113,7 +109,8 @@ function handleClickDroit(id: number) {
       if (blocClick?.mine) {
         ++nouvellesMinesTrouvees;
       }
-  } else {
+  } 
+  else {
       ++nouveauxDrapeauxAPlacer;
       if (blocClick.mine) {
           --nouvellesMinesTrouvees;
