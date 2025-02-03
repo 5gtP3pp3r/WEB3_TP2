@@ -30,6 +30,6 @@ export function GenererGrille(niveau: INiveau): IBlock[] {
         if (!block.mine) {
             block.valeur = ChercherNbMinesVoisins(niveau, block, grille);
         }
-    })
+    });
     return grille;
 }

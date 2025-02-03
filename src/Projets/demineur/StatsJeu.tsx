@@ -36,5 +36,5 @@ export function StatsJeu({ temps, nbMine }: StatsJeuProps): JSX.Element {
                 </div>
             </div>        
         </div>
-    )
+    );
 }
