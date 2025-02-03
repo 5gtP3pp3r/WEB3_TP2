@@ -20,7 +20,7 @@ export function App() {
   const [ niveau, setNiveau ] = useState<INiveau>({difficulte:"facile", dimensions: 8, qtMines: 10, pointsBase:500}); 
   const [ niveauActif, setNiveauActif ] = useState<string>("facile");
   const [ niveauSelectionne, setNiveauSelectionne ] = useState(niveau);
-  const [ enJeu, setEnjeu ] = useState<boolean>(true);
+  const [ enJeu, setEnJeu ] = useState<boolean>(true);
   const [ premierClick, setPremierClick ] = useState<boolean>(true);
   const [ nbClicks, setNbClicks ] = useState<number>(0);
   const [ drapeauxPlaces, setdrapeauxPlaces ] = useState<number>(0);
@@ -28,7 +28,7 @@ export function App() {
   
   
   const maxTime = 600;
-  const demarrerTimer = () => {
+  function demarrerTimer() {
     if (timer < maxTime && premierClick) {
       timerRef.current = window.setTimeout(() => {
         setTimer(timerPrecedent => timerPrecedent + 1);
@@ -36,26 +36,35 @@ export function App() {
       }, 1000);
     }
   };
+
   const timerRef = useRef<number | null>(null);
-  const arreterTimer = () => {
+  function arreterTimer() {
     if (timerRef.current !== null) {
         clearTimeout(timerRef.current);
         timerRef.current = null;
     }
-};
+  };
 
-  const handleLeftClick = (id: number) => {   
-    setGrille(grille.map((block) =>
-        block.id === id && !block.drapeau ? { ...block, cache: false } : block
-      )    
-    );
+  function handleClickGauche(id: number) {   
+    setGrille((prevGrille) => {
+        const blocClique = prevGrille.find(block => block.id === id);
+        if (blocClique && blocClique.mine) {
+            setEnJeu(false);
+            arreterTimer();
+            return prevGrille.map(block => ({ ...block, cache: false }));
+        }
+
+        return prevGrille.map(block =>
+            block.id === id && !block.drapeau ? { ...block, cache: false } : block
+        );
+    });
+
     demarrerTimer(); 
     setPremierClick(false);
     setNbClicks(nbClicks + 1);
-  };
+}
   
-  //const minDrapeau = 0;
-  const handleRightClick = (id: number) => {   
+  function handleClickDroit(id: number) {   
     setGrille(grille.map((block) =>
         block.id === id ? { ...block, drapeau: !block.drapeau } : block
       )    
@@ -64,15 +73,13 @@ export function App() {
     if (grille.find((block) => block.id === id)?.drapeau) {       
         setdrapeauxPlaces(drapeauxPlaces + 1);            
     } else {
-      //if (drapeauxPlaces > minDrapeau) {
         setdrapeauxPlaces(drapeauxPlaces - 1);
-      //}
     }
   
     setNbClicks(nbClicks + 1);
   };
 
-  const handleNiveauSelect = (niveau: string) => {
+  function handleNiveauSelect(niveau: string) {
     setNiveauActif(niveau);
     const niveauChoisi = niveauxTab.find((diff) => diff.difficulte === niveau);
 
@@ -81,9 +88,9 @@ export function App() {
     }
   };
 
-  const handelGenererNouvelleGrille = (niveau: INiveau) => {
+  function handelGenererNouvelleGrille(niveau: INiveau) {
     arreterTimer();
-    if (!enJeu) setEnjeu(true);   // temp pour enlever soulignement const useState   
+    if (!enJeu) setEnJeu(true);   // temp pour enlever soulignement const useState   
     setNiveau(niveauSelectionne);
     setGrille(GenererGrille(niveau));  
     setdrapeauxPlaces(niveau.qtMines);
@@ -115,7 +122,7 @@ export function App() {
             {grille.map((block) => (
               <div key={block.id} style={{ width: "20px", height: "20px", cursor: block.cache ? 'url(../../images/demineur/curseurDemineur.png), auto' : 'auto' }}
 
-                onClick={() => {handleLeftClick(block.id)}}
+                onClick={() => {handleClickGauche(block.id)}}
 
                 onMouseOver={() =>console.log("x: "+block.x+"\n"+                           // Diag test valeurs au mouseOver console.log()
                                               "y: "+block.y+"\n"+                           //
@@ -125,7 +132,7 @@ export function App() {
                                               "drapeau: "+block.drapeau+"\n"+               //
                                               "mine: "+block.mine)}                         //
 
-                onContextMenu={(e) => { e.preventDefault(); handleRightClick(block.id);}}>
+                onContextMenu={(e) => { e.preventDefault(); handleClickDroit(block.id);}}>
                 {GestionAffichagesBlocksOnClickSurGrille(block)}                
               </div>
             ))}
@@ -134,10 +141,17 @@ export function App() {
         </Col>
         <Col xs={3}>
             <Row>
-              <ResultatJeu niveau={niveau} nbMinesTrouves={10} tempsSecondes={55} nbClicks={nbClicks} estEnJeu={false}/>
+              <ResultatJeu              /**** NE PAS OUBLIER DE REVOIR LES PARAMETRES POUR LES VRAIS ****/
+                niveau={niveau} 
+                nbMinesTrouves={10} 
+                tempsSecondes={timer} 
+                nbClicks={nbClicks} 
+                estEnJeu={false}
+              />
             </Row>
             <Row>
-              <LeaderBord />
+              <LeaderBord               /**** NE PAS OUBLIER DE REVOIR LES PARAMETRES AVEC REQUETE API ****/
+              />            
             </Row>            
         </Col>
       </Row>
