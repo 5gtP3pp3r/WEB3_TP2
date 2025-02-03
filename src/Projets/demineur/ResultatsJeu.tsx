@@ -36,8 +36,9 @@ export function ResultatJeu({niveau, nbMinesTrouves, tempsSecondes, nbClicks, es
         </div>
     ) : (
         <div className="d-flex-justify-content-center" style={{ height:'175px'}}>    
-            <h3>Résultats de la partie</h3>
+            <h5>Résultats de la partie</h5>
             <ul>
+                <li>"Victoire" ou "Défaite" à ajouter...</li>
                 <li>Niveau: {difficulte}</li>
                 <li>Mines trouvé:  {nbMinesTrouves}</li>
                 <li>Temps: {minute}{minuteString}{seconde} secondes</li>

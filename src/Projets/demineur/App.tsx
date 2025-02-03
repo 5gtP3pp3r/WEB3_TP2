@@ -138,17 +138,24 @@ function handleClickDroit(id: number) {
     <Container>
       <Row>
         <Col xs={3}>
-          <h3>Test affichage grid:</h3>
-          <p>-Test de changements d'états des blocks fonctionnels<br />
-          -Ce côté va être la zone d'interface pour générer le jeux.<br />
-          -Affichage mines et valeurs fonctionnelles!<br />
-          -Trouver comment éviter un réaffichage à la sélection de la difficulté lorsque le jeu est en cours.</p>
+          <h5>Les règles sont simples:</h5>
+          <ul>
+            <li>Choisir le niveau de difficulté.</li>
+            <li>Lancer le jeu!</li>
+          </ul>
+          <h5>Sur la grille de jeu:</h5>
+          <ul>
+            <li>Clique gauche pour déminer une partie du terrain.</li>
+            <li>Clique droit pour marquer l'emplacement d'une mine possible.</li>
+            <li>Clique droit pour enlever la marque d'un emplacement.</li>
+          </ul>         
           <SelectionJeu
             niveaux={niveauxTab}
             niveauActif={niveauActif}
             onNiveauSelect={handleNiveauSelect}
             onLancerJeu={handelGenererNouvelleGrille}
           />
+          <p>Le jeu se termine si vous tochez une mine, ou si vous marquez tout les emplacements des mines</p>
         </Col>
         <Col xs={6} >                
           <StatsJeu temps={timer} nbMine={drapeauxAPlacer}/>   

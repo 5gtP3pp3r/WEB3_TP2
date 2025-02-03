@@ -14,7 +14,7 @@ export const niveauxTab: INiveau[] = [
         pointsBase: 500
     },
     {
-        difficulte: "intermediaire",
+        difficulte: "intermédiaire",
         dimensions: 16,
         qtMines: 40,
         pointsBase: 1000
