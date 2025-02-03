@@ -23,7 +23,8 @@ export function App() {
   const [ enJeu, setEnJeu ] = useState<boolean>(true);
   const [ premierClick, setPremierClick ] = useState<boolean>(true);
   const [ nbClicks, setNbClicks ] = useState<number>(0);
-  const [ drapeauxPlaces, setdrapeauxPlaces ] = useState<number>(0);
+  const [ drapeauxAPlacer, setDrapeauxAPlacer ] = useState<number>(0);
+  const [ minesTrouvees, setMineTrouvees ] = useState<number>(0);
   const [ timer, setTimer ] = useState<number>(0);
   
   
@@ -45,40 +46,6 @@ export function App() {
     }
   };
 
-  function handleClickGauche(id: number) {   
-    setGrille((prevGrille) => {
-        const blocClique = prevGrille.find(block => block.id === id);
-        if (blocClique && blocClique.mine) {
-            setEnJeu(false);
-            arreterTimer();
-            return prevGrille.map(block => ({ ...block, cache: false }));
-        }
-
-        return prevGrille.map(block =>
-            block.id === id && !block.drapeau ? { ...block, cache: false } : block
-        );
-    });
-
-    demarrerTimer(); 
-    setPremierClick(false);
-    setNbClicks(nbClicks + 1);
-}
-  
-  function handleClickDroit(id: number) {   
-    setGrille(grille.map((block) =>
-        block.id === id ? { ...block, drapeau: !block.drapeau } : block
-      )    
-    );
-
-    if (grille.find((block) => block.id === id)?.drapeau) {       
-        setdrapeauxPlaces(drapeauxPlaces + 1);            
-    } else {
-        setdrapeauxPlaces(drapeauxPlaces - 1);
-    }
-  
-    setNbClicks(nbClicks + 1);
-  };
-
   function handleNiveauSelect(niveau: string) {
     setNiveauActif(niveau);
     const niveauChoisi = niveauxTab.find((diff) => diff.difficulte === niveau);
@@ -86,6 +53,11 @@ export function App() {
     if (niveauChoisi) {
       setNiveauSelectionne(niveauChoisi);          
     }
+    console.log("Niveau Selectioné: ");
+    console.log("difficulte: "+niveauChoisi?.difficulte);
+    console.log("dimensions: "+niveauChoisi?.dimensions);
+    console.log("Qt mines: "+niveauChoisi?.qtMines);
+    console.log("Points de base: "+niveauChoisi?.pointsBase);
   };
 
   function handelGenererNouvelleGrille(niveau: INiveau) {
@@ -93,10 +65,65 @@ export function App() {
     if (!enJeu) setEnJeu(true);   // temp pour enlever soulignement const useState   
     setNiveau(niveauSelectionne);
     setGrille(GenererGrille(niveau));  
-    setdrapeauxPlaces(niveau.qtMines);
+    setDrapeauxAPlacer(niveau.qtMines);
     setTimer(0);
     setPremierClick(true);
+    console.log("Niveau Nouvelle grille générée: ");
+    console.log("difficulte: "+niveau?.difficulte);
+    console.log("dimensions: "+niveau?.dimensions);
+    console.log("Qt mines: "+niveau?.qtMines);
+    console.log("Points de base: "+niveau?.pointsBase);
   }
+
+  function handleClickGauche(id: number) {       
+    setGrille((prevGrille) => {
+        const blocClick = prevGrille.find(block => block.id === id);
+        if (blocClick && blocClick.mine) {
+            setEnJeu(false);
+            arreterTimer();            
+            return prevGrille.map(block => ({ ...block, cache: false }));
+        }
+        return prevGrille.map(block =>
+            block.id === id && !block.drapeau ? { ...block, cache: false } : block
+        );
+    });
+    demarrerTimer(); 
+    setPremierClick(false);
+    setNbClicks(nbClicks + 1);
+}
+  
+function handleClickDroit(id: number) {        
+  setGrille(grille => {
+      return grille.map((block) =>
+          block.id === id ? { ...block, drapeau: !block.drapeau } : block
+      );
+  });
+
+  const blocClick = grille.find((block) => block.id === id);
+  console.log("Mines Trouvees: "+minesTrouvees);
+  
+  if (blocClick?.drapeau) {  
+      setDrapeauxAPlacer(drapeauxAPlacer + 1);
+      if (blocClick.mine) {
+          setMineTrouvees(minesTrouvees -1);
+      }
+  } else {
+      setDrapeauxAPlacer(drapeauxAPlacer - 1);
+      if (blocClick?.mine) {
+          setMineTrouvees(minesTrouvees + 1);
+      }
+  }
+
+  setNbClicks(prevNbClicks => prevNbClicks + 1);
+
+  // Vérification si toutes les mines sont trouvées
+  if (minesTrouvees === niveau.qtMines) {
+      setEnJeu(false);
+      arreterTimer();
+  }
+  console.log("Drapeaux à placés: "+drapeauxAPlacer);
+  console.log("Mines trouvées: "+minesTrouvees);
+} 
 
   return (
     <div style={{height: '620px',backgroundImage: "url('../../images/demineur/noMansLand.png')",backgroundSize: 'cover', backgroundPosition: 'center'}}>
@@ -116,7 +143,7 @@ export function App() {
           />
         </Col>
         <Col xs={6} >                
-          <StatsJeu temps={timer} nbMine={drapeauxPlaces}/>   
+          <StatsJeu temps={timer} nbMine={drapeauxAPlacer}/>   
           <div className="d-flex justify-content-center" >          
           <div style={{ display: "grid", gridTemplateColumns: `repeat(${niveau.dimensions}, 20px)`}}>
             {grille.map((block) => (
@@ -143,10 +170,10 @@ export function App() {
             <Row>
               <ResultatJeu              /**** NE PAS OUBLIER DE REVOIR LES PARAMETRES POUR LES VRAIS ****/
                 niveau={niveau} 
-                nbMinesTrouves={10} 
+                nbMinesTrouves={minesTrouvees} 
                 tempsSecondes={timer} 
                 nbClicks={nbClicks} 
-                estEnJeu={false}
+                estEnJeu={enJeu}
               />
             </Row>
             <Row>
