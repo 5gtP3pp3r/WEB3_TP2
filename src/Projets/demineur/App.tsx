@@ -66,6 +66,7 @@ export function App() {
     setNiveau(niveauSelectionne);
     setGrille(GenererGrille(niveau));  
     setDrapeauxAPlacer(niveau.qtMines);
+    setMineTrouvees(0);
     setTimer(0);
     setPremierClick(true);
     console.log("Niveau Nouvelle grille générée: ");
@@ -76,53 +77,62 @@ export function App() {
   }
 
   function handleClickGauche(id: number) {       
-    setGrille((prevGrille) => {
-        const blocClick = prevGrille.find(block => block.id === id);
-        if (blocClick && blocClick.mine) {
-            setEnJeu(false);
-            arreterTimer();            
-            return prevGrille.map(block => ({ ...block, cache: false }));
-        }
-        return prevGrille.map(block =>
-            block.id === id && !block.drapeau ? { ...block, cache: false } : block
-        );
-    });
-    demarrerTimer(); 
+    const blocClick = grille.find(block => block.id === id);
+
+    let nouvelleGrille;
+    if (blocClick?.mine) {
+        setEnJeu(false);
+        arreterTimer();
+        nouvelleGrille = grille.map(block => ({ ...block, cache: false }));
+    } 
+    else {
+      nouvelleGrille = grille.map(block =>
+          block.id === id && !block.drapeau ? { ...block, cache: false } : block
+      );
+    }
+
+    setGrille(nouvelleGrille);
+    demarrerTimer();
     setPremierClick(false);
-    setNbClicks(nbClicks + 1);
+    setNbClicks(prevNbClicks => prevNbClicks + 1);
 }
   
 function handleClickDroit(id: number) {        
-  setGrille(grille => {
-      return grille.map((block) =>
-          block.id === id ? { ...block, drapeau: !block.drapeau } : block
-      );
-  });
+  const blocClick = grille.find(block => block.id === id);
+  if (!blocClick) return;
 
-  const blocClick = grille.find((block) => block.id === id);
-  console.log("Mines Trouvees: "+minesTrouvees);
-  
-  if (blocClick?.drapeau) {  
-      setDrapeauxAPlacer(drapeauxAPlacer + 1);
+  const nouvelleGrille = grille.map(block =>
+      block.id === id ? { ...block, drapeau: !block.drapeau } : block
+  );
+
+  setGrille(nouvelleGrille);
+
+  let nouveauxDrapeauxAPlacer = drapeauxAPlacer;
+  let nouvellesMinesTrouvees = minesTrouvees;
+
+  if (!blocClick.drapeau) {  
+      --nouveauxDrapeauxAPlacer;
       if (blocClick.mine) {
-          setMineTrouvees(minesTrouvees -1);
+        ++nouvellesMinesTrouvees;
       }
   } else {
-      setDrapeauxAPlacer(drapeauxAPlacer - 1);
-      if (blocClick?.mine) {
-          setMineTrouvees(minesTrouvees + 1);
+      ++nouveauxDrapeauxAPlacer;
+      if (blocClick.mine) {
+          --nouvellesMinesTrouvees;
       }
   }
-
+  setDrapeauxAPlacer(nouveauxDrapeauxAPlacer);
+  setMineTrouvees(nouvellesMinesTrouvees);
+  demarrerTimer();
+  setPremierClick(false);
   setNbClicks(prevNbClicks => prevNbClicks + 1);
 
-  // Vérification si toutes les mines sont trouvées
-  if (minesTrouvees === niveau.qtMines) {
+  if (nouvellesMinesTrouvees === niveau.qtMines) {
       setEnJeu(false);
       arreterTimer();
   }
-  console.log("Drapeaux à placés: "+drapeauxAPlacer);
-  console.log("Mines trouvées: "+minesTrouvees);
+  console.log("Drapeaux à placer: " + nouveauxDrapeauxAPlacer);
+  console.log("Mines trouvées: " + nouvellesMinesTrouvees);
 } 
 
   return (
