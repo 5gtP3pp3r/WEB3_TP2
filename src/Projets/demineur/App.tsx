@@ -62,7 +62,7 @@ export function App() {
 
   function handelGenererNouvelleGrille(niveau: INiveau) {
     arreterTimer();
-    if (!enJeu) setEnJeu(true);   // temp pour enlever soulignement const useState   
+    setEnJeu(true);    
     setNiveau(niveauSelectionne);
     setGrille(GenererGrille(niveau));  
     setDrapeauxAPlacer(niveau.qtMines);
@@ -90,7 +90,6 @@ export function App() {
           block.id === id && !block.drapeau ? { ...block, cache: false } : block
       );
     }
-
     setGrille(nouvelleGrille);
     demarrerTimer();
     setPremierClick(false);
@@ -99,7 +98,6 @@ export function App() {
   
 function handleClickDroit(id: number) {        
   const blocClick = grille.find(block => block.id === id);
-  if (!blocClick) return;
 
   const nouvelleGrille = grille.map(block =>
       block.id === id ? { ...block, drapeau: !block.drapeau } : block
@@ -110,9 +108,9 @@ function handleClickDroit(id: number) {
   let nouveauxDrapeauxAPlacer = drapeauxAPlacer;
   let nouvellesMinesTrouvees = minesTrouvees;
 
-  if (!blocClick.drapeau) {  
+  if (!blocClick?.drapeau) {  
       --nouveauxDrapeauxAPlacer;
-      if (blocClick.mine) {
+      if (blocClick?.mine) {
         ++nouvellesMinesTrouvees;
       }
   } else {
