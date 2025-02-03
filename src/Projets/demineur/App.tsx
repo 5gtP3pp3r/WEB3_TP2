@@ -10,7 +10,7 @@ import { SelectionJeu } from './SelectionJeu';
 import { INiveau } from './Niveau';
 import { niveauxTab } from './Niveau';
 import { GenererGrille } from './GenererGrille';
-import { StatsJeu } from './Statsjeu';
+import { StatsJeu } from './StatsJeu';
 import { ResultatJeu } from './ResultatsJeu';
 import { LeaderBord } from './LeaderBord';
 
