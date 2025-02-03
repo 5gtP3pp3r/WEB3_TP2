@@ -3,6 +3,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { useState } from 'react';
 import { IBlock } from "./IBlock";
+import { useRef } from 'react';
 
 import { SelectionJeu } from './SelectionJeu';
 import { INiveau } from './Niveau';
@@ -22,14 +23,21 @@ export function App() {
   const [ timer, setTimer ] = useState<number>(0);
   
   const maxTime = 600;
-  const demarerTimer = () => {
+  const demarrerTimer = () => {
     if (timer < maxTime && premierClick) {
-      setTimeout(() => {
+      timerRef.current = window.setTimeout(() => {
         setTimer(timerPrecedent => timerPrecedent + 1);
-        demarerTimer();         
+        demarrerTimer();         
       }, 1000);
     }
   };
+  const timerRef = useRef<number | null>(null);
+  const arreterTimer = () => {
+    if (timerRef.current !== null) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null; // Remet à zéro la référence
+    }
+};
 
   const handleLeftClick = (id: number) => {   
     setGrille((prevGrille) =>
@@ -60,17 +68,20 @@ export function App() {
       console.log("2-setNiveau");
       console.log("2-Difficulté: ", niveauChoisi.difficulte); 
       console.log("2-Dimensions: ", niveauChoisi.dimensions);
-      console.log("2-Qty mines: ", niveauChoisi.qtMines);
+      console.log("2-Qty mines: ", niveauChoisi.qtMines);           
     }
   };
 
-  const handelGenererGrille = (niveau: INiveau) => {
+  const handelGenererNouvelleGrille = (niveau: INiveau) => {
     console.log("4-handelGenererGrille");
     console.log("4-Difficulté: ", niveau.difficulte); 
     console.log("4-Dimensions: ", niveau.dimensions);
     console.log("4-Qty mines: ", niveau.qtMines);
-    setGrille(GenererGrille(niveau)); 
+    arreterTimer();
+    setGrille(GenererGrille(niveau));  
     setdrapeauxPlaces(niveau.qtMines);
+    setTimer(0);
+    setPremierClick(true);
   }
 
   return (
@@ -87,7 +98,7 @@ export function App() {
             niveaux={niveauxTab}
             niveauActif={niveauActif}
             onNiveauSelect={handleNiveauSelect}
-            onLancerJeu={handelGenererGrille}
+            onLancerJeu={handelGenererNouvelleGrille}
           />
         </Col>
         <Col xs={6} >                
@@ -97,7 +108,7 @@ export function App() {
             {grille.map((block) => (
               <div key={block.id} style={{ width: "20px", height: "20px", cursor: block.cache ? 'url(../../images/demineur/curseurDemineur.png), auto' : 'auto' }}
 
-                onClick={() => {handleLeftClick(block.id); demarerTimer(); setPremierClick(false);}}
+                onClick={() => {handleLeftClick(block.id); demarrerTimer(); setPremierClick(false);}}
 
                 onMouseOver={() =>console.log("x: "+block.x+"\n"+                           // Diag test valeurs au mouseOver console.log()
                                               "y: "+block.y+"\n"+                           //
