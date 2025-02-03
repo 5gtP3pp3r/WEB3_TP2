@@ -31,7 +31,7 @@ export function SelectionJeu({niveaux, niveauActif, onNiveauSelect, onLancerJeu}
             <Button
                 className='mt-3'
                 variant='secondary'
-                onClick={() =>{ if(niveau) onLancerJeu(niveau) }}    // enlevé soulignement "undefined possible"
+                onClick={() =>{ if(niveau) onLancerJeu(niveau) }}    // if(niveau): enlevé soulignement "undefined possible"
                 style={{ width: '130px', cursor: 'url(../../images/demineur/curseurDemineur.png), auto'}}
                 >Jouer!
             </Button>
