@@ -166,14 +166,16 @@ function handleClickDroit(id: number) {
 
                 onClick={() => {handleClickGauche(block.id)}}
 
-                onMouseOver={() =>console.log("x: "+block.x+"\n"+                           // Diag test valeurs au mouseOver console.log()
-                                              "y: "+block.y+"\n"+                           //
-                                              "id: "+block.id+"\n"+                         //
-                                              "valeur: "+block.valeur+"\n"+                 //
-                                              "caché: "+block.cache+"\n"+                   //
-                                              "drapeau: "+block.drapeau+"\n"+               //
-                                              "mine: "+block.mine)}                         //
-
+                /****** Diag test valeurs au mouseOver console.log() ******/
+                onMouseOver={() =>console.log("x: "+block.x+"\n"+                           
+                                              "y: "+block.y+"\n"+                           
+                                              "id: "+block.id+"\n"+                         
+                                              "valeur: "+block.valeur+"\n"+                 
+                                              "caché: "+block.cache+"\n"+                   
+                                              "drapeau: "+block.drapeau+"\n"+               
+                                              "mine: "+block.mine)}                         
+                /**********************************************************/
+                
                 onContextMenu={(e) => { e.preventDefault(); handleClickDroit(block.id);}}>
                 {GestionAffichagesBlocksOnClickSurGrille(block)}                
               </div>
