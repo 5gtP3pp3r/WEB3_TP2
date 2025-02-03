@@ -17,10 +17,12 @@ export function App() {
   const [ grille, setGrille ] = useState<IBlock[]>([]);
   const [ niveau, setNiveau ] = useState<INiveau>({difficulte:"facile", dimensions: 8, qtMines: 10}); 
   const [ niveauActif, setNiveauActif ] = useState<string>("facile");
+  const [niveauSelectionne, setNiveauSelectionne] = useState(niveau);
   const [ enJeu, setEnjeu ] = useState<boolean>(false);
   const [ premierClick, setPremierClick ] = useState<boolean>(true);
   const [ drapeauxPlaces, setdrapeauxPlaces ] = useState<number>(0);
   const [ timer, setTimer ] = useState<number>(0);
+  
   
   const maxTime = 600;
   const demarrerTimer = () => {
@@ -64,7 +66,7 @@ export function App() {
     const niveauChoisi = niveauxTab.find((diff) => diff.difficulte === niveau);
 
     if (niveauChoisi) {
-      setNiveau(niveauChoisi); 
+      setNiveauSelectionne(niveauChoisi);
       console.log("2-setNiveau");
       console.log("2-Difficulté: ", niveauChoisi.difficulte); 
       console.log("2-Dimensions: ", niveauChoisi.dimensions);
@@ -78,6 +80,7 @@ export function App() {
     console.log("4-Dimensions: ", niveau.dimensions);
     console.log("4-Qty mines: ", niveau.qtMines);
     arreterTimer();
+    setNiveau(niveauSelectionne);
     setGrille(GenererGrille(niveau));  
     setdrapeauxPlaces(niveau.qtMines);
     setTimer(0);
