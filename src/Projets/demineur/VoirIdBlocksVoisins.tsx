@@ -1,5 +1,5 @@
 import { IBlock } from './IBlock';
-import { INiveau } from './Niveau';
+import { INiveau } from './INiveau';
 
 export function voirNordId(block: IBlock, grille: IBlock[]): number | null {
     if (block.y > 0) {

@@ -1,4 +1,4 @@
-import { INiveau } from "./Niveau";
+import { INiveau } from "./INiveau";
 import { IBlock } from "./IBlock";
 import { GenerateurMinesAleatoire } from "./GenerateurMinesAleatoire";
 import { ChercherNbMinesVoisins } from "./ChercherNbMinesVoisins";
@@ -26,7 +26,7 @@ export function GenererGrille(niveau: INiveau): IBlock[] {
             mine,
         });
     }    
-    grille.forEach((block) => {
+    grille.forEach(block => {
         if (!block.mine) {
             block.valeur = ChercherNbMinesVoisins(niveau, block, grille);
         }

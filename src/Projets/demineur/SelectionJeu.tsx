@@ -1,7 +1,7 @@
 import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
-import { INiveau } from './Niveau';
+import { INiveau } from './INiveau';
 //import { niveauxTab } from './Niveau';
 
 interface NiveauProps {

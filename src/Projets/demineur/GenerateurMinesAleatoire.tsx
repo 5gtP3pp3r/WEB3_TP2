@@ -1,4 +1,4 @@
-import { INiveau } from "./Niveau";
+import { INiveau } from "./INiveau";
 
 
 export function GenerateurMinesAleatoire({dimensions, qtMines}: INiveau):number[] {

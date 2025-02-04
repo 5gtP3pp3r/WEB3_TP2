@@ -1,5 +1,5 @@
 import { Table } from "react-bootstrap";
-import { INiveau } from "./Niveau";
+import { INiveau } from "./INiveau";
 
 interface ResultatJeuProps {
     niveau: INiveau;

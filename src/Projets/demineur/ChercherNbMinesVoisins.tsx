@@ -1,5 +1,5 @@
 import { IBlock } from './IBlock';
-import { INiveau } from './Niveau';
+import { INiveau } from './INiveau';
 import { voirNordMine } from './VoirMinesBlocksVoisins';
 import { voirNordEstMine } from './VoirMinesBlocksVoisins';
 import { voirEstMine } from './VoirMinesBlocksVoisins';
