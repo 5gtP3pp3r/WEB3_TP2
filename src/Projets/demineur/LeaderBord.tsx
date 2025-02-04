@@ -1,14 +1,30 @@
-
+import { Table } from "react-bootstrap";
 export function LeaderBord(): JSX.Element {
+
+
     return (
         <div className="d-flex-justify-content-center">
-            <h5>Leader bord:</h5>
-            <p>À implémenter avec appel API</p>
-            <ul>
-                <li>Test affichage leader 1</li>
-                <li>Test affichage leader 2</li>
-                <li>Test affichage leader 3</li>
-            </ul>
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th colSpan={2}><h4>Leader Bord</h4></th>
+                    </tr>                   
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong className="text-success">Niveau facile</strong></td>                                                                         
+                    </tr>    
+                    {}                                
+                    <tr>
+                        <td><strong className="text-warning">Niveau intermédiaire</strong></td>                                            
+                    </tr>
+                    {}
+                    <tr>
+                        <td><strong className="text-danger">Niveau expert</strong></td>
+                    </tr>
+                    {}
+                </tbody>
+            </Table>
         </div>
     );
 }
