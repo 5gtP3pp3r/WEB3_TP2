@@ -1,3 +1,4 @@
+import { Table } from "react-bootstrap";
 import { INiveau } from "./Niveau";
 
 interface ResultatJeuProps {
@@ -34,18 +35,36 @@ export function ResultatJeu({niveau, nbMinesTrouves, tempsSecondes, nbClicks, es
     const resultatPartie = victoire ? <h4 className='text-success'>VICTOIRE</h4> : <h4 className='text-danger'>DEFAITE</h4> ;
 
     return estEnJeu ? (
-        <div className="d-flex-justify-content-center" style={{ height:'175px'}}>    
+        <div className="d-flex-justify-content-center" style={{ height:'250px'}}>    
             <></>        
         </div>
     ) : (
-        <div className="d-flex-justify-content-center" style={{ height:'175px'}}>    
-            {resultatPartie}
-            <ul>
-                <li>Niveau: {difficulte}</li>
-                <li>Mines trouvé:  {nbMinesTrouves}</li>
-                <li>Temps: {minute}{minuteString}{seconde} secondes</li>
-                <li>Points total: {pointsTotal}</li>
-            </ul>        
-        </div>
+        <div className="d-flex-justify-content-center" style={{ height:'250px'}}>
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th colSpan={2}>{resultatPartie}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Niveau</strong></td>
+                        <td>{difficulte}</td>                                                                         
+                    </tr>
+                    <tr>
+                        <td><strong>Mines trouvé</strong></td>
+                        <td>{nbMinesTrouves}</td>                                             
+                    </tr>
+                    <tr>
+                        <td><strong>Temps</strong></td>
+                        <td>{minute}{minuteString}{seconde} secondes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Points total</strong></td>
+                        <td>{pointsTotal}</td> 
+                    </tr>
+                </tbody>
+            </Table>
+        </div>   
     );
 }
