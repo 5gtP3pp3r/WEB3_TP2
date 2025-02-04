@@ -7,13 +7,15 @@ import { useRef } from 'react';
 
 import { GestionAffichagesBlocksOnClickSurGrille } from './GestionAffichagesBlocksOnClickSurGrille';
 import { SelectionJeu } from './SelectionJeu';
-import { INiveau } from './Niveau';
-import { niveauxTab } from './Niveau';
+import { INiveau } from './INiveau';
+import { niveauxTab } from './INiveau';
 import { GenererGrille } from './GenererGrille';
 import { StatsJeu } from './StatsJeu';
 import { ResultatJeu } from './ResultatsJeu';
 import { LeaderBord } from './LeaderBord';
 import { RevelerBlockRecursif } from './RevelerBlockRecursif';
+import { IJoueur } from './IJoueur';
+import { FecthListeNomsApi } from './FetchListeNomsApi';
 
 
 export function App() {
@@ -28,96 +30,114 @@ export function App() {
   const [ minesTrouvees, setMineTrouvees ] = useState<number>(0);
   const [ timer, setTimer ] = useState<number>(0);
   const [ victoire, setVictoire ] = useState<boolean>(false);
+  const [ listeJoueurs, setListeJoueurs ] = useState<IJoueur[]>([]);
+
+  const listeApi: string[] = RemplirListeJoueurs();
+
+  function RemplirListeJoueurs(): string[] {
+    const listeAPI: string[] = [];
+
+    FecthListeNomsApi()
+      .then((donnees: { array: { name: string; }[]; }) => {
+        donnees.array.forEach((element: { name: string; }) => {        
+          listeAPI.push(element.name);
+        });
+      })
+      .catch((error) => {
+        console.error("Erreur Fetch :", error);
+        alert("Impossible de récupérer la liste de noms");
+      });
+      return listeAPI;
+    }
+
+  const maxTime = 600;
+  function demarrerTimer(): void {
+    if (timer < maxTime && premierClick) {
+      timerRef.current = window.setTimeout(() => {
+        setTimer(timerPrecedent => timerPrecedent + 1);
+        demarrerTimer();         
+      }, 1000);
+    }
+  };
+
+  const timerRef = useRef<number | null>(null);
+  function arreterTimer(): void {
+    if (timerRef.current !== null) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+    }
+  };
+
+  function handleNiveauSelect(niveau: string): void {
+    setNiveauActif(niveau);
+    const niveauChoisi = niveauxTab.find((diff) => diff.difficulte === niveau);
+
+    if (niveauChoisi) {
+      setNiveauSelectionne(niveauChoisi);          
+    }
+    console.log("Niveau Selectioné: ");
+    console.log("difficulte: "+niveauChoisi?.difficulte);
+    console.log("dimensions: "+niveauChoisi?.dimensions);
+    console.log("Qt mines: "+niveauChoisi?.qtMines);
+    console.log("Points de base: "+niveauChoisi?.pointsBase);
+  };
+
+  function handelGenererNouvelleGrille(niveau: INiveau): void {
+    arreterTimer();
+    setEnJeu(true);    
+    setNiveau(niveauSelectionne);
+    setGrille(GenererGrille(niveau));  
+    setDrapeauxAPlacer(niveau.qtMines);
+    setMineTrouvees(0);
+    setTimer(0);
+    setPremierClick(true);
+    console.log("Niveau Nouvelle grille générée: ");
+    console.log("difficulte: "+niveau?.difficulte);
+    console.log("dimensions: "+niveau?.dimensions);
+    console.log("Qt mines: "+niveau?.qtMines);
+    console.log("Points de base: "+niveau?.pointsBase);
+  }
+
+  function handleClickGauche(id: number): void {
+    let nouvelleGrille = RevelerBlockRecursif(niveau, id, grille);
+
+    if (grille.find(block => block.id === id)?.mine) {
+        setEnJeu(false);
+        arreterTimer();
+        setVictoire(false);
+        nouvelleGrille = grille.map(block => ({ ...block, cache: false })); 
+    } 
+
+    setGrille(nouvelleGrille);
+    demarrerTimer();      
+    setPremierClick(false);
+    setNbClicks(prevNbClicks => prevNbClicks + 1);
+  }
   
-  
-const maxTime = 600;
-function demarrerTimer() {
-  if (timer < maxTime && premierClick) {
-    timerRef.current = window.setTimeout(() => {
-      setTimer(timerPrecedent => timerPrecedent + 1);
-      demarrerTimer();         
-    }, 1000);
-  }
-};
+  function handleClickDroit(id: number): void {        
+    const blocClick = grille.find(block => block.id === id);
 
-const timerRef = useRef<number | null>(null);
-function arreterTimer() {
-  if (timerRef.current !== null) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
-  }
-};
+    const nouvelleGrille = grille.map(block =>
+        block.id === id ? { ...block, drapeau: !block.drapeau } : block
+    );
 
-function handleNiveauSelect(niveau: string) {
-  setNiveauActif(niveau);
-  const niveauChoisi = niveauxTab.find((diff) => diff.difficulte === niveau);
+    setGrille(nouvelleGrille);
 
-  if (niveauChoisi) {
-    setNiveauSelectionne(niveauChoisi);          
-  }
-  console.log("Niveau Selectioné: ");
-  console.log("difficulte: "+niveauChoisi?.difficulte);
-  console.log("dimensions: "+niveauChoisi?.dimensions);
-  console.log("Qt mines: "+niveauChoisi?.qtMines);
-  console.log("Points de base: "+niveauChoisi?.pointsBase);
-};
+    let nouveauxDrapeauxAPlacer = drapeauxAPlacer;
+    let nouvellesMinesTrouvees = minesTrouvees;
 
-function handelGenererNouvelleGrille(niveau: INiveau) {
-  arreterTimer();
-  setEnJeu(true);    
-  setNiveau(niveauSelectionne);
-  setGrille(GenererGrille(niveau));  
-  setDrapeauxAPlacer(niveau.qtMines);
-  setMineTrouvees(0);
-  setTimer(0);
-  setPremierClick(true);
-  console.log("Niveau Nouvelle grille générée: ");
-  console.log("difficulte: "+niveau?.difficulte);
-  console.log("dimensions: "+niveau?.dimensions);
-  console.log("Qt mines: "+niveau?.qtMines);
-  console.log("Points de base: "+niveau?.pointsBase);
-}
-
-function handleClickGauche(id: number) {
-  let nouvelleGrille = RevelerBlockRecursif(niveau, id, grille);
-
-  if (grille.find(block => block.id === id)?.mine) {
-      setEnJeu(false);
-      arreterTimer();
-      setVictoire(false);
-      nouvelleGrille = grille.map(block => ({ ...block, cache: false })); 
-  } 
-
-  setGrille(nouvelleGrille);
-  demarrerTimer();      
-  setPremierClick(false);
-  setNbClicks(prevNbClicks => prevNbClicks + 1);
-}
-  
-function handleClickDroit(id: number) {        
-  const blocClick = grille.find(block => block.id === id);
-
-  const nouvelleGrille = grille.map(block =>
-      block.id === id ? { ...block, drapeau: !block.drapeau } : block
-  );
-
-  setGrille(nouvelleGrille);
-
-  let nouveauxDrapeauxAPlacer = drapeauxAPlacer;
-  let nouvellesMinesTrouvees = minesTrouvees;
-
-  if (!blocClick?.drapeau) {  
-      --nouveauxDrapeauxAPlacer;
-      if (blocClick?.mine) {
-        ++nouvellesMinesTrouvees;
-      }
-  } 
-  else {
-      ++nouveauxDrapeauxAPlacer;
-      if (blocClick.mine) {
-          --nouvellesMinesTrouvees;
-      }
-  }
+    if (!blocClick?.drapeau) {  
+        --nouveauxDrapeauxAPlacer;
+        if (blocClick?.mine) {
+          ++nouvellesMinesTrouvees;
+        }
+    } 
+    else {
+        ++nouveauxDrapeauxAPlacer;
+        if (blocClick.mine) {
+            --nouvellesMinesTrouvees;
+        }
+    }
   setDrapeauxAPlacer(nouveauxDrapeauxAPlacer);
   setMineTrouvees(nouvellesMinesTrouvees);
   demarrerTimer();
