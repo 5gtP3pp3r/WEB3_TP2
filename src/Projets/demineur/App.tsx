@@ -84,11 +84,12 @@ function handleClickGauche(id: number) {
   if (grille.find(block => block.id === id)?.mine) {
       setEnJeu(false);
       arreterTimer();
-      nouvelleGrille = grille.map(block => ({ ...block, cache: false })); // Dévoiler toute la grille si mine touchée
+      setVictoire(false);
+      nouvelleGrille = grille.map(block => ({ ...block, cache: false })); 
   } 
 
   setGrille(nouvelleGrille);
-  demarrerTimer();
+  demarrerTimer();      
   setPremierClick(false);
   setNbClicks(prevNbClicks => prevNbClicks + 1);
 }
@@ -123,13 +124,17 @@ function handleClickDroit(id: number) {
   setPremierClick(false);
   setNbClicks(prevNbClicks => prevNbClicks + 1);
 
-  if (nouvellesMinesTrouvees === niveau.qtMines) {
+  console.log("Stats conditions victoire:");
+  console.log("Mines trouvées: " + nouvellesMinesTrouvees);
+  console.log(nouvellesMinesTrouvees === niveau.qtMines);
+  console.log("Drapeaux à placer: " + nouveauxDrapeauxAPlacer);
+  console.log(drapeauxAPlacer === 0);
+
+  if (nouvellesMinesTrouvees === niveau.qtMines && nouveauxDrapeauxAPlacer === 0) {
       setEnJeu(false);
       arreterTimer();
       setVictoire(true);
-  }
-  console.log("Drapeaux à placer: " + nouveauxDrapeauxAPlacer);
-  console.log("Mines trouvées: " + nouvellesMinesTrouvees);
+  }  
 } 
 
   return (
