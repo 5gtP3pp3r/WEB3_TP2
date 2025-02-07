@@ -1,10 +1,10 @@
 
 interface StatsJeuProps {
     temps: number;
-    nbMine: number;
+    nbMine: number;    
 }
 
-export function StatsJeu({ temps, nbMine }: StatsJeuProps): JSX.Element {   
+export function StatsJeu({ temps, nbMine}: StatsJeuProps): JSX.Element {   
     let minute: number  = Math.floor(temps / 60);   
     let secondeDizaine: number = temps % 60 < 0 ? 0 : Math.floor((temps % 60) / 10);
     let secondeUnite: number = temps % 10;
