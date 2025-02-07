@@ -1,9 +1,76 @@
 import { Form } from "react-bootstrap";
-import ListGroup from 'react-bootstrap/ListGroup';
+import { useState } from 'react';
+import { FecthListeNomsApi } from "./FetchListeNomsApi";
 import { IJoueur } from "./IJoueur";
 
-interface ListeJoueursProps {
+interface JoueursProps {
+    listeJoueurs: IJoueur[],
+    setJoueur: (joueurActif: IJoueur) => void;
+    setListeJoueurs: (joueurs: IJoueur[]) => void;
+}
 
+export function ChoisirNomJoueur({ listeJoueurs, setJoueur, setListeJoueurs }: JoueursProps) {
+    const [listeNomsApi, setListeNomsApi] = useState<string[]>([]);
+    const [nomJoueur, setNomJoueur] = useState<string>("");
+
+    async function chargerListe() {
+        if (listeNomsApi.length > 0) {
+            console.log("Liste déjà chargée !");
+            return;
+        }
+        const listeNoms = await RemplirListeJoueurs();
+        setListeNomsApi(listeNoms);
+    }
+
+    async function RemplirListeJoueurs(): Promise<string[]> {
+        try {
+            const donnees = await FecthListeNomsApi();
+            return donnees.map((element: { name: string }) => element.name);
+        } catch (error) {
+            console.error("Erreur Fetch :", error);
+            alert("Impossible de récupérer la liste de noms");
+            return [];
+        }
+    }
+
+    function handleSelection(nom: string) {
+        setNomJoueur(nom);
+        const joueurActif: IJoueur = {
+            nom: nom,
+            niveau: "none",
+            points: 0
+        };
+        setJoueur(joueurActif);
+        if (!listeJoueurs.some(liste => liste.nom === nom)) {
+            setListeJoueurs([...listeJoueurs, joueurActif]);
+        }
+        console.log("Stats Joueur Actif fraichement choisi (sans niveau ou pointage associé):");
+        console.log(joueurActif.nom);
+        console.log(joueurActif.niveau);
+        console.log(joueurActif.points);
+    }
+
+    return (
+        <div>
+            <Form>
+                <Form.Group>
+                    <Form.Control 
+                        className='mt-2'  
+                        style={{width:'200px'}}                      
+                        as="select" 
+                        value={nomJoueur} 
+                        onMouseOver={chargerListe}
+                        onChange={(e) => handleSelection(e.target.value)}
+                    >
+                        <option value="">Joueurs</option>
+                        {listeNomsApi.map((nom, index) => (
+                            <option key={index} value={nom}>{nom}</option>
+                        ))}
+                    </Form.Control>
+                </Form.Group>
+            </Form>
+        </div>
+    );
 }
 
 
