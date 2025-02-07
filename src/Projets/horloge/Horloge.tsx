@@ -7,24 +7,28 @@ export interface Paquet { // Un paquet est un tableau de cartes
 
 interface HorlogeProps {
   paquets: Paquet[];
+  indexCarteRevelee: number;
+  onClickPaquet: (index:number) => void;
 }
 
 export function Horloge(props: HorlogeProps) {
-  const { paquets } = props;
-
+  const { paquets,indexCarteRevelee, onClickPaquet } = props;
+  const indexPaquetCentre: number =12;
   return (
     <div className="divHorloge">
       <div className="horloge">
-        {paquets.slice(0, 12).map((paquet, index) => (
-          <PaquetCarte key={index} paquet={paquet.cartes} index={index} />
+        {paquets.slice(0, 12).map((paquet, paquetIndex) => (
+          <div key={paquetIndex} onClick={() => onClickPaquet(paquetIndex)}>
+          <PaquetCarte key={paquetIndex} paquet={paquet.cartes} index={paquetIndex} indexCarteRevelee={indexCarteRevelee}/>
+          </div>
         ))}
 
         {/* Je gere le paquet de carte qui sera au centre dans une div appart */}
-        <div className="paquetDuCentre">
-          {paquets[12]?.cartes.map((carte, carteIndex) => (
+        <div className="paquetDuCentre" onClick={() => onClickPaquet(12)}>
+          {paquets[indexPaquetCentre].cartes.map((carte, carteIndex) => (
             <img
               key={carte.code}
-              src={carteIndex === 0 ? carte.image : "https://deckofcardsapi.com/static/img/back.png"}
+              src={carteIndex === 0 && indexPaquetCentre ===  indexCarteRevelee? carte.image : "https://deckofcardsapi.com/static/img/back.png"}
               alt={`Carte centrale ${carte.code}`}
               className="dos_carte"
               style={{

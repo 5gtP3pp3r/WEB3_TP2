@@ -8,10 +8,11 @@ export interface Carte { // Carte contient une image, qui est une string contena
 interface PaquetCarteProps { 
   paquet: Carte[]; //  tableau de cartes
   index: number;  // representera la position du paquet dans lhorloge. utilise pour appliquer un rotation et espacer les paquets.
+  indexCarteRevelee: number;
 }
 
 export function PaquetCarte(props: PaquetCarteProps) { // affiche un paquet de cartes sous form de piles ou chaque carte dun paquet est mis en cascade les unes les autres 
-  const { paquet, index } = props;
+  const { paquet, index, indexCarteRevelee } = props;
 
   return (
     <div
@@ -21,9 +22,9 @@ export function PaquetCarte(props: PaquetCarteProps) { // affiche un paquet de c
       }}
     >
       {paquet.map((carte, carteIndex) => ( // Parcour chaque carte du paquet 
-        <img      // on affiche limage, pour linstant face cache.
+        <img
           key={carte.code}
-          src="https://deckofcardsapi.com/static/img/back.png"  // Pour l'instant on voit seulement le dos des cartes
+          src= {carteIndex === 0 && index === indexCarteRevelee ? carte.image : "https://deckofcardsapi.com/static/img/back.png"}
           alt={`Carte ${carte.code}`}
           className="dos_carte"
           style={{
