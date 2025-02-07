@@ -1,14 +1,47 @@
+import { Form } from "react-bootstrap";
+import ListGroup from 'react-bootstrap/ListGroup';
+import { IJoueur } from "./IJoueur";
+
+interface ListeJoueursProps {
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
-import { INiveau } from './INiveau';
+import { INiveau } from './Niveau';
 //import { niveauxTab } from './Niveau';
 
 interface NiveauProps {
     niveaux: INiveau[];    
     niveauActif: string;
     onNiveauSelect: (niveau: string) => void;
-    onLancerJeu: (niveau: INiveau) => void;
+
 }
 
 export function SelectionJeu({niveaux, niveauActif, onNiveauSelect, onLancerJeu}: NiveauProps): JSX.Element {
@@ -39,3 +72,4 @@ export function SelectionJeu({niveaux, niveauActif, onNiveauSelect, onLancerJeu}
         </Form>
     );
 }
+*/

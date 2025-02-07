@@ -1,10 +1,11 @@
 import { PageTemplate } from '../../PageTemplate';
-import { App } from './App';  
+import { Game } from './Game';
+
 
 export function PageYahtzee() {
   return (
-    <PageTemplate title="Jeu Yahtzee" previous="/projets/horloge" nextPage="/projets/demineur">
-      {<App />}
+    <PageTemplate title="Yahtzee!" previous="/projets/horloge" nextPage="/projets/demineur">
+      {<Game/>}
     </PageTemplate>
   );
 }
