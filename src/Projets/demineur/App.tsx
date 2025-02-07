@@ -57,6 +57,7 @@ export function App() {
     joueurActif.niveau = niveauActif;
     joueurActif.points = pointage;
     setJoueurActif(joueurActif);
+    // Diag tests
     console.log("Stats Joueur Actif avec niveau et pointage:");
     console.log(joueurActif.nom);
     console.log(joueurActif.niveau);
@@ -72,6 +73,7 @@ export function App() {
     if (niveauChoisi) {
       setNiveauSelectionne(niveauChoisi);          
     }
+    // Diag tests
     console.log("Niveau Selectioné: ");
     console.log("difficulte: "+niveauChoisi?.difficulte);
     console.log("dimensions: "+niveauChoisi?.dimensions);
@@ -88,6 +90,7 @@ export function App() {
     setMineTrouvees(0);
     setTimer(0);
     setPremierClick(true);
+    // Diag tests
     console.log("Niveau Nouvelle grille générée: ");
     console.log("difficulte: "+niveau?.difficulte);
     console.log("dimensions: "+niveau?.dimensions);
@@ -99,13 +102,6 @@ export function App() {
     let nouvelleGrille = RevelerBlockRecursif(niveau, id, grille);
 
     if (grille.find(block => block.id === id)?.mine) {
-      // joueurActif.niveau = niveauActif;
-      // joueurActif.points = pointage;
-      // setJoueurActif(joueurActif);
-      // console.log("Stats Joueur Actif avec niveau et pointage:");
-      // console.log(joueurActif.nom);
-      // console.log(joueurActif.niveau);
-      // console.log(joueurActif.points);
       miseAJourJoueurJeu();
       setEnJeu(false);
       arreterTimer();
@@ -147,7 +143,7 @@ export function App() {
   demarrerTimer();
   setPremierClick(false);
   setNbClicks(prevNbClicks => prevNbClicks + 1);
-
+  // Diag tests
   console.log("Stats conditions victoire:");
   console.log("Mines trouvées: " + nouvellesMinesTrouvees);
   console.log(nouvellesMinesTrouvees === niveau.qtMines);
@@ -155,13 +151,6 @@ export function App() {
   console.log(drapeauxAPlacer === 0);
 
   if (nouvellesMinesTrouvees === niveau.qtMines && nouveauxDrapeauxAPlacer === 0) {
-    // joueurActif.niveau = niveauActif;
-    // joueurActif.points = pointage;
-    // setJoueurActif(joueurActif);
-    // console.log("Stats Joueur Actif avec niveau et pointage:");
-    // console.log(joueurActif.nom);
-    // console.log(joueurActif.niveau);
-    // console.log(joueurActif.points);
     miseAJourJoueurJeu();
     setEnJeu(false);
     arreterTimer();

@@ -10,7 +10,8 @@ export function GenerateurMinesAleatoire({dimensions, qtMines}: INiveau):number[
         if (!minesTab.includes(indexMine)) {
             minesTab.push(indexMine);
         }
-    }   
+    }  
+    // Diag tests 
     console.log("Valeurs dans le générateur de mines: ");
     console.log("Dimensions: "+dimensions);
     console.log("Qt mines: "+qtMines);
