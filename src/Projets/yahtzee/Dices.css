@@ -1,0 +1,16 @@
+.dice {
+    padding: 0;
+    border: none;
+    background: none;
+  }
+  
+  .dice-image {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .dice:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease-in-out;
+  }
+  

@@ -4,7 +4,7 @@ import { HorlogeSolitaire } from './HorlogeSolitaire';
 export function PageHorloge() {
   return (
     <PageTemplate title="Jeu Horloge" previous="/projets/demineur" nextPage="/projets/yahtzee">
-      {<HorlogeSolitaire />}
+      <div>{<HorlogeSolitaire />}</div>
     </PageTemplate>
   );
 }
