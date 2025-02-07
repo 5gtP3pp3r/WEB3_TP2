@@ -15,7 +15,8 @@ import { ResultatJeu } from './ResultatsJeu';
 import { LeaderBord } from './LeaderBord';
 import { RevelerBlockRecursif } from './RevelerBlockRecursif';
 import { IJoueur } from './IJoueur';
-import { FecthListeNomsApi } from './FetchListeNomsApi';
+import { ChoisirNomJoueur } from './ChoisirNomJoueur';
+//import { FecthListeNomsApi } from './FetchListeNomsApi';
 
 
 export function App() {
@@ -30,25 +31,9 @@ export function App() {
   const [ minesTrouvees, setMineTrouvees ] = useState<number>(0);
   const [ timer, setTimer ] = useState<number>(0);
   const [ victoire, setVictoire ] = useState<boolean>(false);
+  const [ pointage, setPointage ] = useState<number>(0);
+  const [ joueurActif, setJoueurActif ] = useState<IJoueur>({nom: "none", niveau: "none", points: 0});
   const [ listeJoueurs, setListeJoueurs ] = useState<IJoueur[]>([]);
-
-  const listeApi: string[] = RemplirListeJoueurs();
-
-  function RemplirListeJoueurs(): string[] {
-    const listeAPI: string[] = [];
-
-    FecthListeNomsApi()
-      .then((donnees: { array: { name: string; }[]; }) => {
-        donnees.array.forEach((element: { name: string; }) => {        
-          listeAPI.push(element.name);
-        });
-      })
-      .catch((error) => {
-        console.error("Erreur Fetch :", error);
-        alert("Impossible de récupérer la liste de noms");
-      });
-      return listeAPI;
-    }
 
   const maxTime = 600;
   function demarrerTimer(): void {
@@ -67,6 +52,18 @@ export function App() {
         timerRef.current = null;
     }
   };
+
+  function miseAJourJoueurJeu(): void {
+    joueurActif.niveau = niveauActif;
+    joueurActif.points = pointage;
+    setJoueurActif(joueurActif);
+    console.log("Stats Joueur Actif avec niveau et pointage:");
+    console.log(joueurActif.nom);
+    console.log(joueurActif.niveau);
+    console.log(joueurActif.points);
+    console.log("Liste des joueurs qui ont joués:");
+    console.log(listeJoueurs);
+  }
 
   function handleNiveauSelect(niveau: string): void {
     setNiveauActif(niveau);
@@ -102,15 +99,22 @@ export function App() {
     let nouvelleGrille = RevelerBlockRecursif(niveau, id, grille);
 
     if (grille.find(block => block.id === id)?.mine) {
-        setEnJeu(false);
-        arreterTimer();
-        setVictoire(false);
-        nouvelleGrille = grille.map(block => ({ ...block, cache: false })); 
+      // joueurActif.niveau = niveauActif;
+      // joueurActif.points = pointage;
+      // setJoueurActif(joueurActif);
+      // console.log("Stats Joueur Actif avec niveau et pointage:");
+      // console.log(joueurActif.nom);
+      // console.log(joueurActif.niveau);
+      // console.log(joueurActif.points);
+      miseAJourJoueurJeu();
+      setEnJeu(false);
+      arreterTimer();
+      setVictoire(false);
+      nouvelleGrille = grille.map(block => ({ ...block, cache: false })); 
     } 
-
-    setGrille(nouvelleGrille);
-    demarrerTimer();      
+    demarrerTimer();
     setPremierClick(false);
+    setGrille(nouvelleGrille);
     setNbClicks(prevNbClicks => prevNbClicks + 1);
   }
   
@@ -151,9 +155,17 @@ export function App() {
   console.log(drapeauxAPlacer === 0);
 
   if (nouvellesMinesTrouvees === niveau.qtMines && nouveauxDrapeauxAPlacer === 0) {
-      setEnJeu(false);
-      arreterTimer();
-      setVictoire(true);
+    // joueurActif.niveau = niveauActif;
+    // joueurActif.points = pointage;
+    // setJoueurActif(joueurActif);
+    // console.log("Stats Joueur Actif avec niveau et pointage:");
+    // console.log(joueurActif.nom);
+    // console.log(joueurActif.niveau);
+    // console.log(joueurActif.points);
+    miseAJourJoueurJeu();
+    setEnJeu(false);
+    arreterTimer();
+    setVictoire(true);
   }  
 } 
 
@@ -162,24 +174,27 @@ export function App() {
     <Container>
       <Row>
         <Col xs={3}>
-          <h5>Les règles sont simples:</h5>
-          <ul>
-            <li>Choisir le niveau de difficulté.</li>
-            <li>Lancer le jeu!</li>
-          </ul>
-          <h5>Sur la grille de jeu:</h5>
-          <ul>
-            <li>Clique gauche pour déminer une partie du terrain.</li>
-            <li>Clique droit pour marquer l'emplacement d'une mine possible.</li>
-            <li>Clique droit pour enlever la marque d'un emplacement.</li>
-          </ul>         
-          <SelectionJeu
-            niveaux={niveauxTab}
-            niveauActif={niveauActif}
-            onNiveauSelect={handleNiveauSelect}
-            onLancerJeu={handelGenererNouvelleGrille}
-          />
-          <p>Le jeu se termine si vous tochez une mine, ou si vous marquez tout les emplacements des mines</p>
+          <Row>
+            <h5>Les règles sont simples:</h5>
+            <div className='mt-3 mb-3'>
+              <h6>Choisir ou changer de joueur:</h6>
+              <ChoisirNomJoueur
+                listeJoueurs={listeJoueurs}
+                setJoueur={setJoueurActif} 
+                setListeJoueurs={setListeJoueurs}
+              /> 
+            </div>
+          </Row>            
+          <Row>
+            <h6> Choisir un niveau:</h6>
+            <SelectionJeu
+              estJoueurActif={joueurActif.nom == "none" ? true : false}
+              niveaux={niveauxTab}
+              niveauActif={niveauActif}
+              onNiveauSelect={handleNiveauSelect}
+              onLancerJeu={handelGenererNouvelleGrille}
+            />
+          </Row>
         </Col>
         <Col xs={6} >                
           <StatsJeu temps={timer} nbMine={drapeauxAPlacer}/>   
@@ -216,11 +231,11 @@ export function App() {
                 nbClicks={nbClicks} 
                 estEnJeu={enJeu}
                 victoire={victoire}
+                setPointage={setPointage}
               />
             </Row>
             <Row>
-              <LeaderBord               /**** NE PAS OUBLIER DE REVOIR LES PARAMETRES AVEC REQUETE API ****/
-              />            
+              <LeaderBord listeJoueurs={listeJoueurs} />            
             </Row>            
         </Col>
       </Row>
