@@ -1,5 +1,5 @@
 import { IBlock } from "./IBlock";
-import { INiveau } from './Niveau';
+import { INiveau } from './INiveau';
 import { voirNordId } from './VoirIdBlocksVoisins';
 import { voirNordEstId } from './VoirIdBlocksVoisins';
 import { voirEstId } from './VoirIdBlocksVoisins';
