@@ -8,7 +8,7 @@ interface ResultatJeuProps {
     nbClicks: number;
     estEnJeu: boolean;
     victoire: boolean;
-    
+    setPointage: (pointage: number) => void;   
 }
 
 // Logique personnelle de calcule de points. Chaque niveau a une quantité de point de base.
@@ -19,7 +19,7 @@ interface ResultatJeuProps {
 // On ajoute une pénalitée pour avoir touché une mine. On perd le nombres de mines non trouvées * 10 points
 // En dernier on ajoute le nombre de mines découvertes. 
 
-export function ResultatJeu({niveau, nbMinesTrouves, tempsSecondes, nbClicks, estEnJeu, victoire}: ResultatJeuProps): JSX.Element {
+export function ResultatJeu({niveau, nbMinesTrouves, tempsSecondes, nbClicks, estEnJeu, victoire, setPointage}: ResultatJeuProps): JSX.Element {
     const { difficulte, pointsBase, qtMines } = niveau;
 
     const minute: number = tempsSecondes > 59 ? Math.floor(tempsSecondes / 60) : 0;  
@@ -33,6 +33,8 @@ export function ResultatJeu({niveau, nbMinesTrouves, tempsSecondes, nbClicks, es
     const pointsTotal: number = pointsApresPenalite + (nbMinesTrouves * 5);
 
     const resultatPartie = victoire ? <h4 className='text-success'>VICTOIRE</h4> : <h4 className='text-danger'>DEFAITE</h4> ;
+
+    setPointage(pointsTotal);
 
     return estEnJeu ? (
         <div className="d-flex-justify-content-center" style={{ height:'250px'}}>    
