@@ -17,10 +17,10 @@ export function PageAccueil() {
                         <Col xs={4}> 
                             <div style={{width:'350px'}}>    
                                 <img 
-                                    src="public/images/JeuYahtzee.png" 
+                                    src="images/JeuYahtzee.png" 
                                     alt="Yahtzee" 
                                     onClick={() => navigate("/projets/yahtzee")} 
-                                    style={{ cursor: 'url(../images/Curseurs/curseurDe6.png), auto' }}
+                                    style={{ cursor: 'url(../images/Curseurs/curseurDe6.png), auto', borderRadius: '10px'}}
                                 />    
                             <p className='mt-3'>On a tous déjà oublié les règlements ou comment compter les points... plus besoin 
                                                 de papier et crayon! Essayez cette version numérique du classique "YAHTZEE!" </p>  
@@ -32,20 +32,20 @@ export function PageAccueil() {
                                 <p> Vous vous souvenez du classique "Démineur" de window 98? Voici une version revue de se jeu sous estimé!</p>
                                 <p className='d-flex justify-content-end'>Par William Crépault</p>
                                 <img    
-                                    src="public/images/MinesweeperFondWin98.png" 
+                                    src="images/MinesweeperFondWin98.png" 
                                     alt="Demineur" 
                                     onClick={() => navigate("/projets/demineur")} 
-                                    style={{ cursor: 'url(../images/Curseurs/curseurDemineur.png), auto'  }}
+                                    style={{ cursor: 'url(../images/Curseurs/curseurDemineur.png), auto', borderRadius: '10px'}}
                                 />   
                             </div>                    
                         </Col>
                         <Col xs={4}>   
                             <div style={{width:'350px'}}>
                                 <img 
-                                    src="public/images/DeckCartes.png" 
+                                    src="images/DeckCartes.png" 
                                     alt="Horloge" 
                                     onClick={() => navigate("/projets/horloge")} 
-                                    style={{ cursor: 'url(../images/Curseurs/curseurAs.png), auto'  }}
+                                    style={{ cursor: 'url(../images/Curseurs/curseurAs.png), auto', borderRadius: '10px'}}
                                 />   
                             <p className='mt-3'>Qui n'a jamais fait des jeux de patiences sur la table de la cuisine. Les cartes 
                                                 étendues partout et au sol... Pourquoi ne pas essayer cette version numérique?</p>
