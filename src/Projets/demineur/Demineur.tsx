@@ -54,18 +54,64 @@ export function Demineur() {
     }
   }
 
-  function miseAJourJoueurJeu(): void {
-    const joueurMisAJour: IJoueur = {...joueurActif, niveau: niveauActif, points: pointage };
-    setJoueurActif(joueurMisAJour);
-    setListeJoueurs((listePrecedente) => [...listePrecedente, joueurMisAJour]);
+  function calculerPointage() {
+    const pointsApresTemps: number = Math.max(niveau.pointsBase - timer, 0);
+    const pointsApresClicks: number = Math.max(pointsApresTemps - nbClicks, 0);
+    const penaliteMinesManquantes: number = (niveau.qtMines - minesTrouvees) * 50;
+    const pointsApresPenalite: number = Math.max(pointsApresClicks - penaliteMinesManquantes, 0);
+    const pointsTotal: number = pointsApresPenalite + (minesTrouvees * 5);
+    setPointage(pointsTotal);
     /**********  Diag tests **********/
-    /**/console.log("Stats Joueur Actif avec niveau et pointage:");
-    /**/console.log(joueurActif.nom);
-    /**/console.log(joueurActif.niveau);
-    /**/console.log(joueurActif.points);
-    /**/console.log("Liste des joueurs qui ont joués:");
-    /**/console.log(listeJoueurs);
+    console.log("Pointage: " + pointsTotal); // Points visible ok
     /*********************************/
+  }
+
+  function miseAJourJoueur() {
+    const joueurMisAJour: IJoueur = {...joueurActif, niveau: niveauActif, points: pointage};
+    /**********  Diag tests **********/   
+    /**/console.log("miseAJourJoueur() variable");
+    /**/console.log("Stats Joueur Actif:");
+    /**/console.log(joueurMisAJour.nom); // Nom visible ok 
+    /**/console.log(joueurMisAJour.niveau); // Niveau visible ok
+    /**/console.log(joueurMisAJour.points); // Points à 0 NOPE!     
+    /*********************************/
+    setJoueurActif(joueurMisAJour);
+    /**********  Diag tests **********/
+    /**/console.log("miseAJourJoueur() état");
+    /**/console.log("Stats Joueur Actif:");
+    /**/console.log(joueurActif.nom); // Nom visible ok 
+    /**/console.log(joueurActif.niveau); // Niveau visible ok
+    /**/console.log(joueurActif.points); // Points à 0 NOPE!     
+    /*********************************/
+  }
+
+  function miseAJourListeJoueurs() {
+    const nouvelleListeJoueurs: IJoueur[] = [...listeJoueurs, joueurActif]; 
+    /**********  Diag tests **********/ 
+    /**/console.log("miseAJourListeJoueurs() variable");
+    nouvelleListeJoueurs.forEach((element) => { // Particulier, 2 joueurs dans la liste devrait être 1
+    /**/console.log("Nom: " + element.nom); // Nom visible ok 
+    /**/console.log("Niveau: " + element.niveau); // Niveau visible ok
+    /**/console.log("Points: " + element.points); // Points à 0 NOPE!      
+    });
+    /*********************************/
+    setListeJoueurs(nouvelleListeJoueurs); 
+    /**********  Diag tests **********/
+    /**/console.log("miseAJourListeJoueurs() état");
+    listeJoueurs.forEach((element) => {
+    /**/console.log("Nom: " + element.nom); // Nom visible ok 
+    /**/console.log("Niveau: " + element.niveau); // Niveau à none NOPE!
+    /**/console.log("Points: " + element.points); // Points à 0 NOPE!      
+    });
+    /*********************************/
+  }
+
+  function miseAJourJeu(): void {
+    //if (!enJeu) {
+      calculerPointage();
+      miseAJourJoueur();
+      miseAJourListeJoueurs();             
+    //}
   }
 
   function selectionNiveau(niveau: string): void {
@@ -77,10 +123,10 @@ export function Demineur() {
     }
     /**********  Diag tests **********/
     /**/console.log("Niveau Selectioné: ");
-    /**/console.log("difficulte: "+niveauChoisi?.difficulte);
-    /**/console.log("dimensions: "+niveauChoisi?.dimensions);
-    /**/console.log("Qt mines: "+niveauChoisi?.qtMines);
-    /**/console.log("Points de base: "+niveauChoisi?.pointsBase);
+    /**/console.log("difficulte: " + niveauChoisi?.difficulte);
+    /**/console.log("dimensions: " + niveauChoisi?.dimensions);
+    /**/console.log("Qt mines: " + niveauChoisi?.qtMines);
+    /**/console.log("Points de base: " + niveauChoisi?.pointsBase);
     /*********************************/
   }
 
@@ -95,78 +141,79 @@ export function Demineur() {
     setPremierClick(true);
     /**********  Diag tests **********/
     /**/console.log("Niveau Nouvelle grille générée: ");
-    /**/console.log("difficulte: "+niveau?.difficulte);
-    /**/console.log("dimensions: "+niveau?.dimensions);
-    /**/console.log("Qt mines: "+niveau?.qtMines);
-    /**/console.log("Points de base: "+niveau?.pointsBase);
+    /**/console.log("difficulte: " + niveau?.difficulte);
+    /**/console.log("dimensions: " + niveau?.dimensions);
+    /**/console.log("Qt mines: " + niveau?.qtMines);
+    /**/console.log("Points de base: " + niveau?.pointsBase);
     /*********************************/
   }
 
   function handleClickGauche(id: number): void {
-    let nouvelleGrille = RevelerBlockRecursif(niveau, id, grille);
-    const estUneMine = grille.find(block => block.id === id)?.mine ?? false;
+    if (enJeu) {
+      let nouvelleGrille = RevelerBlockRecursif(niveau, id, grille);
+      const estUneMine = grille.find(block => block.id === id)?.mine ?? false;
 
-    if (estUneMine) {
-      miseAJourJoueurJeu();
-      setEnJeu(false);
-      arreterTimer(); 
-      setVictoire(false);
-      nouvelleGrille = grille.map(block => ({ ...block, cache: false })); 
-  } else {
-      if (premierClick) {
-          demarrerTimer();
-          setPremierClick(false);
+      if (estUneMine) {
+        miseAJourJeu();
+        setEnJeu(false);
+        arreterTimer(); 
+        setVictoire(false);        
+        nouvelleGrille = grille.map(block => ({ ...block, cache: false }));              
+      } else {
+        if (premierClick) {
+            demarrerTimer();
+            setPremierClick(false);
+        }
       }
-  }
-
-  setGrille(nouvelleGrille);
-  setNbClicks(NbClicksPrecedent => NbClicksPrecedent + 1);
+      setGrille(nouvelleGrille);
+      setNbClicks(NbClicksPrecedent => NbClicksPrecedent + 1);
+    }
   }
   
-  function handleClickDroit(id: number): void {        
-    const blocClick = grille.find(block => block.id === id);
+  function handleClickDroit(id: number): void {  
+    if (enJeu) {      
+      const blocClick = grille.find(block => block.id === id);
+      const nouvelleGrille = grille.map(block =>
+          block.id === id ? { ...block, drapeau: !block.drapeau } : block
+      );
+      setGrille(nouvelleGrille);
 
-    const nouvelleGrille = grille.map(block =>
-        block.id === id ? { ...block, drapeau: !block.drapeau } : block
-    );
+      let nouveauxDrapeauxAPlacer = drapeauxAPlacer;
+      let nouvellesMinesTrouvees = minesTrouvees;
 
-    setGrille(nouvelleGrille);
+      if (!blocClick?.drapeau) {  
+          --nouveauxDrapeauxAPlacer;
+          if (blocClick?.mine) {
+            ++nouvellesMinesTrouvees;
+          }
+      } 
+      else {
+          ++nouveauxDrapeauxAPlacer;
+          if (blocClick.mine) {
+              --nouvellesMinesTrouvees;
+          }
+      }
+      setDrapeauxAPlacer(nouveauxDrapeauxAPlacer);
+      setMineTrouvees(nouvellesMinesTrouvees);
+      demarrerTimer();
+      setPremierClick(false);
+      setNbClicks(NbClicksPrecedent => NbClicksPrecedent + 1);  
+      /**********  Diag tests **********/
+      /**/console.log("Stats conditions victoire:");
+      /**/console.log("Mines trouvées: " + nouvellesMinesTrouvees);
+      /**/console.log(nouvellesMinesTrouvees === niveau.qtMines);
+      /**/console.log("Drapeaux à placer: " + nouveauxDrapeauxAPlacer);
+      /**/console.log(drapeauxAPlacer === 0);
+      /*********************************/
 
-    let nouveauxDrapeauxAPlacer = drapeauxAPlacer;
-    let nouvellesMinesTrouvees = minesTrouvees;
-
-    if (!blocClick?.drapeau) {  
-        --nouveauxDrapeauxAPlacer;
-        if (blocClick?.mine) {
-          ++nouvellesMinesTrouvees;
-        }
-    } 
-    else {
-        ++nouveauxDrapeauxAPlacer;
-        if (blocClick.mine) {
-            --nouvellesMinesTrouvees;
-        }
-    }
-  setDrapeauxAPlacer(nouveauxDrapeauxAPlacer);
-  setMineTrouvees(nouvellesMinesTrouvees);
-  demarrerTimer();
-  setPremierClick(false);
-  setNbClicks(NbClicksPrecedent => NbClicksPrecedent + 1);  
-  /**********  Diag tests **********/
-  /**/console.log("Stats conditions victoire:");
-  /**/console.log("Mines trouvées: " + nouvellesMinesTrouvees);
-  /**/console.log(nouvellesMinesTrouvees === niveau.qtMines);
-  /**/console.log("Drapeaux à placer: " + nouveauxDrapeauxAPlacer);
-  /**/console.log(drapeauxAPlacer === 0);
-  /*********************************/
-
-  if (nouvellesMinesTrouvees === niveau.qtMines && nouveauxDrapeauxAPlacer === 0) {
-    miseAJourJoueurJeu();
-    setEnJeu(false);
-    arreterTimer();
-    setVictoire(true);
-  }  
-} 
+      if (nouvellesMinesTrouvees === niveau.qtMines && nouveauxDrapeauxAPlacer === 0) {   
+        miseAJourJeu();
+        setEnJeu(false);
+        arreterTimer();
+        setVictoire(true);            
+      }  
+    }   
+  }
 
   /*********** Affichage *************/
   return (
@@ -174,7 +221,8 @@ export function Demineur() {
       backgroundImage: "url('../../images/demineur/noMansLand.png')",
       backgroundSize: 'cover', 
       backgroundPosition: 'center', 
-      minHeight: '650px'
+      minHeight: '650px',
+      caretColor: "transparent"
     }}>
       <Container>
         <Row>
@@ -230,9 +278,9 @@ export function Demineur() {
                   nbMinesTrouves={minesTrouvees} 
                   tempsSecondes={timer} 
                   nbClicks={nbClicks} 
-                  estEnJeu={enJeu}
+                  estEnJeu={false}
                   victoire={victoire}
-                  setPointage={setPointage}
+                  pointage={pointage} 
                 />
               </Row>
               <Row>
