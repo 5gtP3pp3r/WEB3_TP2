@@ -35,8 +35,9 @@ export function ResultatJeu({niveau, nbMinesTrouves, tempsSecondes, nbClicks, es
 
     const resultatPartie = victoire ? <h4 className='text-success'>VICTOIRE</h4> : <h4 className='text-danger'>DEFAITE</h4> ;
 
-    setPointage(pointsTotal);
-
+    if (!estEnJeu) {
+        setPointage(pointsTotal);
+    }
     return estEnJeu ? (
         <div className="d-flex-justify-content-center" style={{ height:'250px'}}>    
             <></>        
