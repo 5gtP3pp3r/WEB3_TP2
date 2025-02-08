@@ -14,6 +14,7 @@ interface HorlogeProps {
 export function Horloge(props: HorlogeProps) {
   const { paquets,indexCarteRevelee, onClickPaquet } = props;
   const indexPaquetCentre: number =12;
+  const nbPixels = 8;
   return (
     <div className="divHorloge">
       <div className="horloge">
@@ -37,7 +38,7 @@ export function Horloge(props: HorlogeProps) {
               className="dos_carte"
               style={{
                 zIndex: paquets[12].cartes.length - carteIndex,  // jutilise zIndex pour empiler les cartes en cascade : https://developer.mozilla.org/fr/docs/Web/CSS/z-index
-                top: `${carteIndex * 8}px`,  // Décalage vertical des cartes
+                top: `${carteIndex * nbPixels}px`,  // Décalage vertical des cartes
               }}
             />
           ))}
