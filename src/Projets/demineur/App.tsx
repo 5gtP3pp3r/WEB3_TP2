@@ -100,18 +100,23 @@ export function App() {
 
   function handleClickGauche(id: number): void {
     let nouvelleGrille = RevelerBlockRecursif(niveau, id, grille);
+    const estUneMine = grille.find(block => block.id === id)?.mine ?? false;
 
-    if (grille.find(block => block.id === id)?.mine) {
+    if (estUneMine) {
       miseAJourJoueurJeu();
       setEnJeu(false);
-      arreterTimer();
+      arreterTimer(); 
       setVictoire(false);
       nouvelleGrille = grille.map(block => ({ ...block, cache: false })); 
-    } 
-    demarrerTimer();
-    setPremierClick(false);
-    setGrille(nouvelleGrille);
-    setNbClicks(NbClicksPrecedent => NbClicksPrecedent + 1);
+  } else {
+      if (premierClick) {
+          demarrerTimer();
+          setPremierClick(false);
+      }
+  }
+
+  setGrille(nouvelleGrille);
+  setNbClicks(NbClicksPrecedent => NbClicksPrecedent + 1);
   }
   
   function handleClickDroit(id: number): void {        
