@@ -1,28 +1,26 @@
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import { useState } from 'react';
-import { IBlock } from "./IBlock";
 import { useRef } from 'react';
+import { useState } from 'react';
+import {Container, Col, Row } from 'react-bootstrap';
 
-import { GestionAffichagesBlocksOnClickSurGrille } from './GestionAffichagesBlocksOnClickSurGrille';
-import { SelectionJeu } from './SelectionJeu';
-import { INiveau } from './INiveau';
-import { niveauxTab } from './INiveau';
-import { GenererGrille } from './GenererGrille';
-import { StatsJeu } from './StatsJeu';
-import { ResultatJeu } from './ResultatsJeu';
-import { LeaderBord } from './LeaderBord';
-import { RevelerBlockRecursif } from './RevelerBlockRecursif';
+import { IBlock } from "./IBlock";
 import { IJoueur } from './IJoueur';
+import { StatsJeu } from './StatsJeu';
+import { LeaderBord } from './LeaderBord';
+import { ResultatJeu } from './ResultatsJeu';
+import { SelectionJeu } from './SelectionJeu';
+import { GenererGrille } from './GenererGrille';
 import { ChoisirNomJoueur } from './ChoisirNomJoueur';
-//import { FecthListeNomsApi } from './FetchListeNomsApi';
-
+import { INiveau, niveauxTab } from './INiveau';
+import { RevelerBlockRecursif } from './RevelerBlockRecursif';
+import { GestionAffichagesBlocksOnClickSurGrille } from './GestionAffichagesBlocksOnClickSurGrille';
 
 export function Demineur() {
+  const niveauDefaut: INiveau = {difficulte:"facile", dimensions: 8, qtMines: 10, pointsBase:500};
+  const JoueurActifDefaut: IJoueur = {nom: "none", niveau: "none", points: 0};
+
   const [ grille, setGrille ] = useState<IBlock[]>([]);
-  const [ niveau, setNiveau ] = useState<INiveau>({difficulte:"facile", dimensions: 8, qtMines: 10, pointsBase:500}); 
-  const [ niveauActif, setNiveauActif ] = useState<string>("facile");
+  const [ niveau, setNiveau ] = useState<INiveau>(niveauDefaut); 
+  const [ niveauActif, setNiveauActif ] = useState<string>("");
   const [ niveauSelectionne, setNiveauSelectionne ] = useState(niveau);
   const [ enJeu, setEnJeu ] = useState<boolean>(true);
   const [ premierClick, setPremierClick ] = useState<boolean>(true);
@@ -32,7 +30,7 @@ export function Demineur() {
   const [ timer, setTimer ] = useState<number>(0);
   const [ victoire, setVictoire ] = useState<boolean>(false);
   const [ pointage, setPointage ] = useState<number>(0);
-  const [ joueurActif, setJoueurActif ] = useState<IJoueur>({nom: "none", niveau: "none", points: 0});
+  const [ joueurActif, setJoueurActif ] = useState<IJoueur>(JoueurActifDefaut);
   const [ listeJoueurs, setListeJoueurs ] = useState<IJoueur[]>([]);
 
   const maxTime = 600;
