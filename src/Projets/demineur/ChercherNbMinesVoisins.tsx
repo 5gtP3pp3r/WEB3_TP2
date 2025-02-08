@@ -1,13 +1,15 @@
 import { IBlock } from './IBlock';
 import { INiveau } from './INiveau';
-import { voirNordMine } from './VoirMinesBlocksVoisins';
-import { voirNordEstMine } from './VoirMinesBlocksVoisins';
-import { voirEstMine } from './VoirMinesBlocksVoisins';
-import { voirSudEstMine } from './VoirMinesBlocksVoisins';
-import { voirSudMine } from './VoirMinesBlocksVoisins';
-import { voirSudOuestMine } from './VoirMinesBlocksVoisins';
-import { voirOuestMine } from './VoirMinesBlocksVoisins';
-import { voirNordOuestMine } from './VoirMinesBlocksVoisins';
+import {  
+    voirNordMine, 
+    voirNordEstMine, 
+    voirEstMine, 
+    voirSudEstMine, 
+    voirSudMine, 
+    voirSudOuestMine, 
+    voirOuestMine, 
+    voirNordOuestMine
+} from './VoirMinesBlocksVoisins';
 
 export function ChercherNbMinesVoisins(niveau: INiveau, block: IBlock, grille: IBlock[]): number {
     return voirNordMine(block, grille) +

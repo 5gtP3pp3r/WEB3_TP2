@@ -73,7 +73,7 @@ export function HorlogeSolitaire() {
     }, []);
 
     return (
-        <div>
+        <div className='d-flex justify-content-center' style={{height:'600px'}}> {/* Voilà, j'ai ajouté une hauteur à une div ici pour posser le bas de page du PageTemplate et placer ton horloge au dessus des boutons "Jeu Précédent/Jeu Suivant"*/}
             {/* Envoi du tableau de paquets "paquets" en props au composant Horloge */}
             {estEnChargement ? <p>Chargement du jeu...</p> : <Horloge paquets={paquets} onClickPaquet={handlePaquetClick} indexCarteRevelee={indexCarteRevelee} />} 
         </div>

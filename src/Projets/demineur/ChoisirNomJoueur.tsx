@@ -1,75 +1,79 @@
 import { Form } from "react-bootstrap";
-import ListGroup from 'react-bootstrap/ListGroup';
+import { useState } from 'react';
+
 import { IJoueur } from "./IJoueur";
+import { FecthListeNomsApi } from "./FetchListeNomsApi";
 
-interface ListeJoueursProps {
-
+interface JoueursProps {
+    listeJoueurs: IJoueur[],
+    setJoueur: (joueurActif: IJoueur) => void;
 }
 
+export function ChoisirNomJoueur({ setJoueur }: JoueursProps) {
+    const [listeNomsApi, setListeNomsApi] = useState<string[]>([]);
+    const [nomJoueur, setNomJoueur] = useState<string>("");
 
+    async function chargerListe() {
+        if (listeNomsApi.length > 0) {
+            /**********  Diag tests **********/
+            /**/console.log("Liste déjà chargée !");
+            /*********************************/
+            return;
+        }
+        const listeNoms = await RemplirListeJoueurs();
+        setListeNomsApi(listeNoms);
+    }
 
+    async function RemplirListeJoueurs(): Promise<string[]> {
+        try {
+            const donnees = await FecthListeNomsApi();
+            return donnees.map((element: { name: string }) => element.name);
+        } catch (error) {
+            /**********  Diag tests **********/
+            /**/console.error("Erreur Fetch :", error);
+            /**/alert("Impossible de récupérer la liste de noms");
+            /*********************************/
 
+            return [];
+        }
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-import ListGroup from 'react-bootstrap/ListGroup';
-import Form from 'react-bootstrap/Form';
-import { Button } from 'react-bootstrap';
-import { INiveau } from './Niveau';
-//import { niveauxTab } from './Niveau';
-
-interface NiveauProps {
-    niveaux: INiveau[];    
-    niveauActif: string;
-    onNiveauSelect: (niveau: string) => void;
-
-}
-
-export function SelectionJeu({niveaux, niveauActif, onNiveauSelect, onLancerJeu}: NiveauProps): JSX.Element {
-    const niveau = niveaux.find(n => n.difficulte === niveauActif);
+    function handleSelection(nom: string) {
+        setNomJoueur(nom);
+        const joueurActif: IJoueur = {
+            nom: nom,
+            niveau: "none",
+            points: 0
+        };
+        setJoueur(joueurActif);
+        /**********  Diag tests **********/
+        /**/console.log("Stats Joueur Actif fraichement choisi (sans niveau ou pointage associé):");
+        /**/console.log(joueurActif.nom);
+        /**/console.log(joueurActif.niveau);
+        /**/console.log(joueurActif.points);
+        /*********************************/
+    }
 
     return (
-        <Form>
-        <ListGroup>
-            {niveaux.map((niveau) => (
-                <ListGroup.Item
-                    key={niveau.difficulte}
-                    active={niveau.difficulte === niveauActif}
-                    onClick={() => onNiveauSelect(niveau.difficulte)} 
-                    style={{ cursor: 'pointer', width: '130px' }}
-                    variant='light'
+        <div>
+            <Form>
+            <h6>Choisir/Changer joueur:</h6>
+                <Form.Group>
+                    <Form.Control 
+                        className='mt-2'  
+                        style={{width:'200px', boxShadow: 'none', border: '1px solid #ccc'}}                      
+                        as="select" 
+                        value={nomJoueur} 
+                        onMouseOver={chargerListe}
+                        onChange={(e) => handleSelection(e.target.value)}
                     >
-                    {niveau.difficulte}
-                </ListGroup.Item>
-            ))}
-        </ListGroup>
-            <Button
-                className='mt-3'
-                variant='secondary'
-                onClick={() =>{ if(niveau) onLancerJeu(niveau) }}    // if(niveau): enlevé soulignement "undefined possible"
-                style={{ width: '130px', cursor: 'url(../../images/demineur/curseurDemineur.png), auto'}}
-                >Jouer!
-            </Button>
-        </Form>
+                        <option value="">Joueurs</option>
+                        {listeNomsApi.map((nom, index) => (
+                            <option key={index} value={nom}>{nom}</option>
+                        ))}
+                    </Form.Control>
+                </Form.Group>
+            </Form>
+        </div>
     );
 }
-*/

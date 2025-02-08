@@ -1,6 +1,13 @@
 
 export function Header() {
     return (
-        <h3 className="bg-light m-0" style={{height: '50px'}}>Web3_TP2 blablabla</h3>
+        <div className="d-flex justify-content-center" style={{ backgroundImage: "url('../images/desMelanges.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            height: '59px'
+            }}>         
+        <h3 className="mt-2">Web -3 TP-2: Site de jeux</h3>
+        </div>
     )
 }

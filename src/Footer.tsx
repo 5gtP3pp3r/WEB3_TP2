@@ -11,7 +11,7 @@ export function Footer() {
     const navigate = useNavigate();
 
     return (
-        <div className="d-flex justify-content-center mb-1 fixed-bottom bg-light">       
+        <div className="d-flex justify-content-center mb-1 fixed-bottom">       
             <ButtonGroup aria-label="Bouton liens exercicesrang1">
                 {isAuthenticated ? (
                 <>                             
