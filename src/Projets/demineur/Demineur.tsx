@@ -19,7 +19,7 @@ import { ChoisirNomJoueur } from './ChoisirNomJoueur';
 //import { FecthListeNomsApi } from './FetchListeNomsApi';
 
 
-export function App() {
+export function Demineur() {
   const [ grille, setGrille ] = useState<IBlock[]>([]);
   const [ niveau, setNiveau ] = useState<INiveau>({difficulte:"facile", dimensions: 8, qtMines: 10, pointsBase:500}); 
   const [ niveauActif, setNiveauActif ] = useState<string>("facile");
@@ -164,7 +164,7 @@ export function App() {
 } 
 
   return (
-    <div style={{height: '620px',backgroundImage: "url('../../images/demineur/noMansLand.png')",backgroundSize: 'cover', backgroundPosition: 'center'}}>
+    <div style={{backgroundImage: "url('../../images/demineur/noMansLand.png')",backgroundSize: 'cover', backgroundPosition: 'center'}}>
     <Container>
       <Row>
         <Col xs={2}>
