@@ -54,9 +54,9 @@ export function App() {
   };
 
   function miseAJourJoueurJeu(): void {
-    joueurActif.niveau = niveauActif;
-    joueurActif.points = pointage;
-    setJoueurActif(joueurActif);
+    const joueurMisAJour: IJoueur = {...joueurActif, niveau: niveauActif, points: pointage };
+    setJoueurActif(joueurMisAJour);
+    setListeJoueurs((listePrecedente) => [...listePrecedente, joueurMisAJour]);
     // Diag tests
     console.log("Stats Joueur Actif avec niveau et pointage:");
     console.log(joueurActif.nom);
@@ -111,7 +111,7 @@ export function App() {
     demarrerTimer();
     setPremierClick(false);
     setGrille(nouvelleGrille);
-    setNbClicks(prevNbClicks => prevNbClicks + 1);
+    setNbClicks(NbClicksPrecedent => NbClicksPrecedent + 1);
   }
   
   function handleClickDroit(id: number): void {        
@@ -142,7 +142,7 @@ export function App() {
   setMineTrouvees(nouvellesMinesTrouvees);
   demarrerTimer();
   setPremierClick(false);
-  setNbClicks(prevNbClicks => prevNbClicks + 1);
+  setNbClicks(NbClicksPrecedent => NbClicksPrecedent + 1);
   // Diag tests
   console.log("Stats conditions victoire:");
   console.log("Mines trouvées: " + nouvellesMinesTrouvees);
@@ -169,7 +169,6 @@ export function App() {
               <ChoisirNomJoueur
                 listeJoueurs={listeJoueurs}
                 setJoueur={setJoueurActif} 
-                setListeJoueurs={setListeJoueurs}
               /> 
             </div>
           </Row>            
