@@ -13,18 +13,18 @@ interface PaquetCarteProps {
 
 export function PaquetCarte(props: PaquetCarteProps) { // affiche un paquet de cartes sous form de piles ou chaque carte dun paquet est mis en cascade les unes les autres 
   const { paquet, index, indexCarteRevelee } = props;
-
+  const angleRotation = index * 30;
   return (
     <div
       className="paquet"
       style={{
-        transform: `rotate(${index * 30}deg) translate(200px) rotate(-${index * 30}deg)`, // Chaque paquet est tourne avec un rotate positif selon son index, ca les repartit de maniere circulaire autour du centre. translate eloigne chaque paquet du centre. le rotate negatif applique une rotation inverse pour sassurer que les cartes reste orientees correctement. 
+        transform: `rotate(${angleRotation}deg) translate(200px) rotate(-${angleRotation}deg)` // Jutilise transform pour faire trois transformation : une rotation de 30 degree pour que chaque paquet soit places en cercle autour du centre. en suite je fait un translate pour eloigner les paquets du centre et finalement une rotation negative pour quelle restent orientees correctement
       }}
     >
       {paquet.map((carte, carteIndex) => ( // Parcour chaque carte du paquet 
         <img
           key={carte.code}
-          src= {carteIndex === 0 && index === indexCarteRevelee ? carte.image : "https://deckofcardsapi.com/static/img/back.png"}
+          src= {carteIndex === 0 && (index === indexCarteRevelee) ? carte.image : "https://deckofcardsapi.com/static/img/back.png"}
           alt={`Carte ${carte.code}`}
           className="dos_carte"
           style={{

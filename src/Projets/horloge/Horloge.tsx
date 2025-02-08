@@ -19,12 +19,16 @@ export function Horloge(props: HorlogeProps) {
       <div className="horloge">
         {paquets.slice(0, 12).map((paquet, paquetIndex) => (
           <div key={paquetIndex} onClick={() => onClickPaquet(paquetIndex)}>
-          <PaquetCarte key={paquetIndex} paquet={paquet.cartes} index={paquetIndex} indexCarteRevelee={indexCarteRevelee}/>
+          <PaquetCarte 
+            key={paquetIndex} 
+            paquet={paquet.cartes} 
+            index={paquetIndex} 
+            indexCarteRevelee={indexCarteRevelee}/>
           </div>
         ))}
 
         {/* Je gere le paquet de carte qui sera au centre dans une div appart */}
-        <div className="paquetDuCentre" onClick={() => onClickPaquet(12)}>
+        <div className="paquetDuCentre" onClick={() => onClickPaquet(indexPaquetCentre)}>
           {paquets[indexPaquetCentre].cartes.map((carte, carteIndex) => (
             <img
               key={carte.code}
