@@ -7,7 +7,7 @@ export function Header() {
             backgroundRepeat: "no-repeat",
             height: '59px'
             }}>         
-        <h3 className="mt-2">Web 3 TP2 Site de jeux</h3>
+        <h3 className="mt-2">Web -3 TP-2: Site de jeux</h3>
         </div>
     )
 }
