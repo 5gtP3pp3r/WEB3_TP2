@@ -6,10 +6,9 @@ import { IJoueur } from "./IJoueur";
 interface JoueursProps {
     listeJoueurs: IJoueur[],
     setJoueur: (joueurActif: IJoueur) => void;
-    setListeJoueurs: (joueurs: IJoueur[]) => void;
 }
 
-export function ChoisirNomJoueur({ listeJoueurs, setJoueur, setListeJoueurs }: JoueursProps) {
+export function ChoisirNomJoueur({ setJoueur }: JoueursProps) {
     const [listeNomsApi, setListeNomsApi] = useState<string[]>([]);
     const [nomJoueur, setNomJoueur] = useState<string>("");
 
@@ -43,9 +42,6 @@ export function ChoisirNomJoueur({ listeJoueurs, setJoueur, setListeJoueurs }: J
             points: 0
         };
         setJoueur(joueurActif);
-        if (!listeJoueurs.some(liste => liste.nom === nom)) {
-            setListeJoueurs([...listeJoueurs, joueurActif]);
-        }
         // Diag tests
         console.log("Stats Joueur Actif fraichement choisi (sans niveau ou pointage associé):");
         console.log(joueurActif.nom);
@@ -76,71 +72,3 @@ export function ChoisirNomJoueur({ listeJoueurs, setJoueur, setListeJoueurs }: J
         </div>
     );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-import ListGroup from 'react-bootstrap/ListGroup';
-import Form from 'react-bootstrap/Form';
-import { Button } from 'react-bootstrap';
-import { INiveau } from './Niveau';
-//import { niveauxTab } from './Niveau';
-
-interface NiveauProps {
-    niveaux: INiveau[];    
-    niveauActif: string;
-    onNiveauSelect: (niveau: string) => void;
-
-}
-
-export function SelectionJeu({niveaux, niveauActif, onNiveauSelect, onLancerJeu}: NiveauProps): JSX.Element {
-    const niveau = niveaux.find(n => n.difficulte === niveauActif);
-
-    return (
-        <Form>
-        <ListGroup>
-            {niveaux.map((niveau) => (
-                <ListGroup.Item
-                    key={niveau.difficulte}
-                    active={niveau.difficulte === niveauActif}
-                    onClick={() => onNiveauSelect(niveau.difficulte)} 
-                    style={{ cursor: 'pointer', width: '130px' }}
-                    variant='light'
-                    >
-                    {niveau.difficulte}
-                </ListGroup.Item>
-            ))}
-        </ListGroup>
-            <Button
-                className='mt-3'
-                variant='secondary'
-                onClick={() =>{ if(niveau) onLancerJeu(niveau) }}    // if(niveau): enlevé soulignement "undefined possible"
-                style={{ width: '130px', cursor: 'url(../../images/demineur/curseurDemineur.png), auto'}}
-                >Jouer!
-            </Button>
-        </Form>
-    );
-}
-*/
