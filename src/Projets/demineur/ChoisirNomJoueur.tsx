@@ -56,6 +56,7 @@ export function ChoisirNomJoueur({ listeJoueurs, setJoueur, setListeJoueurs }: J
     return (
         <div>
             <Form>
+            <h6>Choisir/Changer joueur:</h6>
                 <Form.Group>
                     <Form.Control 
                         className='mt-2'  

@@ -18,6 +18,7 @@ export function SelectionJeu({estJoueurActif, niveaux, niveauActif, onNiveauSele
     return (
         <Form>
         <ListGroup>
+            <h6> Choisir niveau:</h6>
             {niveaux.map((niveau) => (
                 <ListGroup.Item
                     key={niveau.difficulte}
