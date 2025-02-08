@@ -32,7 +32,7 @@ export function Horloge(props: HorlogeProps) {
           {paquets[indexPaquetCentre].cartes.map((carte, carteIndex) => (
             <img
               key={carte.code}
-              src={carteIndex === 0 && indexPaquetCentre ===  indexCarteRevelee? carte.image : "https://deckofcardsapi.com/static/img/back.png"}
+              src={(carteIndex === 0 && indexPaquetCentre ===  indexCarteRevelee) || carte.estRevelee? carte.image : "https://deckofcardsapi.com/static/img/back.png"}
               alt={`Carte centrale ${carte.code}`}
               className="dos_carte"
               style={{

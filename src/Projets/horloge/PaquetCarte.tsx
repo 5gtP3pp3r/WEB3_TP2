@@ -3,6 +3,7 @@ import './css/PaquetCarte.css';
 export interface Carte { // Carte contient une image, qui est une string contenant lurl de l'image de la carte.
   code: string  
   image: string;
+  estRevelee: boolean; // Ajout d'un etat pour verifier si la carte a ete revelee
 };
 
 interface PaquetCarteProps { 
@@ -24,7 +25,7 @@ export function PaquetCarte(props: PaquetCarteProps) { // affiche un paquet de c
       {paquet.map((carte, carteIndex) => ( // Parcour chaque carte du paquet 
         <img
           key={carte.code}
-          src= {carteIndex === 0 && (index === indexCarteRevelee) ? carte.image : "https://deckofcardsapi.com/static/img/back.png"}
+          src= {(carteIndex === 0 && (index === indexCarteRevelee) || carte.estRevelee) ? carte.image : "https://deckofcardsapi.com/static/img/back.png"}
           alt={`Carte ${carte.code}`}
           className="dos_carte"
           style={{
