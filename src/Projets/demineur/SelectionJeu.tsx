@@ -22,8 +22,8 @@ export function SelectionJeu({estJoueurActif, niveaux, niveauActif, onNiveauSele
                     key={niveau.difficulte}
                     active={niveau.difficulte === niveauActif}
                     onClick={() => onNiveauSelect(niveau.difficulte)} 
-                    style={{ cursor: 'pointer', width: '200px' }}
-                    variant='light'
+                    style={{ cursor: 'pointer', width: '200px', borderRadius: '10px', border: '1px solid #ccc' }}
+                    variant='light'                   
                     >
                     {niveau.difficulte}
                 </ListGroup.Item>
