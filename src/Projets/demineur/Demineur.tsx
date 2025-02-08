@@ -170,13 +170,18 @@ export function Demineur() {
 
   /*********** Affichage *************/
   return (
-    <div style={{backgroundImage: "url('../../images/demineur/noMansLand.png')",backgroundSize: 'cover', backgroundPosition: 'center'}}>
+    <div style={{
+      backgroundImage: "url('../../images/demineur/noMansLand.png')",
+      backgroundSize: 'cover', 
+      backgroundPosition: 'center', 
+      minHeight: '650px'
+    }}>
     <Container>
       <Row>
         <Col xs={2}>
           <Row>
-            <h5>Les règles sont simples:</h5>
-            <div className='mt-3 mb-3'>             
+            
+            <div className='mt-5 mb-3'>             
               <ChoisirNomJoueur
                 listeJoueurs={listeJoueurs}
                 setJoueur={setJoueurActif} 
@@ -196,9 +201,9 @@ export function Demineur() {
         <Col xs={7} >                
           <StatsJeu temps={timer} nbMine={drapeauxAPlacer}/>   
           <div className="d-flex justify-content-center" >          
-          <div style={{ display: "grid", gridTemplateColumns: `repeat(${niveau.dimensions}, 20px)`}}>
+          <div style={{ display: "grid", gridTemplateColumns: `repeat(${niveau.dimensions}, 22px)`}}>
             {grille.map((block) => (
-              <div key={block.id} style={{ width: "20px", height: "20px", cursor: block.cache ? 'url(../../images/demineur/curseurDemineur.png), auto' : 'auto' }}
+              <div key={block.id} style={{ width: "22px", height: "22px", cursor: block.cache ? 'url(../../images/demineur/curseurDemineur.png), auto' : 'auto' }}
 
                 onClick={() => {handleClickGauche(block.id)}}
 
