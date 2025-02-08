@@ -61,7 +61,7 @@ export function ChoisirNomJoueur({ setJoueur }: JoueursProps) {
                 <Form.Group>
                     <Form.Control 
                         className='mt-2'  
-                        style={{width:'200px'}}                      
+                        style={{width:'200px', boxShadow: 'none', border: '1px solid #ccc'}}                      
                         as="select" 
                         value={nomJoueur} 
                         onMouseOver={chargerListe}
