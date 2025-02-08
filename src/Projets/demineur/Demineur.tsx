@@ -33,9 +33,9 @@ export function Demineur() {
   const [ minesTrouvees, setMineTrouvees ] = useState<number>(0);
   const [ timer, setTimer ] = useState<number>(0);
   const [ victoire, setVictoire ] = useState<boolean>(false);
-  const [ pointage, setPointage ] = useState<number>(0);
+  //const [ pointage, setPointage ] = useState<number>(0);
   const [ joueurActif, setJoueurActif ] = useState<IJoueur>(JoueurActifDefaut);
-  const [ listeJoueurs, setListeJoueurs ] = useState<IJoueur[]>([]);
+  const [ listeJoueurs, setListeJoueur] = useState<IJoueur[]>([]);
 
   /*********** Fonctions *************/
   function demarrerTimer(): void {
@@ -54,64 +54,44 @@ export function Demineur() {
     }
   }
 
-  function calculerPointage() {
+  function calculerPointage(): number {
     const pointsApresTemps: number = Math.max(niveau.pointsBase - timer, 0);
     const pointsApresClicks: number = Math.max(pointsApresTemps - nbClicks, 0);
     const penaliteMinesManquantes: number = (niveau.qtMines - minesTrouvees) * 50;
     const pointsApresPenalite: number = Math.max(pointsApresClicks - penaliteMinesManquantes, 0);
     const pointsTotal: number = pointsApresPenalite + (minesTrouvees * 5);
-    setPointage(pointsTotal);
-    /**********  Diag tests **********/
-    console.log("Pointage: " + pointsTotal); // Points visible ok
-    /*********************************/
+    return pointsTotal;
   }
 
   function miseAJourJoueur() {
-    const joueurMisAJour: IJoueur = {...joueurActif, niveau: niveauActif, points: pointage};
-    /**********  Diag tests **********/   
-    /**/console.log("miseAJourJoueur() variable");
-    /**/console.log("Stats Joueur Actif:");
-    /**/console.log(joueurMisAJour.nom); // Nom visible ok 
-    /**/console.log(joueurMisAJour.niveau); // Niveau visible ok
-    /**/console.log(joueurMisAJour.points); // Points à 0 NOPE!     
-    /*********************************/
-    setJoueurActif(joueurMisAJour);
+    const points: number = calculerPointage();
+    const joueurMisAJour: IJoueur = {...joueurActif, niveau: niveauActif, points: points};      
     /**********  Diag tests **********/
-    /**/console.log("miseAJourJoueur() état");
-    /**/console.log("Stats Joueur Actif:");
-    /**/console.log(joueurActif.nom); // Nom visible ok 
-    /**/console.log(joueurActif.niveau); // Niveau visible ok
-    /**/console.log(joueurActif.points); // Points à 0 NOPE!     
+    /**/console.log("Mise à jour joueur: ");
+    /**/console.log("Nom: " + joueurMisAJour.nom);
+    /**/console.log("Niveau: " + joueurMisAJour.niveau);
+    /**/console.log("Points: " + joueurMisAJour.points);
+    /*********************************/ 
+    setJoueurActif(joueurMisAJour);
+    
+    /**********  Diag tests **********/
+    /**/console.log("Joueur Actif: ");
+    /**/console.log("Nom: " + joueurActif.nom);
+    /**/console.log("Niveau: " + joueurActif.niveau);
+    /**/console.log("Points: " + joueurActif.points);
     /*********************************/
   }
 
-  function miseAJourListeJoueurs() {
-    const nouvelleListeJoueurs: IJoueur[] = [...listeJoueurs, joueurActif]; 
-    /**********  Diag tests **********/ 
-    /**/console.log("miseAJourListeJoueurs() variable");
-    nouvelleListeJoueurs.forEach((element) => { // Particulier, 2 joueurs dans la liste devrait être 1
-    /**/console.log("Nom: " + element.nom); // Nom visible ok 
-    /**/console.log("Niveau: " + element.niveau); // Niveau visible ok
-    /**/console.log("Points: " + element.points); // Points à 0 NOPE!      
-    });
-    /*********************************/
-    setListeJoueurs(nouvelleListeJoueurs); 
-    /**********  Diag tests **********/
-    /**/console.log("miseAJourListeJoueurs() état");
-    listeJoueurs.forEach((element) => {
-    /**/console.log("Nom: " + element.nom); // Nom visible ok 
-    /**/console.log("Niveau: " + element.niveau); // Niveau à none NOPE!
-    /**/console.log("Points: " + element.points); // Points à 0 NOPE!      
-    });
-    /*********************************/
+  function miseAJourListeJoueurs() {  
+    const listeMiseAJour: IJoueur[] = listeJoueurs;
+    listeMiseAJour.push(joueurActif);    
+    setListeJoueur(listeMiseAJour); 
+    console.log(listeJoueurs); 
   }
 
   function miseAJourJeu(): void {
-    //if (!enJeu) {
-      calculerPointage();
-      miseAJourJoueur();
+      setTimeout(() => {miseAJourJoueur();},1000);  
       miseAJourListeJoueurs();             
-    //}
   }
 
   function selectionNiveau(niveau: string): void {
@@ -138,7 +118,10 @@ export function Demineur() {
     setDrapeauxAPlacer(niveau.qtMines);
     setMineTrouvees(0);
     setTimer(0);
+    setNbClicks(0);
     setPremierClick(true);
+    joueurActif.points = 0;
+    //setJoueurActif(JoueurActifDefaut);
     /**********  Diag tests **********/
     /**/console.log("Niveau Nouvelle grille générée: ");
     /**/console.log("difficulte: " + niveau?.difficulte);
@@ -154,17 +137,23 @@ export function Demineur() {
       const estUneMine = grille.find(block => block.id === id)?.mine ?? false;
 
       if (estUneMine) {
-        miseAJourJeu();
+        
+        
         setEnJeu(false);
         arreterTimer(); 
         setVictoire(false);        
-        nouvelleGrille = grille.map(block => ({ ...block, cache: false }));              
+        nouvelleGrille = grille.map(block => ({ ...block, cache: false })); 
+         
+        miseAJourJeu();  
+        //miseAJourJoueur();  
+
       } else {
         if (premierClick) {
             demarrerTimer();
             setPremierClick(false);
         }
       }
+      miseAJourJoueur();
       setGrille(nouvelleGrille);
       setNbClicks(NbClicksPrecedent => NbClicksPrecedent + 1);
     }
@@ -197,7 +186,10 @@ export function Demineur() {
       setMineTrouvees(nouvellesMinesTrouvees);
       demarrerTimer();
       setPremierClick(false);
-      setNbClicks(NbClicksPrecedent => NbClicksPrecedent + 1);  
+      setNbClicks(NbClicksPrecedent => NbClicksPrecedent + 1); 
+      //miseAJourJoueur(); 
+      
+
       /**********  Diag tests **********/
       /**/console.log("Stats conditions victoire:");
       /**/console.log("Mines trouvées: " + nouvellesMinesTrouvees);
@@ -207,10 +199,14 @@ export function Demineur() {
       /*********************************/
 
       if (nouvellesMinesTrouvees === niveau.qtMines && nouveauxDrapeauxAPlacer === 0) {   
-        miseAJourJeu();
-        setEnJeu(false);
+        
+        
+        
         arreterTimer();
-        setVictoire(true);            
+        setVictoire(true); 
+        setEnJeu(false); 
+        miseAJourJeu();
+        //miseAJourListeJoueurs();          
       }  
     }   
   }
@@ -280,7 +276,7 @@ export function Demineur() {
                   nbClicks={nbClicks} 
                   estEnJeu={false}
                   victoire={victoire}
-                  pointage={pointage} 
+                  pointage={joueurActif.points} 
                 />
               </Row>
               <Row>
