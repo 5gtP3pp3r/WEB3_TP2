@@ -5,10 +5,6 @@
 }
 
 .horloge {
-  position: relative;
-  width: 300px;
-  height: 300px;
-  border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -17,7 +13,6 @@
   left: 50%;
   position: absolute;
 }
-
 
 .paquetDuCentre {
   position: absolute;
