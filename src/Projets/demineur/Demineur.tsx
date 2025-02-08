@@ -15,9 +15,13 @@ import { RevelerBlockRecursif } from './RevelerBlockRecursif';
 import { GestionAffichagesBlocksOnClickSurGrille } from './GestionAffichagesBlocksOnClickSurGrille';
 
 export function Demineur() {
+  /*********** Constantes *************/
   const niveauDefaut: INiveau = {difficulte:"facile", dimensions: 8, qtMines: 10, pointsBase:500};
   const JoueurActifDefaut: IJoueur = {nom: "none", niveau: "none", points: 0};
+  const maxTime = 600;
+  const timerRef = useRef<number | null>(null);
 
+  /************* États ***************/
   const [ grille, setGrille ] = useState<IBlock[]>([]);
   const [ niveau, setNiveau ] = useState<INiveau>(niveauDefaut); 
   const [ niveauActif, setNiveauActif ] = useState<string>("");
@@ -33,7 +37,7 @@ export function Demineur() {
   const [ joueurActif, setJoueurActif ] = useState<IJoueur>(JoueurActifDefaut);
   const [ listeJoueurs, setListeJoueurs ] = useState<IJoueur[]>([]);
 
-  const maxTime = 600;
+  /*********** Fonctions *************/
   function demarrerTimer(): void {
     if (timer < maxTime && premierClick) {
       timerRef.current = window.setTimeout(() => {
@@ -41,45 +45,46 @@ export function Demineur() {
         demarrerTimer();         
       }, 1000);
     }
-  };
-
-  const timerRef = useRef<number | null>(null);
+  }
+ 
   function arreterTimer(): void {
     if (timerRef.current !== null) {
         clearTimeout(timerRef.current);
         timerRef.current = null;
     }
-  };
+  }
 
   function miseAJourJoueurJeu(): void {
     const joueurMisAJour: IJoueur = {...joueurActif, niveau: niveauActif, points: pointage };
     setJoueurActif(joueurMisAJour);
     setListeJoueurs((listePrecedente) => [...listePrecedente, joueurMisAJour]);
-    // Diag tests
-    console.log("Stats Joueur Actif avec niveau et pointage:");
-    console.log(joueurActif.nom);
-    console.log(joueurActif.niveau);
-    console.log(joueurActif.points);
-    console.log("Liste des joueurs qui ont joués:");
-    console.log(listeJoueurs);
+    /**********  Diag tests **********/
+    /**/console.log("Stats Joueur Actif avec niveau et pointage:");
+    /**/console.log(joueurActif.nom);
+    /**/console.log(joueurActif.niveau);
+    /**/console.log(joueurActif.points);
+    /**/console.log("Liste des joueurs qui ont joués:");
+    /**/console.log(listeJoueurs);
+    /*********************************/
   }
 
-  function handleNiveauSelect(niveau: string): void {
+  function selectionNiveau(niveau: string): void {
     setNiveauActif(niveau);
     const niveauChoisi = niveauxTab.find((diff) => diff.difficulte === niveau);
 
     if (niveauChoisi) {
       setNiveauSelectionne(niveauChoisi);          
     }
-    // Diag tests
-    console.log("Niveau Selectioné: ");
-    console.log("difficulte: "+niveauChoisi?.difficulte);
-    console.log("dimensions: "+niveauChoisi?.dimensions);
-    console.log("Qt mines: "+niveauChoisi?.qtMines);
-    console.log("Points de base: "+niveauChoisi?.pointsBase);
-  };
+    /**********  Diag tests **********/
+    /**/console.log("Niveau Selectioné: ");
+    /**/console.log("difficulte: "+niveauChoisi?.difficulte);
+    /**/console.log("dimensions: "+niveauChoisi?.dimensions);
+    /**/console.log("Qt mines: "+niveauChoisi?.qtMines);
+    /**/console.log("Points de base: "+niveauChoisi?.pointsBase);
+    /*********************************/
+  }
 
-  function handelGenererNouvelleGrille(niveau: INiveau): void {
+  function genererNouvelleGrille(niveau: INiveau): void {
     arreterTimer();
     setEnJeu(true);    
     setNiveau(niveauSelectionne);
@@ -88,12 +93,13 @@ export function Demineur() {
     setMineTrouvees(0);
     setTimer(0);
     setPremierClick(true);
-    // Diag tests
-    console.log("Niveau Nouvelle grille générée: ");
-    console.log("difficulte: "+niveau?.difficulte);
-    console.log("dimensions: "+niveau?.dimensions);
-    console.log("Qt mines: "+niveau?.qtMines);
-    console.log("Points de base: "+niveau?.pointsBase);
+    /**********  Diag tests **********/
+    /**/console.log("Niveau Nouvelle grille générée: ");
+    /**/console.log("difficulte: "+niveau?.difficulte);
+    /**/console.log("dimensions: "+niveau?.dimensions);
+    /**/console.log("Qt mines: "+niveau?.qtMines);
+    /**/console.log("Points de base: "+niveau?.pointsBase);
+    /*********************************/
   }
 
   function handleClickGauche(id: number): void {
@@ -145,13 +151,14 @@ export function Demineur() {
   setMineTrouvees(nouvellesMinesTrouvees);
   demarrerTimer();
   setPremierClick(false);
-  setNbClicks(NbClicksPrecedent => NbClicksPrecedent + 1);
-  // Diag tests
-  console.log("Stats conditions victoire:");
-  console.log("Mines trouvées: " + nouvellesMinesTrouvees);
-  console.log(nouvellesMinesTrouvees === niveau.qtMines);
-  console.log("Drapeaux à placer: " + nouveauxDrapeauxAPlacer);
-  console.log(drapeauxAPlacer === 0);
+  setNbClicks(NbClicksPrecedent => NbClicksPrecedent + 1);  
+  /**********  Diag tests **********/
+  /**/console.log("Stats conditions victoire:");
+  /**/console.log("Mines trouvées: " + nouvellesMinesTrouvees);
+  /**/console.log(nouvellesMinesTrouvees === niveau.qtMines);
+  /**/console.log("Drapeaux à placer: " + nouveauxDrapeauxAPlacer);
+  /**/console.log(drapeauxAPlacer === 0);
+  /*********************************/
 
   if (nouvellesMinesTrouvees === niveau.qtMines && nouveauxDrapeauxAPlacer === 0) {
     miseAJourJoueurJeu();
@@ -161,6 +168,7 @@ export function Demineur() {
   }  
 } 
 
+  /*********** Affichage *************/
   return (
     <div style={{backgroundImage: "url('../../images/demineur/noMansLand.png')",backgroundSize: 'cover', backgroundPosition: 'center'}}>
     <Container>
@@ -180,8 +188,8 @@ export function Demineur() {
               estJoueurActif={joueurActif.nom == "none" ? true : false}
               niveaux={niveauxTab}
               niveauActif={niveauActif}
-              onNiveauSelect={handleNiveauSelect}
-              onLancerJeu={handelGenererNouvelleGrille}
+              onNiveauSelect={selectionNiveau}
+              onLancerJeu={genererNouvelleGrille}
             />
           </Row>
         </Col>
@@ -195,13 +203,13 @@ export function Demineur() {
                 onClick={() => {handleClickGauche(block.id)}}
 
                 /****** Diag test valeurs au mouseOver console.log() ******/
-                onMouseOver={() =>console.log("x: "+block.x+"\n"+                           
-                                              "y: "+block.y+"\n"+                           
-                                              "id: "+block.id+"\n"+                         
-                                              "valeur: "+block.valeur+"\n"+                 
-                                              "caché: "+block.cache+"\n"+                   
-                                              "drapeau: "+block.drapeau+"\n"+               
-                                              "mine: "+block.mine)}                         
+                /**/onMouseOver={() =>console.log("x: "+block.x+"\n"+                           
+                /**/                              "y: "+block.y+"\n"+                           
+                /**/                              "id: "+block.id+"\n"+                         
+                /**/                              "valeur: "+block.valeur+"\n"+                 
+                /**/                              "caché: "+block.cache+"\n"+                   
+                /**/                              "drapeau: "+block.drapeau+"\n"+               
+                /**/                              "mine: "+block.mine)}                         
                 /**********************************************************/
                 
                 onContextMenu={(e) => { e.preventDefault(); handleClickDroit(block.id);}}>

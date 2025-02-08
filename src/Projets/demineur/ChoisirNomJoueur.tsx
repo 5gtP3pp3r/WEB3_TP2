@@ -14,8 +14,9 @@ export function ChoisirNomJoueur({ setJoueur }: JoueursProps) {
 
     async function chargerListe() {
         if (listeNomsApi.length > 0) {
-            // Diag tests
-            console.log("Liste déjà chargée !");
+            /**********  Diag tests **********/
+            /**/console.log("Liste déjà chargée !");
+            /*********************************/
             return;
         }
         const listeNoms = await RemplirListeJoueurs();
@@ -27,9 +28,11 @@ export function ChoisirNomJoueur({ setJoueur }: JoueursProps) {
             const donnees = await FecthListeNomsApi();
             return donnees.map((element: { name: string }) => element.name);
         } catch (error) {
-            // Diag tests
-            console.error("Erreur Fetch :", error);
-            alert("Impossible de récupérer la liste de noms");
+            /**********  Diag tests **********/
+            /**/console.error("Erreur Fetch :", error);
+            /**/alert("Impossible de récupérer la liste de noms");
+            /*********************************/
+
             return [];
         }
     }
@@ -42,11 +45,12 @@ export function ChoisirNomJoueur({ setJoueur }: JoueursProps) {
             points: 0
         };
         setJoueur(joueurActif);
-        // Diag tests
-        console.log("Stats Joueur Actif fraichement choisi (sans niveau ou pointage associé):");
-        console.log(joueurActif.nom);
-        console.log(joueurActif.niveau);
-        console.log(joueurActif.points);
+        /**********  Diag tests **********/
+        /**/console.log("Stats Joueur Actif fraichement choisi (sans niveau ou pointage associé):");
+        /**/console.log(joueurActif.nom);
+        /**/console.log(joueurActif.niveau);
+        /**/console.log(joueurActif.points);
+        /*********************************/
     }
 
     return (
