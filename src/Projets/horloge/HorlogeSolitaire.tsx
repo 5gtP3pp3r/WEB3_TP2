@@ -75,6 +75,10 @@ export function HorlogeSolitaire() {
         }
     }
 
+    const handleBoutonClick = () => {
+        window.location.reload();
+    }
+
     useEffect(() => {
         fetch(`https://deckofcardsapi.com/api/deck/new/draw/?count=52`)                         // Je "fetch" un paquet (de 52 cartes) et "draw" les cartes du paquet dans la même requête.
             .then((reponse) => reponse.json())
@@ -96,13 +100,13 @@ export function HorlogeSolitaire() {
     }, []);
 
     return (
-        <div className='d-flex justify-content-center' style={{ height: '600px' }}>
+        <div className='d-flex justify-content-center' style={{ height: '700px' }}>
             {/* Envoi du tableau de paquets "paquets" en props au composant Horloge.*/}
             {estEnChargement ? (
                 <p>Chargement du jeu...</p>
             ) : (
                 <>
-                    <Horloge paquets={paquets} onClickPaquet={handlePaquetClick} indexCarteRevelee={indexCarteRevelee} />
+                    <Horloge paquets={paquets} indexCarteRevelee={indexCarteRevelee} onClickPaquet={handlePaquetClick} onClickBouton={handleBoutonClick} />
                     <ResultatPartie estGagnee={estPartieGagnee} estPerdue={estPartiePerdue} />
                 </>
             )}

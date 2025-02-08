@@ -1,22 +1,11 @@
-.divHorloge {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.horloge {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform: translate(-50%, -50%);
-  top: 50%;
-  left: 50%;
+.horloge {  
+  top: 55%;
+  left: 49%;
   position: absolute;
 }
 
-.paquetDuCentre {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+.boutonRejouer {
+  bottom: 300px;
+  left: 400px;
+  position: absolute
 }

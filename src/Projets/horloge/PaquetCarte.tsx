@@ -19,7 +19,7 @@ export function PaquetCarte(props: PaquetCarteProps) { // affiche un paquet de c
     <div
       className="paquet"
       style={{
-        transform: `rotate(${angleRotation}deg) translate(200px) rotate(-${angleRotation}deg)` // Jutilise transform pour faire trois transformation : une rotation de 30 degree pour que chaque paquet soit places en cercle autour du centre. en suite je fait un translate pour eloigner les paquets du centre et finalement une rotation negative pour quelle restent orientees correctement
+        transform: `rotate(${angleRotation}deg) translate(250px) rotate(-${angleRotation}deg)` // Jutilise transform pour faire trois transformation : une rotation de 30 degree pour que chaque paquet soit places en cercle autour du centre. en suite je fait un translate pour eloigner les paquets du centre et finalement une rotation negative pour quelle restent orientees correctement
       }}
     >
       {paquet.map((carte, carteIndex) => ( // Parcour chaque carte du paquet 

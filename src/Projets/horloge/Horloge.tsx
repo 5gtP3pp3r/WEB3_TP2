@@ -1,6 +1,6 @@
 import { PaquetCarte, Carte } from './PaquetCarte';
 import './css/Horloge.css';
-
+import { Button } from 'react-bootstrap';
 export interface Paquet { // Un paquet est un tableau de cartes
   cartes: Carte[];
 }
@@ -9,15 +9,20 @@ interface HorlogeProps {
   paquets: Paquet[];
   indexCarteRevelee: number;
   onClickPaquet: (index:number) => void;
+  onClickBouton: ()=> void;
 }
 
 export function Horloge(props: HorlogeProps) {
-  const { paquets,indexCarteRevelee, onClickPaquet } = props;
+  const { paquets,indexCarteRevelee, onClickPaquet, onClickBouton } = props;
   const indexPaquetCentre: number =12;
   const nbPixels = 8;
   return (
-    <div className="divHorloge">
       <div className="horloge">
+          <div>
+          <Button
+          className="boutonRejouer btn-light"
+          onClick={onClickBouton}>Rejouer</Button>
+        </div>
         {paquets.slice(0, 12).map((paquet, paquetIndex) => (
           <div key={paquetIndex} onClick={() => onClickPaquet(paquetIndex)}>
           <PaquetCarte 
@@ -44,6 +49,5 @@ export function Horloge(props: HorlogeProps) {
           ))}
         </div>
       </div>
-    </div>
   );
 }
