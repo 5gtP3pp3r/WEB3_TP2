@@ -162,11 +162,10 @@ export function App() {
     <div style={{height: '620px',backgroundImage: "url('../../images/demineur/noMansLand.png')",backgroundSize: 'cover', backgroundPosition: 'center'}}>
     <Container>
       <Row>
-        <Col xs={3}>
+        <Col xs={2}>
           <Row>
             <h5>Les règles sont simples:</h5>
-            <div className='mt-3 mb-3'>
-              <h6>Choisir ou changer de joueur:</h6>
+            <div className='mt-3 mb-3'>             
               <ChoisirNomJoueur
                 listeJoueurs={listeJoueurs}
                 setJoueur={setJoueurActif} 
@@ -175,7 +174,6 @@ export function App() {
             </div>
           </Row>            
           <Row>
-            <h6> Choisir un niveau:</h6>
             <SelectionJeu
               estJoueurActif={joueurActif.nom == "none" ? true : false}
               niveaux={niveauxTab}
@@ -185,7 +183,7 @@ export function App() {
             />
           </Row>
         </Col>
-        <Col xs={6} >                
+        <Col xs={7} >                
           <StatsJeu temps={timer} nbMine={drapeauxAPlacer}/>   
           <div className="d-flex justify-content-center" >          
           <div style={{ display: "grid", gridTemplateColumns: `repeat(${niveau.dimensions}, 20px)`}}>
