@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useState } from 'react';
-import {Container, Col, Row } from 'react-bootstrap';
+import { Container, Col, Row } from 'react-bootstrap';
 
 import { IBlock } from "./IBlock";
 import { IJoueur } from './IJoueur';

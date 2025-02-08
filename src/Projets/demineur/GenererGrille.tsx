@@ -1,7 +1,7 @@
-import { INiveau } from "./INiveau";
 import { IBlock } from "./IBlock";
-import { GenerateurMinesAleatoire } from "./GenerateurMinesAleatoire";
+import { INiveau } from "./INiveau";
 import { ChercherNbMinesVoisins } from "./ChercherNbMinesVoisins";
+import { GenerateurMinesAleatoire } from "./GenerateurMinesAleatoire";
 
 export function GenererGrille(niveau: INiveau): IBlock[] {
     const minesTab = GenerateurMinesAleatoire(niveau);

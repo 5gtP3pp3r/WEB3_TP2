@@ -1,5 +1,5 @@
-import { PageTemplate } from '../../PageTemplate';
 import { Demineur } from './Demineur';  
+import { PageTemplate } from '../../PageTemplate';
 
 export function PageDemineur(): JSX.Element {
   return (

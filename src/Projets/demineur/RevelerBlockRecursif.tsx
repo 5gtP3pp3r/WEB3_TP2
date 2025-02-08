@@ -1,13 +1,16 @@
 import { IBlock } from "./IBlock";
 import { INiveau } from './INiveau';
-import { voirNordId } from './VoirIdBlocksVoisins';
-import { voirNordEstId } from './VoirIdBlocksVoisins';
-import { voirEstId } from './VoirIdBlocksVoisins';
-import { voirSudEstId } from './VoirIdBlocksVoisins';
-import { voirSudId } from './VoirIdBlocksVoisins';
-import { voirSudOuestId } from './VoirIdBlocksVoisins';
-import { voirOuestId } from './VoirIdBlocksVoisins';
-import { voirNordOuestId } from './VoirIdBlocksVoisins'; 
+import { 
+    voirNordId, 
+    voirNordEstId, 
+    voirEstId, 
+    voirSudEstId, 
+    voirSudId, 
+    voirSudOuestId, 
+    voirOuestId, 
+    voirNordOuestId
+ } from './VoirIdBlocksVoisins';
+ 
 
 export function RevelerBlockRecursif(niveau: INiveau, id: number, grille: IBlock[]): IBlock[] {
     let nouvelleGrille = [...grille];

@@ -1,7 +1,8 @@
 import { Form } from "react-bootstrap";
 import { useState } from 'react';
-import { FecthListeNomsApi } from "./FetchListeNomsApi";
+
 import { IJoueur } from "./IJoueur";
+import { FecthListeNomsApi } from "./FetchListeNomsApi";
 
 interface JoueursProps {
     listeJoueurs: IJoueur[],

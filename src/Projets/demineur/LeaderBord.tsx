@@ -1,4 +1,5 @@
 import { Table } from "react-bootstrap";
+
 import { IJoueur } from "./IJoueur";
 
 interface ListeJoueursProps {
@@ -6,7 +7,7 @@ interface ListeJoueursProps {
 }
 
 export function LeaderBord({listeJoueurs}: ListeJoueursProps): JSX.Element {
-    // Préfiltrage pour ne pas "poluer visuellement" le tableau dans le return
+    // Préfiltrage pour ne pas "polluer visuellement" le tableau dans le return
     const listeFacile: IJoueur[] = listeJoueurs
         .filter((joueur) => joueur.niveau === "facile") 
         .sort((a, b) => b.points - a.points) 
