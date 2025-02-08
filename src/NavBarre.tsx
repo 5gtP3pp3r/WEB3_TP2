@@ -12,7 +12,7 @@ export function NavBarre() {
   return (
     <>
       {[false].map((expand) => (
-        <Navbar expand={expand} className="bg-body-tertiary mb-3">
+        <Navbar expand={expand} className="mb-3">
           <Container fluid>
             <div className='d-flex justify-content-center'>
               <Navbar.Brand href="/"><h3>Retour à l'accueil</h3></Navbar.Brand>  
