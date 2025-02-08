@@ -176,72 +176,71 @@ export function Demineur() {
       backgroundPosition: 'center', 
       minHeight: '650px'
     }}>
-    <Container>
-      <Row>
-        <Col xs={2}>
-          <Row>
-            
-            <div className='mt-5 mb-3'>             
-              <ChoisirNomJoueur
-                listeJoueurs={listeJoueurs}
-                setJoueur={setJoueurActif} 
-              /> 
-            </div>
-          </Row>            
-          <Row>
-            <SelectionJeu
-              estJoueurActif={joueurActif.nom == "none" ? true : false}
-              niveaux={niveauxTab}
-              niveauActif={niveauActif}
-              onNiveauSelect={selectionNiveau}
-              onLancerJeu={genererNouvelleGrille}
-            />
-          </Row>
-        </Col>
-        <Col xs={7} >                
-          <StatsJeu temps={timer} nbMine={drapeauxAPlacer}/>   
-          <div className="d-flex justify-content-center" >          
-          <div style={{ display: "grid", gridTemplateColumns: `repeat(${niveau.dimensions}, 22px)`}}>
-            {grille.map((block) => (
-              <div key={block.id} style={{ width: "22px", height: "22px", cursor: block.cache ? 'url(../../images/demineur/curseurDemineur.png), auto' : 'auto' }}
-
-                onClick={() => {handleClickGauche(block.id)}}
-
-                /****** Diag test valeurs au mouseOver console.log() ******/
-                /**/onMouseOver={() =>console.log("x: "+block.x+"\n"+                           
-                /**/                              "y: "+block.y+"\n"+                           
-                /**/                              "id: "+block.id+"\n"+                         
-                /**/                              "valeur: "+block.valeur+"\n"+                 
-                /**/                              "caché: "+block.cache+"\n"+                   
-                /**/                              "drapeau: "+block.drapeau+"\n"+               
-                /**/                              "mine: "+block.mine)}                         
-                /**********************************************************/
-                
-                onContextMenu={(e) => { e.preventDefault(); handleClickDroit(block.id);}}>
-                {GestionAffichagesBlocksOnClickSurGrille(block)}                
+      <Container>
+        <Row>
+          <Col md={12} lg={4} xl={2}>
+            <Row>            
+              <div className='mt-5 mb-3'>             
+                <ChoisirNomJoueur
+                  listeJoueurs={listeJoueurs}
+                  setJoueur={setJoueurActif} 
+                /> 
               </div>
-            ))}
-          </div> 
-          </div>                    
-        </Col>
-        <Col xs={3}>
+            </Row>            
             <Row>
-              <ResultatJeu              
-                niveau={niveau} 
-                nbMinesTrouves={minesTrouvees} 
-                tempsSecondes={timer} 
-                nbClicks={nbClicks} 
-                estEnJeu={enJeu}
-                victoire={victoire}
-                setPointage={setPointage}
+              <SelectionJeu
+                estJoueurActif={joueurActif.nom == "none" ? true : false}
+                niveaux={niveauxTab}
+                niveauActif={niveauActif}
+                onNiveauSelect={selectionNiveau}
+                onLancerJeu={genererNouvelleGrille}
               />
             </Row>
-            <Row>
-              <LeaderBord listeJoueurs={listeJoueurs} />            
-            </Row>            
-        </Col>
-      </Row>
-    </Container>
+          </Col>
+          <Col md={12} lg={8} xl={7}>                
+            <StatsJeu temps={timer} nbMine={drapeauxAPlacer}/>   
+              <div className="d-flex justify-content-center mb-5" >          
+                <div style={{ display: "grid", gridTemplateColumns: `repeat(${niveau.dimensions}, 22px)`}}>
+                  {grille.map((block) => (
+                    <div key={block.id} style={{ width: "22px", height: "22px", cursor: block.cache ? 'url(../../images/demineur/curseurDemineur.png), auto' : 'auto' }}
+
+                      onClick={() => {handleClickGauche(block.id)}}
+
+                      /****** Diag test valeurs au mouseOver console.log() ******/
+                      /**/onMouseOver={() =>console.log("x: "+block.x+"\n"+                           
+                      /**/                              "y: "+block.y+"\n"+                           
+                      /**/                              "id: "+block.id+"\n"+                         
+                      /**/                              "valeur: "+block.valeur+"\n"+                 
+                      /**/                              "caché: "+block.cache+"\n"+                   
+                      /**/                              "drapeau: "+block.drapeau+"\n"+               
+                      /**/                              "mine: "+block.mine)}                         
+                      /**********************************************************/
+                    
+                      onContextMenu={(e) => { e.preventDefault(); handleClickDroit(block.id);}}>
+                      {GestionAffichagesBlocksOnClickSurGrille(block)}                
+                    </div>
+                  ))}
+                </div> 
+              </div>                    
+          </Col>
+          <Col md={12} lg={0} xl={3}>
+              <Row>
+                <ResultatJeu              
+                  niveau={niveau} 
+                  nbMinesTrouves={minesTrouvees} 
+                  tempsSecondes={timer} 
+                  nbClicks={nbClicks} 
+                  estEnJeu={enJeu}
+                  victoire={victoire}
+                  setPointage={setPointage}
+                />
+              </Row>
+              <Row>
+                <LeaderBord listeJoueurs={listeJoueurs} />            
+              </Row>            
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 }

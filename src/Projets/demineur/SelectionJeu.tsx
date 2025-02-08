@@ -29,15 +29,15 @@ export function SelectionJeu({estJoueurActif, niveaux, niveauActif, onNiveauSele
                 </ListGroup.Item>
             ))}
         </ListGroup>
-            <div className='mt-3'>
-            <h6>Lancer le jeu:</h6>
-            <Button                
-                variant='secondary'
-                disabled={boutonDisabled}
-                onClick={() =>{ if(niveau) onLancerJeu(niveau) }}    // if(niveau): enlevé soulignement "undefined possible"
-                style={{ width: '200px', cursor: 'url(../../images/demineur/curseurDemineur.png), auto'}}
-                >Jouer!
-            </Button>
+            <div className='mt-3 mb-5'>
+                <h6>Lancer le jeu:</h6>
+                    <Button                
+                        variant='secondary'
+                        disabled={boutonDisabled}
+                        onClick={() =>{ if(niveau) onLancerJeu(niveau) }}    // if(niveau): enlevé soulignement "undefined possible"
+                        style={{ width: '200px', cursor: 'url(../../images/demineur/curseurDemineur.png), auto'}}
+                        >Jouer!
+                    </Button>
             </div>
         </Form>
     );
