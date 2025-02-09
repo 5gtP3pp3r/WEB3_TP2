@@ -44,8 +44,9 @@ export function ResultatJeu({niveau, nbMinesTrouves, tempsSecondes, nbClicks, es
             <></>        
         </div>
     ) : (
-        <div className="d-flex-justify-content-center" style={{ height:'300px'}}>
-            <Table striped bordered hover>
+        <div className="d-flex-justify-content-center" style={{ height:'300px', width:'280px'}}>
+            <div>
+            <Table striped bordered hover >
                 <thead>
                     <tr>
                         <th colSpan={2}>{resultatPartie}</th>
@@ -74,6 +75,7 @@ export function ResultatJeu({niveau, nbMinesTrouves, tempsSecondes, nbClicks, es
                     </tr>
                 </tbody>
             </Table>
+            </div>
         </div>   
     );
 }
