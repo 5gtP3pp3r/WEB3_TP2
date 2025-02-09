@@ -40,11 +40,11 @@ export function ResultatJeu({niveau, nbMinesTrouves, tempsSecondes, nbClicks, es
         //console.log(pointsTotal);
     //}
     return estEnJeu ? (
-        <div className="d-flex-justify-content-center" style={{ height:'300px'}}>    
+        <div className="d-flex-justify-content-center" style={{ height:'280px'}}>    
             <></>        
         </div>
     ) : (
-        <div className="d-flex-justify-content-center" style={{ height:'300px', width:'280px'}}>
+        <div className="d-flex-justify-content-center" style={{ height:'280px', width:'300px'}}>
             <div>
             <Table striped bordered hover >
                 <thead>

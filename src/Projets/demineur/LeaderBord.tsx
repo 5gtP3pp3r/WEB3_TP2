@@ -8,21 +8,22 @@ interface ListeJoueursProps {
 
 export function LeaderBord({listeJoueurs}: ListeJoueursProps): JSX.Element {
     // Préfiltrage pour ne pas "polluer visuellement" le tableau dans le return
+    // LeaderBord ne conserve pas les points à 0
     const listeFacile: IJoueur[] = listeJoueurs
-        .filter((joueur) => joueur.niveau === "facile") 
+        .filter((joueur) => joueur.niveau === "facile" && joueur.points < 0) 
         .sort((a, b) => b.points - a.points) 
         .slice(0, 3); 
     const listeIntermediaire: IJoueur[] = listeJoueurs
-        .filter((joueur) => joueur.niveau === "intermédiaire") 
+        .filter((joueur) => joueur.niveau === "intermédiaire" && joueur.points < 0) 
         .sort((a, b) => b.points - a.points) 
         .slice(0, 3);
     const listeExpert: IJoueur[] = listeJoueurs
-        .filter((joueur) => joueur.niveau === "expert") 
+        .filter((joueur) => joueur.niveau === "expert" && joueur.points < 0) 
         .sort((a, b) => b.points - a.points) 
         .slice(0, 3);
 
     return (
-        <div className="d-flex-justify-content-center" style={{ width:'280px'}}>
+        <div className="d-flex-justify-content-center" style={{ width:'300px'}}>
             <Table striped bordered hover>
                 <thead>
                     <tr>
