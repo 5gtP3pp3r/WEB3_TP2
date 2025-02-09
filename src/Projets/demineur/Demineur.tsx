@@ -16,12 +16,14 @@ import { GestionAffichagesBlocksOnClickSurGrille } from './GestionAffichagesBloc
 
 export function Demineur() {
   /*********** Constantes *************/
+
   const niveauDefaut: INiveau = {difficulte:"facile", dimensions: 8, qtMines: 10, pointsBase:500};
   const JoueurActifDefaut: IJoueur = {nom: "none", niveau: "none", points: 0};
   const maxTime = 600;
   const timerRef = useRef<number | null>(null);
 
   /************* États ***************/
+
   const [ grille, setGrille ] = useState<IBlock[]>([]);
   const [ niveau, setNiveau ] = useState<INiveau>(niveauDefaut); 
   const [ niveauActif, setNiveauActif ] = useState<string>("");
@@ -38,6 +40,7 @@ export function Demineur() {
   const [ listeJoueurs, setListeJoueur] = useState<IJoueur[]>([]);
 
   /*********** Fonctions *************/
+
   function demarrerTimer(): void {
     if (timer < maxTime && premierClick) {
       timerRef.current = window.setTimeout(() => {
@@ -89,9 +92,13 @@ export function Demineur() {
     console.log(listeJoueurs); 
   }
 
+  function fermerJeu() {
+    setEnJeu(false);
+    arreterTimer();
+  }
   function miseAJourJeu(): void {
-      setTimeout(() => {miseAJourJoueur();},1000);  
-      miseAJourListeJoueurs();             
+    miseAJourJoueur(); 
+    miseAJourListeJoueurs();             
   }
 
   function selectionNiveau(niveau: string): void {
@@ -136,17 +143,13 @@ export function Demineur() {
       let nouvelleGrille = RevelerBlockRecursif(niveau, id, grille);
       const estUneMine = grille.find(block => block.id === id)?.mine ?? false;
 
-      if (estUneMine) {
-        
-        
-        setEnJeu(false);
-        arreterTimer(); 
+      if (estUneMine) {        
+        fermerJeu();
         setVictoire(false);        
         nouvelleGrille = grille.map(block => ({ ...block, cache: false })); 
-         
+        miseAJourJoueur();   
         miseAJourJeu();  
-        //miseAJourJoueur();  
-
+        //
       } else {
         if (premierClick) {
             demarrerTimer();
@@ -186,10 +189,7 @@ export function Demineur() {
       setMineTrouvees(nouvellesMinesTrouvees);
       demarrerTimer();
       setPremierClick(false);
-      setNbClicks(NbClicksPrecedent => NbClicksPrecedent + 1); 
-      //miseAJourJoueur(); 
-      
-
+      setNbClicks(NbClicksPrecedent => NbClicksPrecedent + 1);       
       /**********  Diag tests **********/
       /**/console.log("Stats conditions victoire:");
       /**/console.log("Mines trouvées: " + nouvellesMinesTrouvees);
@@ -198,20 +198,17 @@ export function Demineur() {
       /**/console.log(drapeauxAPlacer === 0);
       /*********************************/
 
-      if (nouvellesMinesTrouvees === niveau.qtMines && nouveauxDrapeauxAPlacer === 0) {   
-        
-        
-        
-        arreterTimer();
+      if (nouvellesMinesTrouvees === niveau.qtMines && nouveauxDrapeauxAPlacer === 0) {           
+        fermerJeu();
         setVictoire(true); 
-        setEnJeu(false); 
-        miseAJourJeu();
-        //miseAJourListeJoueurs();          
+        miseAJourJoueur();         
+        miseAJourJeu();          
       }  
     }   
   }
 
   /*********** Affichage *************/
+
   return (
     <div style={{
       backgroundImage: "url('../../images/demineur/noMansLand.png')",
@@ -267,21 +264,21 @@ export function Demineur() {
                 </div> 
               </div>                    
           </Col>
-          <Col md={12} lg={0} xl={3}>
-              <Row>
-                <ResultatJeu              
-                  niveau={niveau} 
-                  nbMinesTrouves={minesTrouvees} 
-                  tempsSecondes={timer} 
-                  nbClicks={nbClicks} 
-                  estEnJeu={false}
-                  victoire={victoire}
-                  pointage={joueurActif.points} 
-                />
-              </Row>
-              <Row>
-                <LeaderBord listeJoueurs={listeJoueurs} />            
-              </Row>            
+          <Col md={12} lg={0} xl={3}>            
+            <Row>
+              <ResultatJeu              
+                niveau={niveau} 
+                nbMinesTrouves={minesTrouvees} 
+                tempsSecondes={timer} 
+                nbClicks={nbClicks} 
+                estEnJeu={enJeu}
+                victoire={victoire}
+                pointage={joueurActif.points} 
+              />
+            </Row>
+            <Row>
+              <LeaderBord listeJoueurs={listeJoueurs} />            
+            </Row>                       
           </Col>
         </Row>
       </Container>
