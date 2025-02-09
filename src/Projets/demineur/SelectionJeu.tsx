@@ -1,4 +1,5 @@
 import { ListGroup, Form, Button } from 'react-bootstrap';
+import { useState } from 'react';
 
 import { INiveau } from './INiveau';
 
@@ -12,7 +13,9 @@ interface NiveauProps {
 
 export function SelectionJeu({estJoueurActif, niveaux, niveauActif, onNiveauSelect, onLancerJeu}: NiveauProps): JSX.Element {
     const niveau = niveaux.find(n => n.difficulte === niveauActif);
-    const boutonDisabled: boolean = estJoueurActif ? true : false;
+    const [niveauChoisi, setNiveauChoisi] = useState(false);
+    const boutonDisabled: boolean = (estJoueurActif || !niveauChoisi) ? true : false;
+
     return (
         <Form>
         <ListGroup>
@@ -21,7 +24,7 @@ export function SelectionJeu({estJoueurActif, niveaux, niveauActif, onNiveauSele
                 <ListGroup.Item
                     key={niveau.difficulte}
                     active={niveau.difficulte === niveauActif}
-                    onClick={() => onNiveauSelect(niveau.difficulte)} 
+                    onClick={() => {onNiveauSelect(niveau.difficulte); setNiveauChoisi(true);}} 
                     style={{ cursor: 'pointer', width: '200px', borderRadius: '10px', border: '1px solid #ccc' }}
                     variant='light'                   
                     >
