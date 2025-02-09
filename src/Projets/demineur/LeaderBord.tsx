@@ -23,7 +23,7 @@ export function LeaderBord({listeJoueurs}: ListeJoueursProps): JSX.Element {
         .slice(0, 3);
 
     return (
-        <div className="d-flex-justify-content-center" style={{ width:'320px'}}>
+        <div className="d-flex-justify-content-center" style={{ width:'330px'}}>
             <Table striped bordered hover>
                 <thead>
                     <tr>
