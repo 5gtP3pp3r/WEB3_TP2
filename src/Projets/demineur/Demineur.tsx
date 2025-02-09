@@ -97,7 +97,6 @@ export function Demineur() {
     arreterTimer();
   }
   function miseAJourJeu(): void {
-    miseAJourJoueur(); 
     miseAJourListeJoueurs();             
   }
 
@@ -128,7 +127,6 @@ export function Demineur() {
     setNbClicks(0);
     setPremierClick(true);
     joueurActif.points = 0;
-    //setJoueurActif(JoueurActifDefaut);
     /**********  Diag tests **********/
     /**/console.log("Niveau Nouvelle grille générée: ");
     /**/console.log("difficulte: " + niveau?.difficulte);
@@ -147,9 +145,8 @@ export function Demineur() {
         fermerJeu();
         setVictoire(false);        
         nouvelleGrille = grille.map(block => ({ ...block, cache: false })); 
-        miseAJourJoueur();   
+        //miseAJourJoueur();   
         miseAJourJeu();  
-        //
       } else {
         if (premierClick) {
             demarrerTimer();
@@ -162,7 +159,7 @@ export function Demineur() {
     }
   }
   
-  function handleClickDroit(id: number): void {  
+  function handleClickDroit(id: number): void {     // OK BON POINTAGE RASULTATS ET LEADERBORD.... yessss!
     if (enJeu) {      
       const blocClick = grille.find(block => block.id === id);
       const nouvelleGrille = grille.map(block =>
@@ -200,8 +197,7 @@ export function Demineur() {
 
       if (nouvellesMinesTrouvees === niveau.qtMines && nouveauxDrapeauxAPlacer === 0) {           
         fermerJeu();
-        setVictoire(true); 
-        miseAJourJoueur();         
+        setVictoire(true);          
         miseAJourJeu();          
       }  
     }   
@@ -241,9 +237,9 @@ export function Demineur() {
           <Col md={12} lg={8} xl={7}>                
             <StatsJeu temps={timer} nbMine={drapeauxAPlacer}/>   
               <div className="d-flex justify-content-center mb-5" >          
-                <div style={{ display: "grid", gridTemplateColumns: `repeat(${niveau.dimensions}, 22px)`}}>
+                <div style={{ display: "grid", gridTemplateColumns: `repeat(${niveau.dimensions}, 24px)`}}>
                   {grille.map((block) => (
-                    <div key={block.id} style={{ width: "22px", height: "22px", cursor: block.cache ? 'url(../../images/demineur/curseurDemineur.png), auto' : 'auto' }}
+                    <div key={block.id} style={{ height: "24px", cursor: block.cache ? 'url(../../images/demineur/curseurDemineur.png), auto' : 'auto' }}
 
                       onClick={() => {handleClickGauche(block.id)}}
 
