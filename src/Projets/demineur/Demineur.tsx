@@ -288,7 +288,7 @@ export function Demineur() {
                 nbMinesTrouves={minesTrouvees}
                 tempsSecondes={timer}
                 nbClicks={nbClicks}
-                estEnJeu={false}
+                estEnJeu={enJeu}
                 victoire={victoire}
                 pointage={joueurActif.points}
               />
