@@ -25,7 +25,7 @@ export function Demineur() {
   /************* États ***************/
 
   const [ grille, setGrille ] = useState<IBlock[]>([]);
-  const [ niveau, setNiveau ] = useState<INiveau>(niveauDefaut); 
+  const [ niveau, setNiveau ] = useState<INiveau>(niveauDefaut);
   const [ niveauActif, setNiveauActif ] = useState<string>("");
   const [ niveauSelectionne, setNiveauSelectionne ] = useState(niveau);
   const [ enJeu, setEnJeu ] = useState<boolean>(true);
@@ -35,7 +35,6 @@ export function Demineur() {
   const [ minesTrouvees, setMineTrouvees ] = useState<number>(0);
   const [ timer, setTimer ] = useState<number>(0);
   const [ victoire, setVictoire ] = useState<boolean>(false);
-  //const [ pointage, setPointage ] = useState<number>(0);
   const [ joueurActif, setJoueurActif ] = useState<IJoueur>(JoueurActifDefaut);
   const [ listeJoueurs, setListeJoueur] = useState<IJoueur[]>([]);
 
@@ -45,7 +44,7 @@ export function Demineur() {
     if (timer < maxTime && premierClick) {
       timerRef.current = window.setTimeout(() => {
         setTimer(timerPrecedent => timerPrecedent + 1);
-        demarrerTimer();         
+        demarrerTimer();
       }, 1000);
     }
   }
@@ -66,16 +65,25 @@ export function Demineur() {
     return pointsTotal;
   }
 
+  function resetJoueurActif() {
+    setJoueurActif(joueurEtatPrecedent => ({
+      ...joueurEtatPrecedent,
+      niveau: niveauActif, 
+      points: 0
+    }));
+  }
+
   function miseAJourJoueur() {
+    // Seul moyen trouvé de changer l'état du joueur assé rapidement à la fin d'un jeu avant de le passer à la liste.
     const points: number = calculerPointage();
-    const joueurMisAJour: IJoueur = {...joueurActif, niveau: niveauActif, points: points};      
-    /**********  Diag tests **********/
-    /**/console.log("Mise à jour joueur: ");
-    /**/console.log("Nom: " + joueurMisAJour.nom);
-    /**/console.log("Niveau: " + joueurMisAJour.niveau);
-    /**/console.log("Points: " + joueurMisAJour.points);
-    /*********************************/ 
-    setJoueurActif(joueurMisAJour);
+    joueurActif.niveau = niveauActif;
+    joueurActif.points = points;
+    
+    // Les formes officiels suivante n'on pas fonctionné: 
+    // const joueurMisAJour: IJoueur = {...joueurActif, niveau: niveauActif, points: points}; 
+    // setJoueurActif(joueurMisAJour); 
+    // ou  
+    // setJoueurActif(joueurEtatPrecedent => ({...joueurEtatPrecedent, niveau: niveauActif, points: points })); 
     
     /**********  Diag tests **********/
     /**/console.log("Joueur Actif: ");
@@ -85,19 +93,19 @@ export function Demineur() {
     /*********************************/
   }
 
-  function miseAJourListeJoueurs() {  
-    const listeMiseAJour: IJoueur[] = listeJoueurs;
-    listeMiseAJour.push(joueurActif);    
-    setListeJoueur(listeMiseAJour); 
-    console.log(listeJoueurs); 
+  function miseAJourListeJoueurs() {
+    const listeMiseAJour: IJoueur[] = [...listeJoueurs, joueurActif];
+    setListeJoueur(listeMiseAJour);
+    /**********  Diag tests **********/
+    /**/console.log(listeJoueurs);
+    /*********************************/
   }
 
   function fermerJeu() {
+    miseAJourJoueur();
     setEnJeu(false);
     arreterTimer();
-  }
-  function miseAJourJeu(): void {
-    miseAJourListeJoueurs();             
+    miseAJourListeJoueurs();
   }
 
   function selectionNiveau(niveau: string): void {
@@ -105,7 +113,7 @@ export function Demineur() {
     const niveauChoisi = niveauxTab.find((diff) => diff.difficulte === niveau);
 
     if (niveauChoisi) {
-      setNiveauSelectionne(niveauChoisi);          
+      setNiveauSelectionne(niveauChoisi);
     }
     /**********  Diag tests **********/
     /**/console.log("Niveau Selectioné: ");
@@ -116,17 +124,16 @@ export function Demineur() {
     /*********************************/
   }
 
-  function genererNouvelleGrille(niveau: INiveau): void {
-    arreterTimer();
-    setEnJeu(true);    
+  function LancerNouveauJeu(niveau: INiveau): void {
+    setEnJeu(true);
     setNiveau(niveauSelectionne);
-    setGrille(GenererGrille(niveau));  
+    setGrille(GenererGrille(niveau));
     setDrapeauxAPlacer(niveau.qtMines);
     setMineTrouvees(0);
     setTimer(0);
     setNbClicks(0);
     setPremierClick(true);
-    joueurActif.points = 0;
+    resetJoueurActif();
     /**********  Diag tests **********/
     /**/console.log("Niveau Nouvelle grille générée: ");
     /**/console.log("difficulte: " + niveau?.difficulte);
@@ -136,70 +143,84 @@ export function Demineur() {
     /*********************************/
   }
 
-  function handleClickGauche(id: number): void {
-    if (enJeu) {
-      let nouvelleGrille = RevelerBlockRecursif(niveau, id, grille);
-      const estUneMine = grille.find(block => block.id === id)?.mine ?? false;
-
-      if (estUneMine) {        
-        fermerJeu();
-        setVictoire(false);        
-        nouvelleGrille = grille.map(block => ({ ...block, cache: false })); 
-        //miseAJourJoueur();   
-        miseAJourJeu();  
-      } else {
-        if (premierClick) {
-            demarrerTimer();
-            setPremierClick(false);
-        }
-      }
-      miseAJourJoueur();
-      setGrille(nouvelleGrille);
-      setNbClicks(NbClicksPrecedent => NbClicksPrecedent + 1);
+  function gererClickGauche(id: number): void {
+    if (!enJeu) {
+      return;
     }
+    const blocClick = grille.find(block => block.id === id);
+    if (blocClick?.drapeau) {
+      return;
+    }
+
+    let nouvelleGrille = RevelerBlockRecursif(niveau, id, grille);
+    if (blocClick?.mine) {
+      fermerJeu();
+      setVictoire(false);
+      nouvelleGrille = grille.map(block => ({ ...block, cache: false }));    
+    }
+    else {
+      if (premierClick) {
+        demarrerTimer();
+        setPremierClick(false);
+      }
+    }
+    setNbClicks(NbClicksPrecedent => NbClicksPrecedent + 1);
+    setGrille(nouvelleGrille);
   }
   
-  function handleClickDroit(id: number): void {     // OK BON POINTAGE RASULTATS ET LEADERBORD.... yessss!
-    if (enJeu) {      
-      const blocClick = grille.find(block => block.id === id);
-      const nouvelleGrille = grille.map(block =>
-          block.id === id ? { ...block, drapeau: !block.drapeau } : block
-      );
-      setGrille(nouvelleGrille);
+  function gererClickDroit(id: number): void {
+    if (!enJeu) {
+      return;
+    }
 
-      let nouveauxDrapeauxAPlacer = drapeauxAPlacer;
-      let nouvellesMinesTrouvees = minesTrouvees;
+    const blocClick = grille.find(block => block.id === id);
+    if (!blocClick?.cache) {
+      return;
+    }
 
-      if (!blocClick?.drapeau) {  
-          --nouveauxDrapeauxAPlacer;
-          if (blocClick?.mine) {
-            ++nouvellesMinesTrouvees;
-          }
-      } 
-      else {
-          ++nouveauxDrapeauxAPlacer;
-          if (blocClick.mine) {
-              --nouvellesMinesTrouvees;
-          }
+    const grilleEnJeu = grille.map(block => {
+      if (block.id === id) { 
+        return {
+          ...block, drapeau: !block.drapeau
+        };
       }
-      setDrapeauxAPlacer(nouveauxDrapeauxAPlacer);
-      setMineTrouvees(nouvellesMinesTrouvees);
-      demarrerTimer();
-      setPremierClick(false);
-      setNbClicks(NbClicksPrecedent => NbClicksPrecedent + 1);       
-      /**********  Diag tests **********/
-      /**/console.log("Stats conditions victoire:");
-      /**/console.log("Mines trouvées: " + nouvellesMinesTrouvees);
-      /**/console.log(nouvellesMinesTrouvees === niveau.qtMines);
-      /**/console.log("Drapeaux à placer: " + nouveauxDrapeauxAPlacer);
-      /**/console.log(drapeauxAPlacer === 0);
-      /*********************************/
+      else {
+        return block;
+      }
+    });
+    setGrille(grilleEnJeu);
 
-      if (nouvellesMinesTrouvees === niveau.qtMines && nouveauxDrapeauxAPlacer === 0) {           
-        fermerJeu();
-        setVictoire(true);          
-        miseAJourJeu();          
-      }  
+    let nouveauxDrapeauxAPlacer = drapeauxAPlacer;
+    let nouvellesMinesTrouvees = minesTrouvees;
+    if (!blocClick?.drapeau) {
+      --nouveauxDrapeauxAPlacer;
+      if (blocClick?.mine) {
+        ++nouvellesMinesTrouvees;
+      }
+    } 
+    else {
+      ++nouveauxDrapeauxAPlacer;
+      if (blocClick.mine) {
+          --nouvellesMinesTrouvees;
+      }
+    }
+
+    setDrapeauxAPlacer(nouveauxDrapeauxAPlacer);
+    setMineTrouvees(nouvellesMinesTrouvees);
+    demarrerTimer();
+    setPremierClick(false);
+    setNbClicks(NbClicksPrecedent => NbClicksPrecedent + 1);
+    /**********  Diag tests **********/
+    /**/console.log("Stats conditions victoire:");
+    /**/console.log("Mines trouvées: " + nouvellesMinesTrouvees);
+    /**/console.log(nouvellesMinesTrouvees === niveau.qtMines);
+    /**/console.log("Drapeaux à placer: " + nouveauxDrapeauxAPlacer);
+    /**/console.log(drapeauxAPlacer === 0);
+    /*********************************/
+
+    if (nouvellesMinesTrouvees === niveau.qtMines && nouveauxDrapeauxAPlacer === 0) {            
+      setVictoire(true);
+      fermerJeu();           
     }   
   }
 
@@ -208,73 +229,73 @@ export function Demineur() {
   return (
     <div style={{
       backgroundImage: "url('../../images/demineur/noMansLand.png')",
-      backgroundSize: 'cover', 
-      backgroundPosition: 'center', 
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
       minHeight: '650px',
       caretColor: "transparent"
     }}>
       <Container>
         <Row>
           <Col md={12} lg={4} xl={2}>
-            <Row>            
-              <div className='mt-5 mb-3'>             
+            <Row>
+              <div className='mt-5 mb-3'>
                 <ChoisirNomJoueur
                   listeJoueurs={listeJoueurs}
-                  setJoueur={setJoueurActif} 
-                /> 
+                  setJoueur={setJoueurActif}
+                />
               </div>
-            </Row>            
+            </Row>
             <Row>
               <SelectionJeu
                 estJoueurActif={joueurActif.nom == "none" ? true : false}
                 niveaux={niveauxTab}
                 niveauActif={niveauActif}
                 onNiveauSelect={selectionNiveau}
-                onLancerJeu={genererNouvelleGrille}
+                onLancerJeu={LancerNouveauJeu}
               />
             </Row>
           </Col>
-          <Col md={12} lg={8} xl={7}>                
-            <StatsJeu temps={timer} nbMine={drapeauxAPlacer}/>   
-              <div className="d-flex justify-content-center mb-5" >          
+          <Col md={12} lg={8} xl={7}>
+            <StatsJeu temps={timer} nbMine={drapeauxAPlacer}/>
+              <div className="d-flex justify-content-center mb-5" >
                 <div style={{ display: "grid", gridTemplateColumns: `repeat(${niveau.dimensions}, 24px)`}}>
                   {grille.map((block) => (
                     <div key={block.id} style={{ height: "24px", cursor: block.cache ? 'url(../../images/demineur/curseurDemineur.png), auto' : 'auto' }}
 
-                      onClick={() => {handleClickGauche(block.id)}}
+                      onClick={() => {gererClickGauche(block.id)}}
 
                       /****** Diag test valeurs au mouseOver console.log() ******/
-                      /**/onMouseOver={() =>console.log("x: "+block.x+"\n"+                           
-                      /**/                              "y: "+block.y+"\n"+                           
-                      /**/                              "id: "+block.id+"\n"+                         
-                      /**/                              "valeur: "+block.valeur+"\n"+                 
-                      /**/                              "caché: "+block.cache+"\n"+                   
-                      /**/                              "drapeau: "+block.drapeau+"\n"+               
-                      /**/                              "mine: "+block.mine)}                         
+                      /**/onMouseOver={() =>console.log("x: "+block.x+"\n"+
+                      /**/                              "y: "+block.y+"\n"+
+                      /**/                              "id: "+block.id+"\n"+
+                      /**/                              "valeur: "+block.valeur+"\n"+
+                      /**/                              "caché: "+block.cache+"\n"+
+                      /**/                              "drapeau: "+block.drapeau+"\n"+
+                      /**/                              "mine: "+block.mine)}
                       /**********************************************************/
                     
-                      onContextMenu={(e) => { e.preventDefault(); handleClickDroit(block.id);}}>
-                      {GestionAffichagesBlocksOnClickSurGrille(block)}                
+                      onContextMenu={(e) => { e.preventDefault(); gererClickDroit(block.id);}}>
+                      {GestionAffichagesBlocksOnClickSurGrille(block)}
                     </div>
                   ))}
-                </div> 
-              </div>                    
+                </div>
+              </div>
           </Col>
-          <Col md={12} lg={0} xl={3}>            
+          <Col md={12} lg={0} xl={3}>
             <Row>
-              <ResultatJeu              
-                niveau={niveau} 
-                nbMinesTrouves={minesTrouvees} 
-                tempsSecondes={timer} 
-                nbClicks={nbClicks} 
-                estEnJeu={enJeu}
+              <ResultatJeu
+                niveau={niveau}
+                nbMinesTrouves={minesTrouvees}
+                tempsSecondes={timer}
+                nbClicks={nbClicks}
+                estEnJeu={false}
                 victoire={victoire}
-                pointage={joueurActif.points} 
+                pointage={joueurActif.points}
               />
             </Row>
             <Row>
-              <LeaderBord listeJoueurs={listeJoueurs} />            
-            </Row>                       
+              <LeaderBord listeJoueurs={listeJoueurs} />
+            </Row>
           </Col>
         </Row>
       </Container>
