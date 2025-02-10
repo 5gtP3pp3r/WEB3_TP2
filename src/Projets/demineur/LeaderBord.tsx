@@ -22,7 +22,7 @@ export function LeaderBord({listeJoueurs}: ListeJoueursProps): JSX.Element {
         .sort((a, b) => b.points - a.points) 
         .slice(0, 3);
 
-    return (
+   return listeJoueurs.length > 0 ? (
         <div className="d-flex-justify-content-center" style={{ width:'330px'}}>
             <Table striped bordered hover>
                 <thead>
@@ -32,7 +32,7 @@ export function LeaderBord({listeJoueurs}: ListeJoueursProps): JSX.Element {
                 </thead>
                 <tbody>
                     <tr>
-                        <td colSpan={2}><strong className="text-success">Niveau facile</strong></td>                                                                         
+                        <td colSpan={2}><strong className="text-success">{listeFacile.length > 0 ? "Niveau facile" : ""}</strong></td>                                                                         
                     </tr>  
                         {listeFacile
                             .map((joueur, index) => (
@@ -42,7 +42,7 @@ export function LeaderBord({listeJoueurs}: ListeJoueursProps): JSX.Element {
                                 </tr>
                             ))}   
                     <tr>
-                        <td colSpan={2}><strong className="text-warning">Niveau intermédiaire</strong></td>                                            
+                        <td colSpan={2}><strong className="text-warning">{listeIntermediaire.length > 0 ? "Niveau intermédiaire" : ""}</strong></td>                                            
                     </tr>
                         {listeIntermediaire
                             .map((joueur, index) => (
@@ -52,7 +52,7 @@ export function LeaderBord({listeJoueurs}: ListeJoueursProps): JSX.Element {
                                 </tr>
                             ))}       
                     <tr>
-                        <td colSpan={2}><strong className="text-danger">Niveau expert</strong></td>
+                        <td colSpan={2}><strong className="text-danger">{listeExpert.length > 0 ? "Niveau expert" : ""}</strong></td>
                     </tr>
                         {listeExpert
                             .map((joueur, index) => (
@@ -64,5 +64,6 @@ export function LeaderBord({listeJoueurs}: ListeJoueursProps): JSX.Element {
                 </tbody>
             </Table>
         </div>
-    );
+    ) : (<></>);
+
 }

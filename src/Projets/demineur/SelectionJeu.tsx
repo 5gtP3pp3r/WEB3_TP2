@@ -27,7 +27,7 @@ export function SelectionJeu({estJoueurActif, niveaux, niveauActif, onNiveauSele
                     onClick={() => {onNiveauSelect(niveau.difficulte); setNiveauChoisi(true);}} 
                     style={{ cursor: 'pointer', width: '200px', borderRadius: '10px', border: '1px solid #ccc' }}
                     variant='light'                   
-                    >
+                >
                     {niveau.difficulte}
                 </ListGroup.Item>
             ))}
