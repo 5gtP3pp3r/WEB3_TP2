@@ -20,7 +20,7 @@ export function LeaderBord({listeJoueurs}: ListeJoueursProps): JSX.Element {
         .sort((a, b) => b.points - a.points) 
         .slice(0, 3);
 
-   return listeJoueurs.length > 0 ? (
+   return (
         <div className="d-flex-justify-content-center" style={{ width:'330px'}}>
             <Table striped bordered hover>
                 <thead>
@@ -30,51 +30,35 @@ export function LeaderBord({listeJoueurs}: ListeJoueursProps): JSX.Element {
                 </thead>
                 <tbody>
 
-                    {listeFacile.length > 0 && ( 
-                        <>
-                            <tr>
-                                <td colSpan={2}><strong className="text-success">Niveau facile</strong></td>
+                    <tr>
+                        <td colSpan={2}><strong className="text-success">Niveau facile</strong></td>
+                    </tr>
+                        {listeFacile.map((joueur, index) => (
+                            <tr key={`facile-${index}`}>
+                                <td>{joueur.nom}</td>
+                                <td>{joueur.points} pts</td>
+                             </tr>
+                        ))}
+                    <tr>
+                        <td colSpan={2}><strong className="text-warning">Niveau intermédiaire</strong></td>
+                    </tr>
+                        {listeIntermediaire.map((joueur, index) => (
+                            <tr key={`intermediaire-${index}`}>
+                                <td>{joueur.nom}</td>
+                                <td>{joueur.points} pts</td>
                             </tr>
-                            {listeFacile.map((joueur, index) => (
-                                <tr key={`facile-${index}`}>
-                                    <td>{joueur.nom}</td>
-                                    <td>{joueur.points} pts</td>
-                                </tr>
-                            ))}
-                        </>
-                    )}   
-
-
-                    {listeIntermediaire.length > 0 && (
-                        <>
-                            <tr>
-                                <td colSpan={2}><strong className="text-warning">Niveau intermédiaire</strong></td>
+                        ))}
+                    <tr>
+                        <td colSpan={2}><strong className="text-danger">Niveau expert</strong></td>
+                    </tr>
+                         {listeExpert.map((joueur, index) => (
+                            <tr key={`expert-${index}`}>
+                                <td>{joueur.nom}</td>
+                                <td>{joueur.points} pts</td>
                             </tr>
-                            {listeIntermediaire.map((joueur, index) => (
-                                <tr key={`intermediaire-${index}`}>
-                                    <td>{joueur.nom}</td>
-                                    <td>{joueur.points} pts</td>
-                                </tr>
-                            ))}
-                        </>
-                    )}
-
-                    {listeExpert.length > 0 && (
-                        <>
-                            <tr>
-                                <td colSpan={2}><strong className="text-danger">Niveau expert</strong></td>
-                            </tr>
-                            {listeExpert.map((joueur, index) => (
-                                <tr key={`expert-${index}`}>
-                                    <td>{joueur.nom}</td>
-                                    <td>{joueur.points} pts</td>
-                                </tr>
-                            ))}
-                        </>
-                    )}  
-
+                        ))}
                 </tbody>
             </Table>
         </div>
-    ) : (<></>);
+    );
 }
