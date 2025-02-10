@@ -12,7 +12,7 @@ import { GenererGrille } from './GenererGrille';
 import { ChoisirNomJoueur } from './ChoisirNomJoueur';
 import { INiveau, niveauxTab } from './INiveau';
 import { RevelerBlockRecursif } from './RevelerBlockRecursif';
-import { GestionAffichagesBlocksOnClickSurGrille } from './GestionAffichagesBlocksOnClickSurGrille';
+import { GestionAffichagesBlocksImagesSurGrille } from './GestionAffichagesBlocksImagesSurGrille';
 
 export function Demineur() {
   /*********** Constantes *************/
@@ -74,12 +74,12 @@ export function Demineur() {
   }
 
   function miseAJourJoueur() {
-    // Seul moyen trouvé de changer l'état du joueur assé rapidement à la fin d'un jeu avant de le passer à la liste.
+    // Seul moyen trouvé de changer l'état du joueur directe et rapidement à la fin d'un jeu avant de le passer à la liste. Async de &%$/"!
     const points: number = calculerPointage();
     joueurActif.niveau = niveauActif;
     joueurActif.points = points;
     
-    // Les formes officiels suivante n'on pas fonctionné: 
+    // Les formes officiels pour React suivantes n'on pas fonctionné: 
     // const joueurMisAJour: IJoueur = {...joueurActif, niveau: niveauActif, points: points}; 
     // setJoueurActif(joueurMisAJour); 
     // ou  
@@ -275,7 +275,7 @@ export function Demineur() {
                       /**********************************************************/
                     
                       onContextMenu={(e) => { e.preventDefault(); gererClickDroit(block.id);}}>
-                      {GestionAffichagesBlocksOnClickSurGrille(block)}
+                      {GestionAffichagesBlocksImagesSurGrille(block)}
                     </div>
                   ))}
                 </div>

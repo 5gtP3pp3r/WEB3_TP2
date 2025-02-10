@@ -7,8 +7,6 @@ interface ListeJoueursProps {
 }
 
 export function LeaderBord({listeJoueurs}: ListeJoueursProps): JSX.Element {
-    // Préfiltrage pour ne pas "polluer visuellement" le tableau dans le return
-    // LeaderBord ne conserve pas les points à 0
     const listeFacile: IJoueur[] = listeJoueurs
         .filter((joueur) => (joueur.niveau === "facile" && joueur.points > 0)) 
         .sort((a, b) => b.points - a.points) 
@@ -32,7 +30,7 @@ export function LeaderBord({listeJoueurs}: ListeJoueursProps): JSX.Element {
                 </thead>
                 <tbody>
 
-                    {listeFacile.length > 0 && (
+                    {listeFacile.length > 0 && ( 
                         <>
                             <tr>
                                 <td colSpan={2}><strong className="text-success">Niveau facile</strong></td>
@@ -74,7 +72,7 @@ export function LeaderBord({listeJoueurs}: ListeJoueursProps): JSX.Element {
                             ))}
                         </>
                     )}  
-                    
+
                 </tbody>
             </Table>
         </div>

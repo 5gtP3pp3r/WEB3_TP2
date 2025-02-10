@@ -1,4 +1,3 @@
-
 interface StatsJeuProps {
     temps: number;
     nbMine: number;    
