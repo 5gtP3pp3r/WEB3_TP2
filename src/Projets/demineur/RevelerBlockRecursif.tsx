@@ -14,22 +14,22 @@ import {
 
 export function RevelerBlockRecursif(niveau: INiveau, id: number, grille: IBlock[]): IBlock[] {
     let nouvelleGrille = [...grille];
-    const bloc = nouvelleGrille.find(block => block.id === id);
+    const block = nouvelleGrille.find(block => block.id === id);
 
-    if (!bloc || !bloc.cache || bloc.mine) return nouvelleGrille;
+    if (!block || !block.cache || block.mine || block.drapeau) return nouvelleGrille;
 
-    bloc.cache = false; 
+    block.cache = false; 
 
-    if (bloc.valeur === 0) {
+    if (block.valeur === 0) {
         const voisins = [
-            voirNordId(bloc, nouvelleGrille),
-            voirNordEstId(niveau, bloc, nouvelleGrille),
-            voirEstId(niveau, bloc, nouvelleGrille),
-            voirSudEstId(niveau, bloc, nouvelleGrille),
-            voirSudId(niveau, bloc, nouvelleGrille),
-            voirSudOuestId(niveau, bloc, nouvelleGrille),
-            voirOuestId(bloc, nouvelleGrille),
-            voirNordOuestId(bloc, nouvelleGrille)
+            voirNordId(block, nouvelleGrille),
+            voirNordEstId(niveau, block, nouvelleGrille),
+            voirEstId(niveau, block, nouvelleGrille),
+            voirSudEstId(niveau, block, nouvelleGrille),
+            voirSudId(niveau, block, nouvelleGrille),
+            voirSudOuestId(niveau, block, nouvelleGrille),
+            voirOuestId(block, nouvelleGrille),
+            voirNordOuestId(block, nouvelleGrille)
         ];
 
         voisins.forEach(voisinId => {

@@ -147,13 +147,13 @@ export function Demineur() {
     if (!enJeu) {
       return;
     }
-    const blocClick = grille.find(block => block.id === id);
-    if (blocClick?.drapeau) {
+    const blockClick = grille.find(block => block.id === id);
+    if (blockClick?.drapeau) {
       return;
     }
 
     let nouvelleGrille = RevelerBlockRecursif(niveau, id, grille);
-    if (blocClick?.mine) {
+    if (blockClick?.mine) {
       fermerJeu();
       setVictoire(false);
       nouvelleGrille = grille.map(block => ({ ...block, cache: false }));    
@@ -173,8 +173,8 @@ export function Demineur() {
       return;
     }
 
-    const blocClick = grille.find(block => block.id === id);
-    if (!blocClick?.cache) {
+    const blockClick = grille.find(block => block.id === id);
+    if (!blockClick?.cache) {
       return;
     }
 
@@ -192,15 +192,15 @@ export function Demineur() {
 
     let nouveauxDrapeauxAPlacer = drapeauxAPlacer;
     let nouvellesMinesTrouvees = minesTrouvees;
-    if (!blocClick?.drapeau) {
+    if (!blockClick?.drapeau) {
       --nouveauxDrapeauxAPlacer;
-      if (blocClick?.mine) {
+      if (blockClick?.mine) {
         ++nouvellesMinesTrouvees;
       }
     } 
     else {
       ++nouveauxDrapeauxAPlacer;
-      if (blocClick.mine) {
+      if (blockClick.mine) {
           --nouvellesMinesTrouvees;
       }
     }
