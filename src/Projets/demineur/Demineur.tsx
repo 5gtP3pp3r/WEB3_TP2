@@ -5,14 +5,14 @@ import { Container, Col, Row } from 'react-bootstrap';
 import { IBlock } from "./IBlock";
 import { IJoueur } from './IJoueur';
 import { StatsJeu } from './StatsJeu';
-import { LeaderBord } from './LeaderBord';
+import { LeaderBoard } from './LeaderBoard';
 import { ResultatJeu } from './ResultatsJeu';
 import { SelectionJeu } from './SelectionJeu';
-import { GenererGrille } from './GenererGrille';
+import { GenererGrille } from './GenererGrille'; 
 import { ChoisirNomJoueur } from './ChoisirNomJoueur';
-import { INiveau, niveauxTab } from './INiveau';
-import { RevelerBlockRecursif } from './RevelerBlockRecursif';
-import { GestionAffichagesBlocksImagesSurGrille } from './GestionAffichagesBlocksImagesSurGrille';
+import { INiveau, niveauxTab } from './INiveau'; 
+import { RevelerBlockRecursif } from './RevelerBlockRecursif'; 
+import { GestionAffichagesBlocksImagesSurGrille } from './GestionAffichagesBlocksImagesSurGrille'; 
 
 export function Demineur() {
   /*********** Constantes *************/
@@ -86,10 +86,10 @@ export function Demineur() {
     // setJoueurActif(joueurEtatPrecedent => ({...joueurEtatPrecedent, niveau: niveauActif, points: points })); 
     
     /**********  Diag tests **********/
-    /**/console.log("Joueur Actif: ");
-    /**/console.log("Nom: " + joueurActif.nom);
-    /**/console.log("Niveau: " + joueurActif.niveau);
-    /**/console.log("Points: " + joueurActif.points);
+    //console.log("Joueur Actif: ");
+    //console.log("Nom: " + joueurActif.nom);
+    //console.log("Niveau: " + joueurActif.niveau);
+    //console.log("Points: " + joueurActif.points);
     /*********************************/
   }
 
@@ -97,7 +97,7 @@ export function Demineur() {
     const listeMiseAJour: IJoueur[] = [...listeJoueurs, joueurActif];
     setListeJoueur(listeMiseAJour);
     /**********  Diag tests **********/
-    /**/console.log(listeJoueurs);
+    //console.log(listeJoueurs);
     /*********************************/
   }
 
@@ -116,11 +116,11 @@ export function Demineur() {
       setNiveauSelectionne(niveauChoisi);
     }
     /**********  Diag tests **********/
-    /**/console.log("Niveau Selectioné: ");
-    /**/console.log("difficulte: " + niveauChoisi?.difficulte);
-    /**/console.log("dimensions: " + niveauChoisi?.dimensions);
-    /**/console.log("Qt mines: " + niveauChoisi?.qtMines);
-    /**/console.log("Points de base: " + niveauChoisi?.pointsBase);
+    //console.log("Niveau Selectioné: ");
+    //console.log("difficulte: " + niveauChoisi?.difficulte);
+    //console.log("dimensions: " + niveauChoisi?.dimensions);
+    //console.log("Qt mines: " + niveauChoisi?.qtMines);
+    //console.log("Points de base: " + niveauChoisi?.pointsBase);
     /*********************************/
   }
 
@@ -135,11 +135,11 @@ export function Demineur() {
     setPremierClick(true);
     resetJoueurActif();
     /**********  Diag tests **********/
-    /**/console.log("Niveau Nouvelle grille générée: ");
-    /**/console.log("difficulte: " + niveau?.difficulte);
-    /**/console.log("dimensions: " + niveau?.dimensions);
-    /**/console.log("Qt mines: " + niveau?.qtMines);
-    /**/console.log("Points de base: " + niveau?.pointsBase);
+    //console.log("Niveau Nouvelle grille générée: ");
+    //console.log("difficulte: " + niveau?.difficulte);
+    //console.log("dimensions: " + niveau?.dimensions);
+    //console.log("Qt mines: " + niveau?.qtMines);
+    //console.log("Points de base: " + niveau?.pointsBase);
     /*********************************/
   }
 
@@ -211,11 +211,11 @@ export function Demineur() {
     setPremierClick(false);
     setNbClicks(NbClicksPrecedent => NbClicksPrecedent + 1);
     /**********  Diag tests **********/
-    /**/console.log("Stats conditions victoire:");
-    /**/console.log("Mines trouvées: " + nouvellesMinesTrouvees);
-    /**/console.log(nouvellesMinesTrouvees === niveau.qtMines);
-    /**/console.log("Drapeaux à placer: " + nouveauxDrapeauxAPlacer);
-    /**/console.log(drapeauxAPlacer === 0);
+    //console.log("Stats conditions victoire:");
+    //console.log("Mines trouvées: " + nouvellesMinesTrouvees);
+    //console.log(nouvellesMinesTrouvees === niveau.qtMines);
+    //console.log("Drapeaux à placer: " + nouveauxDrapeauxAPlacer);
+    //console.log(drapeauxAPlacer === 0);
     /*********************************/
 
     if (nouvellesMinesTrouvees === niveau.qtMines && nouveauxDrapeauxAPlacer === 0) {            
@@ -265,13 +265,13 @@ export function Demineur() {
                       onClick={() => {gererClickGauche(block.id)}}
 
                       /****** Diag test valeurs au mouseOver console.log() ******/
-                      /**/onMouseOver={() =>console.log("x: "+block.x+"\n"+
-                      /**/                              "y: "+block.y+"\n"+
-                      /**/                              "id: "+block.id+"\n"+
-                      /**/                              "valeur: "+block.valeur+"\n"+
-                      /**/                              "caché: "+block.cache+"\n"+
-                      /**/                              "drapeau: "+block.drapeau+"\n"+
-                      /**/                              "mine: "+block.mine)}
+                      //onMouseOver={() =>console.log("x: "+block.x+"\n"+
+                      //                              "y: "+block.y+"\n"+
+                      //                              "id: "+block.id+"\n"+
+                      //                              "valeur: "+block.valeur+"\n"+
+                      //                              "caché: "+block.cache+"\n"+
+                      //                              "drapeau: "+block.drapeau+"\n"+
+                      //                              "mine: "+block.mine)}
                       /**********************************************************/
                     
                       onContextMenu={(e) => { e.preventDefault(); gererClickDroit(block.id);}}>
@@ -294,7 +294,7 @@ export function Demineur() {
               />
             </Row>
             <Row>
-              <LeaderBord listeJoueurs={listeJoueurs} />
+              <LeaderBoard listeJoueurs={listeJoueurs} />
             </Row>
           </Col>
         </Row>

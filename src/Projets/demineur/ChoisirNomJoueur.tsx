@@ -2,21 +2,21 @@ import { Form } from "react-bootstrap";
 import { useState } from 'react';
 
 import { IJoueur } from "./IJoueur";
-import { FecthListeNomsApi } from "./FetchListeNomsApi";
+import { FecthListeNomsApi } from "./FetchListeNomsApi"; 
 
 interface JoueursProps {
     listeJoueurs: IJoueur[],
     setJoueur: (joueurActif: IJoueur) => void;
 }
 
-export function ChoisirNomJoueur({ setJoueur }: JoueursProps) {
+export function ChoisirNomJoueur({ setJoueur }: JoueursProps): JSX.Element {
     const [listeNomsApi, setListeNomsApi] = useState<string[]>([]);
     const [nomJoueur, setNomJoueur] = useState<string>("");
 
     async function chargerListe() {
         if (listeNomsApi.length > 0) {
             /**********  Diag tests **********/
-            /**/console.log("Liste déjà chargée !");
+            //console.log("Liste déjà chargée !");
             /*********************************/
             return;
         }
@@ -47,10 +47,10 @@ export function ChoisirNomJoueur({ setJoueur }: JoueursProps) {
         };
         setJoueur(joueurActif);
         /**********  Diag tests **********/
-        /**/console.log("Stats Joueur Actif fraichement choisi (sans niveau ou pointage associé):");
-        /**/console.log(joueurActif.nom);
-        /**/console.log(joueurActif.niveau);
-        /**/console.log(joueurActif.points);
+        //console.log("Stats Joueur Actif fraichement choisi (sans niveau ou pointage associé):");
+        //console.log(joueurActif.nom);
+        //console.log(joueurActif.niveau);
+        //console.log(joueurActif.points);
         /*********************************/
     }
 

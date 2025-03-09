@@ -1,13 +1,13 @@
 import { IBlock } from "./IBlock";
 import { INiveau } from './INiveau';
 import { 
-    voirNordId, 
-    voirNordEstId, 
-    voirEstId, 
-    voirSudEstId, 
-    voirSudId, 
-    voirSudOuestId, 
-    voirOuestId, 
+    voirNordId,
+    voirNordEstId,
+    voirEstId,
+    voirSudEstId,
+    voirSudId,
+    voirSudOuestId,
+    voirOuestId,
     voirNordOuestId
  } from './VoirIdBlocksVoisins';
  

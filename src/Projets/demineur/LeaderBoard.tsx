@@ -6,7 +6,7 @@ interface ListeJoueursProps {
     listeJoueurs: IJoueur[];
 }
 
-export function LeaderBord({listeJoueurs}: ListeJoueursProps): JSX.Element {
+export function LeaderBoard({listeJoueurs}: ListeJoueursProps): JSX.Element {
     const listeFacile: IJoueur[] = listeJoueurs
         .filter((joueur) => (joueur.niveau === "facile" && joueur.points > 0)) 
         .sort((a, b) => b.points - a.points) 
@@ -25,7 +25,7 @@ export function LeaderBord({listeJoueurs}: ListeJoueursProps): JSX.Element {
             <Table striped bordered hover>
                 <thead>
                     <tr>
-                        <th colSpan={2}><h4>Leader Bord</h4></th>
+                        <th colSpan={2}><h4>Leader Board</h4></th>
                     </tr>                   
                 </thead>
                 <tbody>
