@@ -8,13 +8,13 @@ export function PageAccueil() {
     const { isAuthenticated, loginWithRedirect} = useAuth0();
 
     return (
-        <div className='m-5'>
+        <div className='mt-5'>
             <h3>Page d'accueil</h3>           
             <div>
             {isAuthenticated ? (
                 <div className='mt-5'>
                     <Row>
-                        <Col xs={4}> 
+                        <Col lg={12} xl={4} className='mt-5'> 
                             <div style={{width:'350px'}}>    
                                 <img 
                                     src="images/JeuYahtzee.png" 
@@ -27,7 +27,7 @@ export function PageAccueil() {
                             <p className='d-flex justify-content-end'>Par Élie Caron</p>
                         </div>         
                         </Col>
-                        <Col xs={4}>  
+                        <Col lg={12} xl={4} className='mt-5'>  
                             <div style={{width:'350px'}}>  
                                 <p> Vous vous souvenez du classique "Démineur" de window 98? Voici une version revue de se jeu sous estimé!</p>
                                 <p className='d-flex justify-content-end'>Par William Crépault</p>
@@ -39,7 +39,7 @@ export function PageAccueil() {
                                 />   
                             </div>                    
                         </Col>
-                        <Col xs={4}>   
+                        <Col lg={12} xl={4} className='mt-5'>   
                             <div style={{width:'350px'}}>
                                 <img 
                                     src="images/DeckCartes.png" 
